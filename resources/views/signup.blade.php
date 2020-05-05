@@ -20,8 +20,21 @@
                 <div class="card card-signin my-5">
                     <div class="card-body">
                         <button type="button" class="btn btn-link"><i class="fas fa-arrow-circle-left"></i> Back</button>
-                        <h5 class="card-title text-center">Sign Up Now!</h5>
+                        <h5 class="card-title text-center">Join Us Now</h5>
                         <form class="form-signin">
+                            <div class="form-group" id="role">
+                                <label for="role">Sign up as</label>
+                                <br>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="teacher" name="role" class="custom-control-input">
+                                    <label class="custom-control-label" for="teacher">Teacher</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="student" name="role" class="custom-control-input">
+                                    <label class="custom-control-label" for="student">Student</label>
+                                </div>
+                            </div>
+
                             <div class="form-label-group">
                                 <input type="text" id="fname" class="form-control" placeholder="First name">
                                 <label for="fname">First name</label>
@@ -51,27 +64,23 @@
                                 <label for="gender">Gender</label>
                                 <br>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="female" name="customRadioInline1" class="custom-control-input">
+                                    <input type="radio" id="female" name="gender" class="custom-control-input">
                                     <label class="custom-control-label" for="female">Female</label>
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="male" name="customRadioInline1" class="custom-control-input">
+                                    <input type="radio" id="male" name="gender" class="custom-control-input">
                                     <label class="custom-control-label" for="male">Male</label>
                                 </div>
                             </div>
-                            
-                            <hr class="my-4">
+
                             <!-- <div class="custom-control custom-checkbox mb-3">
                                 <input type="checkbox" class="custom-control-input" id="customCheck1">
                                 <label class="custom-control-label" for="customCheck1">Remember password</label>
                             </div> -->
-                            <button class="btn btn-lg btn-success btn-block text-uppercase" type="button" id="continue_teacher">Sign up as a teacher</button>
-                            <button class="btn btn-lg btn-warning btn-block text-uppercase" type="button" id="continue_student">Sign up as a student</button>
+                            <button class="btn btn-lg btn-success btn-block text-uppercase" type="button" id="signup">Sign up</button>
+                            {{-- <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i class="fab fa-google mr-2"></i> Sign up with Google</button> --}}
                             <hr class="my-4">
                             <button type="button" class="btn btn-lg btn-info btn-block text-uppercase">Already member? Sign in</button>
-                            <!-- <hr class="my-4">
-                            <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i class="fab fa-google mr-2"></i> Sign in with Google</button>
-                            <button class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i class="fab fa-facebook-f mr-2"></i> Sign in with Facebook</button> -->
                         </form>
                     </div>
                 </div>

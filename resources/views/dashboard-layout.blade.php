@@ -95,7 +95,7 @@
     <!-- Bootstrap JS link -->
     <script src="{{ mix('js/theme.js')}}"></script>
     <!-- Custom JS -->
-    <script src="js/teacherDashboard.js"></script>
+    {{-- <script src="js/teacherDashboard.js"></script> --}}
     <!-- <script src="js/createClass.js"></script> -->
 
 </body>

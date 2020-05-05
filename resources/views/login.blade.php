@@ -54,7 +54,7 @@
     <!-- Bootstrap JS link -->
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Custom JS -->
-    <script src="js/login.js"></script>
+    {{-- <script src="js/login.js"></script> --}}
     
 </body>
 </html>
