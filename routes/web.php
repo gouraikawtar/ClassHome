@@ -16,6 +16,24 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('/posts','PostController'); 
+
+Route::resource('/comments','CommentController'); 
+
+Route::resource('/contributions','ContributionController'); 
+
+Route::resource('/documents','DocumentController'); 
+
+Route::resource('/groups','GroupController'); 
+
+Route::resource('/homeworks','HomeworkController'); 
+
+Route::resource('/profile','ProfileController'); 
+
+Route::resource('/teachingClasses','TeachingClassController'); 
+
+
 Route::get('/signup', function () {
     return view('signup');
 });
