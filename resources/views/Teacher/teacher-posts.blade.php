@@ -1,4 +1,4 @@
-@extends('./layouts.teacher-class-layout')
+@extends('Teacher.layouts.teacher-class-layout')
 
 @section('title')
 <title>ClassHome - Posts</title>

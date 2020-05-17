@@ -44,35 +44,35 @@ Route::get('/backup', function () {
     return view('backup-password');
 });
 Route::get('/myclasses', function () {
-    return view('teacher-views.teacher-myclasses');
+    return view('Teacher.teacher-myclasses');
 });
 Route::get('/archive', function () {
-    return view('teacher-views.teacher-archive');
+    return view('Teacher.teacher-archive');
 });
 Route::get('/profile', function () {
     return view('profile');
 });
 Route::get('/contributions', function () {
-    return view('teacher-views.teacher-contributions');
+    return view('Teacher.teacher-contributions');
 });
 Route::get('/grades', function () {
-    return view('teacher-views.teacher-grades');
+    return view('Teacher.teacher-grades');
 });
 Route::get('/groups', function () {
-    return view('teacher-views.teacher-groups');
+    return view('Teacher.teacher-groups');
 });
 Route::get('/homework', function () {
-    return view('teacher-views.teacher-homework');
+    return view('Teacher.teacher-homework');
 });
 Route::get('/library', function () {
-    return view('teacher-views.teacher-library');
+    return view('Teacher.teacher-library');
 });
 Route::get('/members', function () {
-    return view('teacher-views.teacher-members');
+    return view('Teacher.teacher-members');
 });
 Route::get('/posts', function () {
-    return view('teacher-views.teacher-posts');
+    return view('Teacher.teacher-posts');
 });
 Route::get('/settings', function () {
-    return view('teacher-views.teacher-settings');
+    return view('Teacher.teacher-settings');
 });
