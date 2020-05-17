@@ -9,8 +9,12 @@ class Homework extends Model
 {
     use SoftDeletes;
     
-    public function homeworkDocs(){
+    public function joinedDocuments(){
         return $this->hasMany('App\HomeworkDocument');
+    }
+
+    public function contributions(){
+        return $this->hasMany('App\Contribution');
     }
 
     public function teachingClass(){
