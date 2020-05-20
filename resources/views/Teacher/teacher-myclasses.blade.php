@@ -16,126 +16,29 @@
 @endsection
 
 @section('content')
+
+@forelse ($classes as $class)
 <div class="col-lg-4 col-sm-6 mb-4">
     <div class="card h-80 shadow-sm">
         <div class="card-body">
-            <h4 class="card-title">JAVA</h4>
-            <p class="card-text">Learn Java programming</p>
+            <h4 class="card-title">{{$class->name}}</h4>
+            @if ($class->description == null)
+            <p class="card-text">{{$class->name}}</p>
+            @else
+            <p class="card-text">{{$class->description}}</p> 
+            @endif
             <a href="#" class="btn btn-primary">Go</a>
             <a href="#" class="btn btn-warning">Archive</a>
         </div>
     </div>
 </div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">JEE</h4>
-            <p class="card-text">Learn web backend developpement</p>
-            <a href="#" class="btn btn-primary">Go</a>
-            <a href="#" class="btn btn-warning">Archive</a>
-        </div>
-    </div>
+@empty
+<div class="alert alert-primary" role="alert">
+  No classes created yet
 </div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">PFE SMI S6</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="{{ url('posts') }}" class="btn btn-primary">Go</a>
-            <a href="#" class="btn btn-warning">Archive</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-primary">Go</a>
-            <a href="#" class="btn btn-warning">Archive</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-primary">Go</a>
-            <a href="#" class="btn btn-warning">Archive</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-primary">Go</a>
-            <a href="#" class="btn btn-warning">Archive</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-primary">Go</a>
-            <a href="#" class="btn btn-warning">Archive</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-primary">Go</a>
-            <a href="#" class="btn btn-warning">Archive</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-primary">Go</a>
-            <a href="#" class="btn btn-warning">Archive</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-primary">Go</a>
-            <a href="#" class="btn btn-warning">Archive</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-primary">Go</a>
-            <a href="#" class="btn btn-warning">Archive</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-primary">Go</a>
-            <a href="#" class="btn btn-warning">Archive</a>
-        </div>
-    </div>
-</div>
+    
+@endforelse
+
 @endsection
 
 @section('pagination')
@@ -175,41 +78,36 @@
                         <span>&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form>
+                <form method="POST" action="{{ route('myclasses.store') }}">
+                    @csrf
+                    <div class="modal-body">
                         <div class="form-group">
                             <label for="class_Name">Class name</label>
-                            <input type="text" class="form-control" id="class_Name" required="true">
+                            <input type="text" name="name" class="form-control" id="class_Name" required="true">
                         </div>
                         <div class="form-group">
                             <label for="class_section">Section</label>
-                            <select class="custom-select" id="class_section">
+                            <select name="section" class="custom-select" id="class_section">
                                 <option selected disabled value="">Choose section..</option>
                                 <option value="primary">Primary</option>
                                 <option value="secondary">Secondary</option>
                                 <option value="highschool">Highschool</option>
                                 <option value="university/college">University/College</option>
                             </select>
-                            <!-- à rendre select -->
                         </div>
-                        <!-- <div class="form-group">
-                            <select class="custom-select" id="class_level">
-                                <option selected disabled value="">Level</option>
-                            </select>
-                        </div> -->
                         <div class="form-group">
                             <label for="class_object">Object</label>
-                            <input type="text" class="form-control" id="class_object">
+                            <input type="text" name="object" class="form-control" id="class_object">
                         </div>
                         <div class="form-group">
                             <label for="class_descr">Description</label>
-                            <input type="text" class="form-control" id="class_descr">
+                            <input type="text" name="description" class="form-control" id="class_descr">
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-success" data-dismiss="modal" id="create">Create</button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button name="create" class="btn btn-success" id="create" type="submit">Create</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

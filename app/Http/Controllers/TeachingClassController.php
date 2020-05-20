@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\TeachingClass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class TeachingClassController extends Controller
 {
@@ -14,7 +15,9 @@ class TeachingClassController extends Controller
      */
     public function index()
     {
-        //
+        return view('Teacher.teacher-myclasses',[
+            'classes' => TeachingClass::all()
+        ]);
     }
 
     /**
@@ -35,7 +38,18 @@ class TeachingClassController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $class = new TeachingClass();
+
+        $class->name = $request->input('name');
+        $class->section = $request->input('section');
+        $class->object = $request->input('object');
+        $class->description = $request->input('description');
+        $class->code = Str::random(6);
+        $class->user_id = 1;
+
+        $class->save();
+
+        return redirect('/myclasses');
     }
 
     /**

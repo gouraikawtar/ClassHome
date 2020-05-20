@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeworkController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,7 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/posts','PostController'); 
+/*Route::resource('/posts','PostController'); 
 
 Route::resource('/comments','CommentController'); 
 
@@ -31,7 +32,7 @@ Route::resource('/homeworks','HomeworkController');
 
 Route::resource('/profile','ProfileController'); 
 
-Route::resource('/teachingClasses','TeachingClassController'); 
+Route::resource('/teachingClasses','TeachingClassController'); */
 
 
 Route::get('/signup', function () {
@@ -43,9 +44,9 @@ Route::get('/login', function () {
 Route::get('/backup', function () {
     return view('backup-password');
 });
-Route::get('/myclasses', function () {
-    return view('Teacher.teacher-myclasses');
-});
+// Route::get('/myclasses', function () {
+//     return view('Teacher.teacher-myclasses');
+// });
 Route::get('/archive', function () {
     return view('Teacher.teacher-archive');
 });
@@ -61,9 +62,9 @@ Route::get('/grades', function () {
 Route::get('/groups', function () {
     return view('Teacher.teacher-groups');
 });
-Route::get('/homework', function () {
-    return view('Teacher.teacher-homework');
-});
+// Route::get('/homework', function () {
+//     return view('Teacher.teacher-homework');
+// });
 Route::get('/library', function () {
     return view('Teacher.teacher-library');
 });
@@ -76,3 +77,6 @@ Route::get('/posts', function () {
 Route::get('/settings', function () {
     return view('Teacher.teacher-settings');
 });
+
+Route::resource('myclasses','TeachingClassController')->only(['index','store']);
+//Route::resource('homework','HomeworkController');
