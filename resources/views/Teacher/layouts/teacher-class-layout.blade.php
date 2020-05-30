@@ -13,7 +13,7 @@
     <!-- Fontawesome CSS link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     <!-- Custom CSS link -->
-    <link rel="stylesheet" href="{{ mix('/css/myCustomTheme.css')}}">
+    <link rel="stylesheet" href="{{ mix('/css/myCustomTheme.css')}}"> 
 </head>
 
 <body>
@@ -33,7 +33,7 @@
                         <a href="{{ url('posts') }}" class="nav-link ">Posts</a>
                     </li>
                     <li class="nav-item px-2 ">
-                        <a href="{{ url('homework') }}" class="nav-link ">Homework</a>
+                        <a href="{{route('homeworks.index')}}" class="nav-link ">Homework</a>
                     </li>
                     <li class="nav-item px-2 ">
                         <a href="{{ url('grades') }}" class="nav-link ">Grades</a>
@@ -181,16 +181,15 @@
 
     <!-- ./MODALS -->
 
-    <!-- Jquery link 
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/jquery/jquery.slim.js"></script>-->
+    <!-- Jquery link -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
     <!-- Popper link 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     -->
     <!-- Bootstrap JS link -->
     <script src="{{ mix('js/theme.js')}}"></script>
-    <!-- Custom JS 
-    <script src="js/posts.js"></script>-->
+    <!-- Custom JS -->
+    @yield('custom-js')
 
 </body>
 

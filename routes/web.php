@@ -79,4 +79,5 @@ Route::get('/settings', function () {
 });
 
 Route::resource('myclasses','TeachingClassController')->only(['index','store']);
-//Route::resource('homework','HomeworkController');
+Route::resource('homeworks','HomeworkController')->only(['index','store','update','destroy','show']);
+Route::get('download/{name}','HomeworkController@downloadFile')->name('homeworks.download');
