@@ -94,8 +94,9 @@
 /***/ (function(module, exports) {
 
 function editHomework() {
+  var class_id = document.getElementById("class_id").value;
   var tr = this.parentElement.parentElement;
-  var id = tr.children[0].children[0].value;
+  var homework_id = tr.children[0].children[0].value;
   var description = tr.children[0].children[1].value;
   var title = tr.children[1].textContent;
   var deadline = tr.children[3].textContent;
@@ -105,7 +106,7 @@ function editHomework() {
   document.getElementById("new_deadline").value = deadline;
   document.getElementById("new_exp_at").value = expiration; //Setting up the action for the edit form 
 
-  document.getElementById("edit_homework_form").action = "/homeworks/" + id;
+  document.getElementById("edit_homework_form").action = "/myclasses/" + class_id + "/homeworks/" + homework_id;
 }
 /*function viewHomework() {
     var tr = this.parentElement.parentElement;
@@ -135,10 +136,11 @@ function editHomework() {
 
 
 function deleteHomework() {
+  var class_id = document.getElementById("class_id").value;
   var tr = this.parentElement.parentElement;
-  var id = tr.children[0].children[0].value; //Setting up the action for the delete form 
+  var homework_id = tr.children[0].children[0].value; //Setting up the action for the delete form 
 
-  document.getElementById("delete_homework_form").action = "/homeworks/" + id;
+  document.getElementById("delete_homework_form").action = "/myclasses/" + class_id + "/homeworks/" + homework_id;
 }
 
 window.onload = function () {

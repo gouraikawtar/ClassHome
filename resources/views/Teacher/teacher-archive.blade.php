@@ -10,151 +10,120 @@
 </div>
 @endsection
 
+@section('custom-msg')
+{{-- Alert for class restored --}}
+@if (session()->has('class_restored'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>{{ session()->get('class_restored') }}</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+{{-- Alert for class deleted --}}
+@if (session()->has('class_deleted'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>{{ session()->get('class_deleted') }}</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+@endsection
+
 @section('content')
+@forelse ($archivedClasses as $class)
 <div class="col-lg-4 col-sm-6 mb-4">
     <div class="card h-80 shadow-sm">
         <div class="card-body">
-            <h4 class="card-title">JAVA</h4>
-            <p class="card-text">Learn Java programming</p>
-            <a href="#" class="btn btn-success">Restore</a>
-            <a href="#" class="btn btn-danger">Delete</a>
+            <input type="hidden" name="class_id" id="class_id" value="{{$class->id}}">
+            <h4 class="card-title">{{$class->name}}</h4>
+            @if ($class->description == null)
+            <p class="card-text">{{$class->name}}</p>
+            @else
+            <p class="card-text">{{$class->description}}</p> 
+            @endif
+            <div class="btn-group">
+                <form method="POST" action="{{url('/archive/'.$class->id.'/restore')}}">
+                    @csrf
+                    @method('PATCH')
+                    <button class="btn btn-success">Restore</button>
+                </form>
+                <form method="POST" action="{{url('/archive/'.$class->id.'/delete')}}">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">JEE</h4>
-            <p class="card-text">Learn web backend developpement</p>
-            <a href="#" class="btn btn-success">Restore</a>
-            <a href="#" class="btn btn-danger">Delete</a>
-        </div>
-    </div>
+@empty
+<div class="alert alert-primary" role="alert">
+    <strong>No archived classes yet</strong>
 </div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-success">Restore</a>
-            <a href="#" class="btn btn-danger">Delete</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-success">Restore</a>
-            <a href="#" class="btn btn-danger">Delete</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-success">Restore</a>
-            <a href="#" class="btn btn-danger">Delete</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-success">Restore</a>
-            <a href="#" class="btn btn-danger">Delete</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-success">Restore</a>
-            <a href="#" class="btn btn-danger">Delete</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-success">Restore</a>
-            <a href="#" class="btn btn-danger">Delete</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-success">Restore</a>
-            <a href="#" class="btn btn-danger">Delete</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-success">Restore</a>
-            <a href="#" class="btn btn-danger">Delete</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-success">Restore</a>
-            <a href="#" class="btn btn-danger">Delete</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-success">Restore</a>
-            <a href="#" class="btn btn-danger">Delete</a>
-        </div>
-    </div>
-</div>
+    
+@endforelse
 @endsection
 
 @section('pagination')
-<ul class="pagination justify-content-center">
-    <li class="page-item">
-        <a class="page-link" href="#" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-            <span class="sr-only">Previous</span>
-        </a>
-    </li>
-    <li class="page-item">
-        <a class="page-link" href="#">1</a>
-    </li>
-    <li class="page-item">
-        <a class="page-link" href="#">2</a>
-    </li>
-    <li class="page-item">
-        <a class="page-link" href="#">3</a>
-    </li>
-    <li class="page-item">
-        <a class="page-link" href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-            <span class="sr-only">Next</span>
-        </a>
-    </li>
-</ul>
+<div class="pagination justify-content-center">
+    {{$archivedClasses->links()}}
+</div>
+@endsection
+@section('custom-modal')
+    <!-- RESTORE CLASS MODAL -->
+    <div class="modal fade" id="restoreClassModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Attention</h5>
+                    <button class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to restore this?</p>
+                </div>
+                <div class="modal-footer">
+                    {{-- <form id="restore_class_form" method="POST" action="">
+                        @csrf
+                        @method('PATCH')
+                        
+                    </form> --}}
+                    <button class="btn btn-success" type="submit" id="restore_class">Confirm</button>
+    
+                    <button class="btn btn-dark" data-dismiss="modal">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- RESTORE CLASS MODAL END -->
+
+    <!-- DELETE CLASS MODAL -->
+    <div class="modal fade" id="deleteClassModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Attention</h5>
+                    <button class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this?</p>
+                </div>
+                <div class="modal-footer">
+                    <form id="delete_class_form" method="POST" action="">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-danger" type="submit" id="delete_class">Confirm</button>
+                    </form>
+    
+                    <button class="btn btn-dark" data-dismiss="modal">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- DELETE CLASS MODAL END -->
 @endsection

@@ -47,9 +47,9 @@ Route::get('/backup', function () {
 // Route::get('/myclasses', function () {
 //     return view('Teacher.teacher-myclasses');
 // });
-Route::get('/archive', function () {
-    return view('Teacher.teacher-archive');
-});
+// Route::get('/archive', function () {
+//     return view('Teacher.teacher-archive');
+// });
 Route::get('/profile', function () {
     return view('profile');
 });
@@ -74,10 +74,19 @@ Route::get('/members', function () {
 Route::get('/posts', function () {
     return view('Teacher.teacher-posts');
 });
-Route::get('/settings', function () {
-    return view('Teacher.teacher-settings');
-});
+// Route::get('/settings', function () {
+//     return view('Teacher.teacher-settings');
+// });
 
-Route::resource('myclasses','TeachingClassController')->only(['index','store']);
-Route::resource('homeworks','HomeworkController')->only(['index','store','update','destroy','show']);
-Route::get('download/{name}','HomeworkController@downloadFile')->name('homeworks.download');
+/* Routes for TeachingClassController
+* 
+*/
+Route::get('/archive','TeachingClassController@archive')->name('myclasses.archive');
+Route::delete('/archive/{class_id}/delete','TeachingClassController@forcedelete');
+Route::patch('/archive/{class_id}/restore','TeachingClassController@restore');
+Route::patch('/code/{class_id}/reset','TeachingClassController@resetCode');
+Route::resource('/myclasses','TeachingClassController')->except(['create','show']);
+
+//Routes for HomeworkController
+Route::resource('/myclasses.homeworks','HomeworkController')->only(['index','store','update','destroy','show']);
+Route::get('/download/{name}','HomeworkController@downloadFile')->name('homeworks.download');

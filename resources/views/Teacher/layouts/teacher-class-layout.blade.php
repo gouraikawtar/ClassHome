@@ -27,13 +27,14 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav">
                     <li class="nav-item px-2">
-                        <a href="{{ url('myclasses') }}" class="nav-link ">My Classes</a>
+                        <a href="{{ route('myclasses.index') }}" class="nav-link ">My Classes</a>
                     </li>
                     <li class="nav-item px-2">
                         <a href="{{ url('posts') }}" class="nav-link ">Posts</a>
                     </li>
                     <li class="nav-item px-2 ">
-                        <a href="{{route('homeworks.index')}}" class="nav-link ">Homework</a>
+                        <a href="{{route('myclasses.homeworks.index', $teachingClass->id)}}" class="nav-link ">Homework</a>
+                        {{-- {{route('homeworks.index')}} --}}
                     </li>
                     <li class="nav-item px-2 ">
                         <a href="{{ url('grades') }}" class="nav-link ">Grades</a>
@@ -52,7 +53,7 @@
                             <a href="{{ url('profile') }}" class="dropdown-item">
                                 <i class="fas fa-user-circle"></i> Profile Settings
                             </a>
-                            <a href="{{ url('settings') }}" class="dropdown-item">
+                            <a href="{{ route('myclasses.edit',$teachingClass->id) }}" class="dropdown-item">
                                 <i class="fas fa-cog"></i> Class Settings
                             </a>
                             <a href="index.html" class="dropdown-item">
@@ -73,7 +74,7 @@
             <div class="container ">
                 <div class="row" id="main_header">
                     <div class="col-md-6">
-                        <h2>PFE SMI S6</h2>
+                        <h2>{{$teachingClass->name}}</h2>
                     </div>
                     <div class="col-md-3 offset-md-3">
                         <a href="#" class="btn btn-warning btn-block shadow" data-toggle="modal" data-target="#showCode">
@@ -169,7 +170,7 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                    <h1 id="code">bv65s2</h1>
+                    <h1 id="code">{{$teachingClass->code}}</h1>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-warning" data-dismiss="modal">Go back</button>

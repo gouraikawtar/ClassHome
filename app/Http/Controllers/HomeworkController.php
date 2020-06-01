@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Homework;
+use App\TeachingClass;
 use App\HomeworkDocument;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,13 +15,15 @@ class HomeworkController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($class_id)
     {
         //$homeworks = DB::table('homeworks')->paginate(5);
         //$homeworks = Homework::get()->sortByDesc('created_at')->paginate(5);
-        $homeworks = Homework::orderBy('created_at','desc')->paginate(8);
+        $teachingClass = TeachingClass::find($class_id);
+        $homeworks = Homework::where('teaching_class_id',$class_id)->orderBy('created_at','desc')->paginate(8);
         return view('Teacher.teacher-homework',[
-            'homeworks' => $homeworks
+            'homeworks' => $homeworks,
+            'teachingClass' =>  $teachingClass,
         ]);
     }
 
@@ -40,7 +43,7 @@ class HomeworkController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$class_id)
     {
        //validating request fields
         $validator = $request->validate([
@@ -50,6 +53,8 @@ class HomeworkController extends Controller
             'expires_at' => 'required',
             'files.*' => 'bail|max:2000||mimes:pdf,docx,doc,ppt,pptx,xls,xlsx,png,jpg,jpeg,zip',
         ]);
+        //
+        $teachingClass = TeachingClass::find($class_id);
         //Model instanciation
         $homework = new Homework();
         //Model 
@@ -57,10 +62,11 @@ class HomeworkController extends Controller
         $homework->description = $request->input('desc');
         $homework->deadline = $request->input('deadline');
         $homework->expire_at = $request->input('expires_at');
-        $homework->teaching_class_id = 1;
+        //$homework->teaching_class_id = $class_id;
         $homework->user_id = 1;
         //Database persistence
-        $homework->save();
+        $homework->teachingClass()->associate($teachingClass)->save();
+        //$homework->save();
         //Session flash message
         $request->session()->flash('homework_created', 'Homework successefully created');
         //getting the homework's id
@@ -81,7 +87,8 @@ class HomeworkController extends Controller
             }
         }
         //redirect
-        return redirect()->route('homeworks.index');
+        //return redirect('/homeworks/'.$class_id);
+        return redirect()->route('myclasses.homeworks.index',$class_id);
     }
 
     /**
@@ -90,15 +97,15 @@ class HomeworkController extends Controller
      * @param  \App\Homework  $homework
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($class_id,$homework_id)
     {
-        $homework = Homework::find($id);
+        $teachingClass = TeachingClass::find($class_id);
+        $homework = Homework::find($homework_id);
         $files = $homework->joinedDocuments;
-        $files_nbr = $files->count();
         return view('Teacher.teacher-view-homework',[
+            'teachingClass' =>  $teachingClass,
             'homework'  =>  $homework,
             'files' =>  $files,
-            'files_nbr' =>  $files_nbr,
         ]);
     }
 
@@ -120,21 +127,22 @@ class HomeworkController extends Controller
      * @param  \App\Homework  $homework
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $class_id, $homework_id)
     {
-        $homework = Homework::find($id);
+        $teachingClass = TeachingClass::find($class_id);
+
+        $homework = Homework::find($homework_id);
 
         $homework->title = $request->input('new_title');
         $homework->description = $request->input('new_desc');
         $homework->deadline = $request->input('new_deadline');
         $homework->expire_at = $request->input('new_exp_at');
-        $homework->teaching_class_id = 1;
         $homework->user_id = 1;
 
-        $homework->save();
+        $homework->teachingClass()->associate($teachingClass)->save();
         $request->session()->flash('homework_edited', 'Homework successefully edited');
 
-        return redirect()->route('homeworks.index');
+        return redirect()->route('myclasses.homeworks.index',$class_id);
     }
 
     /**
@@ -143,11 +151,11 @@ class HomeworkController extends Controller
      * @param  \App\Homework  $homework
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($class_id, $id)
     {
         $homework = Homework::find($id);
         $homework->delete();
-        return redirect()->route('homeworks.index');
+        return redirect()->route('myclasses.homeworks.index',$class_id);
     }
 
     public function downloadFile($fileName){

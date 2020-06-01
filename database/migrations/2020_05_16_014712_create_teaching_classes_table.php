@@ -17,7 +17,7 @@ class CreateTeachingClassesTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name',50);
-            $table->string('section',100)->nullable();
+            $table->enum('section',['Primary','Secondary','Highschool','University/College','Other']);
             $table->string('object',100)->nullable();
             $table->string('description',100)->nullable();
             $table->string('code',6)->unique();

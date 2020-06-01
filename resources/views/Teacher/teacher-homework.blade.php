@@ -50,6 +50,7 @@
                 </tr>
             </thead>
             <tbody>
+                <input type="hidden" name="class_id" id="class_id" value="{{$teachingClass->id}}">
                 @foreach ($homeworks as $homework)
                 <tr>
                     <td>
@@ -62,7 +63,7 @@
                     <td>{{$homework->deadline}}</td>
                     <td>{{Carbon\Carbon::parse($homework->expire_at)->format('H:i')}}</td>
                     <td>{{$homework->status}}</td>
-                    <td><a href="{{route('homeworks.show',$homework->id)}}"><i class="view_hw fas fa-info-circle" id=""></i></a></td>
+                    <td><a href="{{route('myclasses.homeworks.show',[$teachingClass->id,$homework->id])}}"><i class="view_hw fas fa-info-circle" id=""></i></a></td>
                     <td><i class="delete_hw fas fa-trash" id="" data-toggle="modal" data-target="#deleteHwModal"></i></td>
                     @if ($homework->status == 'Active')
                     <td><i class="edit_hw fas fa-edit" id="" data-toggle="modal" data-target="#editHwModal"></i></td>
@@ -79,6 +80,8 @@
     </div>
 </div>
 @endsection
+{{-- {{route('homeworks.show',$homework->id)}} 
+{{ route('homeworks.store') }}--}}
 
 @section('custom-modal')
     <!-- ADD HOMEWORK MODAL -->
@@ -91,7 +94,7 @@
                         <span>&times;</span>
                   </button>
                 </div>
-                <form method="POST" action="{{ route('homeworks.store') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{route('myclasses.homeworks.store',$teachingClass->id)}}" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
@@ -157,7 +160,7 @@
                         <span>&times;</span>
                     </button>
                 </div>
-                <form id="edit_homework_form" method="POST" action="/homeworks/">
+                <form id="edit_homework_form" method="POST" action="">
                     @csrf
                     @method('PUT')
                     <div class="modal-body">
