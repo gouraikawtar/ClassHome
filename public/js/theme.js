@@ -14529,10 +14529,15 @@ module.exports = g;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 __webpack_require__(/*! C:\xampp\htdocs\classHome-clone\node_modules\bootstrap\dist\js\bootstrap.bundle.min.js */"./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js");
 __webpack_require__(/*! C:\xampp\htdocs\classHome-clone\node_modules\bootstrap\dist\js\bootstrap.min.js */"./node_modules/bootstrap/dist/js/bootstrap.min.js");
 __webpack_require__(/*! C:\xampp\htdocs\classHome-clone\node_modules\bootstrap\js\src\modal.js */"./node_modules/bootstrap/js/src/modal.js");
 module.exports = __webpack_require__(/*! C:\xampp\htdocs\classHome-clone\node_modules\jquery\dist\jquery.min.js */"./node_modules/jquery/dist/jquery.min.js");
+=======
+__webpack_require__(/*! D:\ClassHome\node_modules\bootstrap\dist\js\bootstrap.bundle.min.js */"./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js");
+module.exports = __webpack_require__(/*! D:\ClassHome\node_modules\bootstrap\dist\js\bootstrap.min.js */"./node_modules/bootstrap/dist/js/bootstrap.min.js");
+>>>>>>> 4f3366f6b4f07a781ce71b0aba05641c44e8e2a3
 
 
 /***/ })

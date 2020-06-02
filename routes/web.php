@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\HomeworkController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,62 +27,33 @@ Route::resource('/users','UserController') -> only(['index', 'show', 'update', '
 
 Route::resource('/groups','GroupController') -> only(['index', 'store', 'update', 'destroy']); 
 
-// Route::resource('/homeworks','HomeworkController'); 
-
-// Route::resource('/profile','ProfileController'); 
-
-// Route::resource('/teachingClasse','TeachingClassController'); 
-
-//Route::get('/Studentposts', function () {return view('Student.posts');});
 
 
-Route::get('/signup', function () {
-    return view('signup');
-});
-Route::get('/login', function () {
-    return view('login');
-});
-Route::get('/backup', function () {
-    return view('backup-password');
-});
-Route::get('/myclasses', function () {
-    return view('teacher-myclasses');
-});
-Route::get('/archive', function () {
-    return view('teacher-archive');
-});
-Route::get('/profile', function () {
-    return view('profile');
-});
-Route::get('/contributions', function () {
-    return view('teacher-contributions');
-});
-Route::get('/grades', function () {
-    return view('teacher-grades');
-});
+// ------------------------------------ Temporary Routes---------------------------------
+Route::get('/library', function () { return view('Teacher.teacher-library');});
+Route::get('/settings', function () {return view('Teacher.teacher-settings');}); 
+Route::get('/myclasses', function () { return view('Teacher.teacher-myclasses');});
+Route::get('/dashboard', function () { return view('Student.dashboard'); });
+Route::get('/contributions', function () {return view('Teacher.teacher-contributions');});
+Route::get('/grades', function () {return view('Teacher.teacher-grades');});
+//----------------------------------------------------------------------------------------
 
-Route::get('/homework', function () {
-    return view('teacher-homework');
-});
-Route::get('/library', function () {
-    return view('teacher-library');
-});
-Route::get('/members', function () {
-    return view('teacher-members');
-});
-
-Route::get('/settings', function () {
-    return view('teacher-settings');
-}); 
-
+//------------------------------ Routes for Authentification----------------------------
 Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
+//--------------------------------------------------------------------------------------
 
-Route::get('/myclasses', function () {
-    return view('teacher-myclasses');
-});
 
-Route::get('/dashboard', function () {
-    return view('Student.dashboard');
-});
+//------------------------ Routes for TeachingClassController------------------------------
+Route::get('/archive','TeachingClassController@archive')->name('myclasses.archive');
+Route::delete('/archive/{class_id}/delete','TeachingClassController@forcedelete');
+Route::patch('/archive/{class_id}/restore','TeachingClassController@restore');
+Route::patch('/code/{class_id}/reset','TeachingClassController@resetCode');
+Route::resource('/myclasses','TeachingClassController')->except(['create','show']);
+//-----------------------------------------------------------------------------------------
+
+//----------------------------Routes for HomeworkController---------------------------------
+Route::resource('/myclasses.homeworks','HomeworkController')->only(['index','store','update','destroy','show']);
+Route::get('/download/{name}','HomeworkController@downloadFile')->name('homeworks.download');
+//------------------------------------------------------------------------------------------
+

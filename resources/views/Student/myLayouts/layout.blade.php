@@ -123,7 +123,7 @@
                                 <h4 class="display-4">
                                     <i class="fas fa-users"></i>
                                 </h4>
-                                <a href="{{ action('GroupController@index') }}" class="btn btn-outline-light btn-sm">View</a>
+                                <a href="{{ route('groups.index') }}" class="btn btn-outline-light btn-sm">View</a>
                             </div>
                         </div>
                     </div>
@@ -141,8 +141,10 @@
     </footer>
     <!-- End copyrights footer -->
 
+    <!-- SEND EMAIL MODAL -->
     @yield('SendEmailModal')
-
+    <!---------------------->
+    
     <script src="{{ mix('/js/theme.js') }}"></script>
 
 </body>

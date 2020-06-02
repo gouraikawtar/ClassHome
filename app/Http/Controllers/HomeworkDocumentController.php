@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\TeachingClass;
+use App\HomeworkDocument;
 use Illuminate\Http\Request;
 
-class TeachingClassesController extends Controller
+class HomeworkDocumentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class TeachingClassesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\TeachingClass  $teachingClass
+     * @param  \App\HomeworkDocument  $homeworkDocument
      * @return \Illuminate\Http\Response
      */
-    public function show(TeachingClass $teachingClass)
+    public function show(HomeworkDocument $homeworkDocument)
     {
         //
     }
@@ -52,10 +52,10 @@ class TeachingClassesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\TeachingClass  $teachingClass
+     * @param  \App\HomeworkDocument  $homeworkDocument
      * @return \Illuminate\Http\Response
      */
-    public function edit(TeachingClass $teachingClass)
+    public function edit(HomeworkDocument $homeworkDocument)
     {
         //
     }
@@ -64,10 +64,10 @@ class TeachingClassesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\TeachingClass  $teachingClass
+     * @param  \App\HomeworkDocument  $homeworkDocument
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TeachingClass $teachingClass)
+    public function update(Request $request, HomeworkDocument $homeworkDocument)
     {
         //
     }
@@ -75,10 +75,10 @@ class TeachingClassesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\TeachingClass  $teachingClass
+     * @param  \App\HomeworkDocument  $homeworkDocument
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TeachingClass $teachingClass)
+    public function destroy(HomeworkDocument $homeworkDocument)
     {
         //
     }

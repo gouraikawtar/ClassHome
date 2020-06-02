@@ -25,11 +25,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav">                   
-                    <li class="nav-item px-2 active" id="myClasses">
-                        <a href="{{ url('myclasses') }}" class="nav-link">My Classes</a>
+                    <li class="nav-item px-2 @if ($active == 'index') active @endif" id="myClasses">
+                        <a href="{{ route('myclasses.index') }}" class="nav-link">My Classes</a>
                     </li>
-                    <li class="nav-item px-2 " id="archivedClasses">
-                        <a href="{{ url('archive') }}" class="nav-link ">Archived Classes</a>
+                    <li class="nav-item px-2 @if ($active == 'archive') active @endif" id="archivedClasses">
+                        <a href="{{ route('myclasses.archive') }}" class="nav-link ">Archived Classes</a>
                     </li>
                 </ul>
 
@@ -66,6 +66,9 @@
             </div>
         </section>
         <div class="container" id="taught">
+            <div class="row d-flex justify-content-center">
+                @yield('custom-msg')
+            </div>
             <div class="row justify-content-center">
                 @yield('content')
             </div>
@@ -99,8 +102,7 @@
     <!-- Bootstrap JS link -->
     <script src="{{ mix('js/theme.js')}}"></script>
     <!-- Custom JS -->
-    {{-- <script src="js/teacherDashboard.js"></script> --}}
-    <!-- <script src="js/createClass.js"></script> -->
+    @yield('custom-js')
 
 </body>
 

@@ -1,4 +1,4 @@
-@extends('dashboard-layout')
+@extends('Teacher.layouts.dashboard-layout')
 
 @section('title')
 <title>ClassHome - Profile</title>

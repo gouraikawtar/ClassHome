@@ -13,7 +13,7 @@
     <!-- Fontawesome CSS link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     <!-- Custom CSS link -->
-    <link rel="stylesheet" href="{{ mix('/css/myCustomTheme.css')}}">
+    <link rel="stylesheet" href="{{ mix('/css/myCustomTheme.css')}}"> 
 </head>
 
 <body>
@@ -27,13 +27,14 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav">
                     <li class="nav-item px-2">
-                        <a href="{{ url('myclasses') }}" class="nav-link ">My Classes</a>
+                        <a href="{{ route('myclasses.index') }}" class="nav-link ">My Classes</a>
                     </li>
                     <li class="nav-item px-2">
                         <a href="{{ url('posts') }}" class="nav-link ">Posts</a>
                     </li>
                     <li class="nav-item px-2 ">
-                        <a href="{{ url('homework') }}" class="nav-link ">Homework</a>
+                        <a href="{{route('myclasses.homeworks.index', $teachingClass->id)}}" class="nav-link ">Homework</a>
+                        {{-- {{route('homeworks.index')}} --}}
                     </li>
                     <li class="nav-item px-2 ">
                         <a href="{{ url('grades') }}" class="nav-link ">Grades</a>
@@ -52,7 +53,7 @@
                             <a href="{{ url('profile') }}" class="dropdown-item">
                                 <i class="fas fa-user-circle"></i> Profile Settings
                             </a>
-                            <a href="{{ url('settings') }}" class="dropdown-item">
+                            <a href="{{ route('myclasses.edit',$teachingClass->id) }}" class="dropdown-item">
                                 <i class="fas fa-cog"></i> Class Settings
                             </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
@@ -77,7 +78,7 @@
             <div class="container ">
                 <div class="row" id="main_header">
                     <div class="col-md-6">
-                        <h4>PFE SMI S6</h4>
+                        <h4>{{$teachingClass->name}}</h4>
                     </div>
                     <div class="col-md-3 offset-md-3">
                         <button class="btn btn-warning btn-block shadow" data-toggle="modal" data-target="#showCode" >
@@ -156,16 +157,37 @@
     <!-- ./COPYRIGHT FOOTER -->
 
 
-    <!-- MODALS -->
+    <!----------------------------------------- MODALS ------------------------------------------>
 
     <!-- CUSTOM MODAL -->
     @yield('custom-modal')
     <!-- ./CUSTOM MODAL -->
 
-    <!-- Bootstrap JS link -->
-<script src="{{ mix('js/theme.js')}}"></script>
+    <!-- SHOW CODE MODAL -->
+    <div class="modal fade" id="showCode">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-white">
+                    <h5 class="modal-title">Class Access Code </h5>
+                    <button class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h1 id="code">{{$teachingClass->code}}</h1>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-warning" data-dismiss="modal">Go back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ./SHOW CODE MODAL -->
 
-    <!-- Post destination -->
+    <!---------------------------------------- END MODALS -------------------------------------->
+
+
+<!------------------------------------------ POST DESTINATION ---------------------------------->
 <script type="text/javascript">
     function chooseDestination()
         {
@@ -176,10 +198,10 @@
             }
         }
 </script>
-    <!-- Post destination End -->
+<!--------------------------------------- POST DESTINATION END --------------------------------->
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+<!-------------------------------------------- EDIT POST--------------------------------------->
 <script>
     $('#editPostModal').on('show.bs.modal', function (event) {
         console.log('Modal opened');
@@ -197,6 +219,16 @@
         modal.find('.modal-body #destination').val(destination); 
     });
 </script>
+<!--------------------------------------EDIT POST END------------------------------------------>
+
+
+    <!-- Jquery links -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Bootstrap JS link -->
+    <script src="{{ mix('js/theme.js')}}"></script>
+    <!-- Custom JS -->
+    @yield('custom-js')
 
 
 </body>
