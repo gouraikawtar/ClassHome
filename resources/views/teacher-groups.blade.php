@@ -12,7 +12,7 @@
 </div>
 <div class="col-md-4 offset-2">
     <input type="text" name="search" id="search" class="form-control shadow" placeholder="Search">
- </div>
+</div>
 @endsection
 
 @section('content')
@@ -32,42 +32,20 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Group 1</td>
-                    <td>Student x</td>
-                    <td>studentx@gmail.com</td>
-                    <td><i class="fas fa-info-circle group_inf" id="" data-toggle="modal"></i></td>
-                    <td><i class="fas fa-trash group_del" id=""></i></td>
-                    <td><i class="fas fa-envelope group_em" data-toggle="modal"></i></td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Group 2</td>
-                    <td>Student y</td>
-                    <td>studenty@gmail.com</td>
-                    <td><i class="fas fa-info-circle group_inf" id="" data-toggle="modal"></i></td>
-                    <td><i class="fas fa-trash group_del" id=""></i></td>
-                    <td><i class="fas fa-envelope group_em" data-toggle="modal"></i></td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Group 3</td>
-                    <td>Student z</td>
-                    <td>studentz@gmail.com</td>
-                    <td><i class="fas fa-info-circle group_inf" id="" data-toggle="modal"></i></td>
-                    <td><i class="fas fa-trash group_del" id=""></i></td>
-                    <td><i class="fas fa-envelope group_em" data-toggle="modal"></i></td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Group 4</td>
-                    <td>Student a</td>
-                    <td>studenta@gmail.com</td>
-                    <td><i class="fas fa-info-circle group_inf" id="" data-toggle="modal"></i></td>
-                    <td><i class="fas fa-trash group_del" id=""></i></td>
-                    <td><i class="fas fa-envelope group_em" data-toggle="modal"></i></td>
-                </tr>
+                @forelse ($groups as $group)
+                    <tr>
+                        <td>{{ $group->id }} </td>
+                        <td>{{ $group->name }}</td>
+                        <td>{{ $group->users()->where('responsible', true) }}</td>
+                        <td>{{ $group->users()->where('responsible', true)->email->get() }}</td>
+                        <td><i class="fas fa-info-circle group_inf" id="" data-toggle="modal"></i></td>
+                        <td><i class="fas fa-trash group_del" id=""></i></td>
+                        <td><i class="fas fa-envelope group_em" data-toggle="modal"></i></td>
+                    </tr>
+                @empty
+                    
+                @endforelse
+                
             </tbody>
         </table>
     </div>

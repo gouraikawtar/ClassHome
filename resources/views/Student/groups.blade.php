@@ -20,36 +20,21 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>First</td>
-                <td>Salma Bouaouid</td>
-                <td>
-                    <a href="#" data-toggle="modal" data-target="#groupMembers">
-                        <i class="fas fa-angle-double-right"></i> Details
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Second</td>
-                <td>Kawtar Gourai</td>
-                <td>
-                    <a href="#" data-toggle="modal" data-target="#groupMembers">
-                        <i class="fas fa-angle-double-right"></i> Details
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Third</td>
-                <td>Lamiaa Jazouli</td>
-                <td>
-                    <a href="#" data-toggle="modal" data-target="#groupMembers">
-                        <i class="fas fa-angle-double-right"></i> Details
-                    </a>
-                </td>
-            </tr>
+            @forelse ($groups as $group)
+                <tr>
+                    <td>{{ $group->id }}</td>
+                    <td>{{ $group->name }}</td>
+                    <td>{{ $group->members()->where('responsible', true) }}</td>
+                    <td>
+                        <button class="btn btn-light" data-toggle="modal" data-target="#groupMembers">
+                            <i class="fas fa-angle-double-right"></i> Details
+                        </button>
+                    </td>
+                </tr>
+            @empty
+                
+            @endforelse
+            
         </tbody>
     </table>
 </div>

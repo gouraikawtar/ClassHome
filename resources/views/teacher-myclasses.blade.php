@@ -41,7 +41,7 @@
         <div class="card-body">
             <h4 class="card-title">PFE SMI S6</h4>
             <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="{{ url('posts') }}" class="btn btn-primary">Go</a>
+            <a href="{{ url('/posts') }}" class="btn btn-primary">Go</a>
             <a href="#" class="btn btn-warning">Archive</a>
         </div>
     </div>

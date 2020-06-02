@@ -20,15 +20,21 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>Abdessamad BELANGOUR</td>
-                <td>belangour@gmail.com </td>
-                <td>
-                    <a href="#">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                </td>
+            @forelse ($users as $user)
+                @if ($user->role == 'teacher')
+                    <tr>
+                        <td>{{ $user->id }}</td>
+                        <td>{{ $user-> first_name }} {{ $user-> last_name }}</td>
+                        <td>{{ $user-> email }}</td>
+                        <td>
+                            <button class="btn btn-light" data-toggle="modal" data-target="#sendEmailModal">
+                                <i class="fas fa-envelope" style="color:dodgerblue"></i>
+                            </button>
+                        </td>
+                    </tr>
+                @endif
+            @empty
+            @endforelse
             </tr>
         </tbody>
     </table>
@@ -48,28 +54,54 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>Salma BOUAOUID</td>
-                <td>salmabouaouid57@gmail.com </td>
-                <td>
-                    <a href="#">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Kawtar GOURAI</td>
-                <td>k.gourai@gmail.com</td>
-                <td>
-                    <a href="#">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                </td>
-            </tr>
+            @forelse ($users as $user)
+                @if ($user->role == 'student')
+                    <tr>
+                        <td>{{ $user->id }}</td>
+                        <td>{{ $user-> first_name }} {{ $user-> last_name }}</td>
+                        <td>{{ $user-> email }}</td>
+                        <td>
+                            <button class="btn btn-light" data-toggle="modal" data-target="#sendEmailModal">
+                                <i class="fas fa-envelope" style="color:dodgerblue"></i>
+                            </button>
+                        </td>
+                    </tr>
+                @endif
+            @empty
+            @endforelse
         </tbody>
     </table>
 </div>
     
+@endsection
+
+@section('SendEmailModal')
+
+<div class="modal fade" id="sendEmailModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Send Email</h5>
+                <button class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" class="form-control" placeholder="Email Destination">
+                    </div>
+                    <div class="form-group">
+                        <label for="e_body">Email body</label>
+                        <textarea name="e_body" rows="7" id="e_body" class="form-control" placeholder="Email Body"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

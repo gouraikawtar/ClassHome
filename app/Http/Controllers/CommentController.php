@@ -4,28 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class CommentsController extends Controller
+class CommentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,41 +17,16 @@ class CommentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $this->validate(request(),[
+            'content'=>'min:2|max:100'
+            ]); 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Comment $comment)
-    {
-        //
-    }
+        $data = $request->only(['content']);
+        $data['user_id']= Auth::user()->id;
+        $data['post_id'] = $request->input('post_id');  
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Comment $comment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Comment $comment)
-    {
-        //
+        $comment = Comment::create($data);
+        return redirect()-> route('posts.index');
     }
 
     /**
@@ -78,8 +35,9 @@ class CommentsController extends Controller
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
+    public function destroy($id)
     {
-        //
+        Comment::destroy($id);
+        return redirect()-> route('posts.index'); 
     }
 }

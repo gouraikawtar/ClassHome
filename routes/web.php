@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,21 +18,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/posts','PostController'); 
+Route::resource('/posts','PostController')-> only(['index', 'store', 'update', 'destroy']); 
 
-Route::resource('/comments','CommentController'); 
+Route::resource('/comments','CommentController') -> only(['store', 'destroy']); 
 
-Route::resource('/contributions','ContributionController'); 
+Route::resource('/users','UserController') -> only(['index', 'show', 'update', 'destroy']); 
 
-Route::resource('/documents','DocumentController'); 
+Route::resource('/groups','GroupController') -> only(['index', 'store', 'update', 'destroy']); 
 
-Route::resource('/groups','GroupController'); 
+// Route::resource('/homeworks','HomeworkController'); 
 
-Route::resource('/homeworks','HomeworkController'); 
+// Route::resource('/profile','ProfileController'); 
 
-Route::resource('/profile','ProfileController'); 
+// Route::resource('/teachingClasse','TeachingClassController'); 
 
-Route::resource('/teachingClasses','TeachingClassController'); 
+//Route::get('/Studentposts', function () {return view('Student.posts');});
 
 
 Route::get('/signup', function () {
@@ -58,9 +59,7 @@ Route::get('/contributions', function () {
 Route::get('/grades', function () {
     return view('teacher-grades');
 });
-Route::get('/groups', function () {
-    return view('teacher-groups');
-});
+
 Route::get('/homework', function () {
     return view('teacher-homework');
 });
@@ -70,9 +69,19 @@ Route::get('/library', function () {
 Route::get('/members', function () {
     return view('teacher-members');
 });
-Route::get('/posts', function () {
-    return view('teacher-posts');
-});
+
 Route::get('/settings', function () {
     return view('teacher-settings');
+}); 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/myclasses', function () {
+    return view('teacher-myclasses');
+});
+
+Route::get('/dashboard', function () {
+    return view('Student.dashboard');
 });

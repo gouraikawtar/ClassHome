@@ -2,77 +2,115 @@
 @section('content')
 
 <div class="actuality shadow-sm mt-2">
-    <div class="card">
+    @forelse($posts as $post)
+    <div class="card mt-4 shadow">
         <div class="post-header d-flex align-items-center bg-transparent p-3">
             <div class="post-profile-photo mr-2">
-                <img src= "{{ asset('images/profile.jpg') }}" alt="Profile Photo" class="bg-dark rounded-circle">
+                @if ( App\User::find($post->user_id)->role=='student' && App\User::find($post->user_id)->gender=='female')
+                    <img src="{{ asset('images/student_female.jpg') }} " alt="... " class="bg-dark rounded-circle ">
+                @elseif ( App\User::find($post->user_id)->role == 'student'&& App\User::find($post->user_id)->gender == 'male')
+                    <img src="{{ asset('images/student_male.jpg') }} " alt="... " class="bg-dark rounded-circle ">
+                @elseif ( App\User::find($post->user_id)->role == 'teacher')
+                    <img src="{{ asset('images/teacher.jpg') }} " alt="... " class="bg-dark rounded-circle ">
+                @endif
             </div>
             <div class="post-details">
-                <h6 class="m-0">Abdessamad BELANGOUR</h6>
-                <p class="text-muted m-0"><small>11 Février 2020, 19:45</small></p>
+                <h6 class="m-0">{{ App\User::find($post->user_id)->first_name }} {{ App\User::find($post->user_id)->last_name }}</h6>
+                <p class="text-muted m-0"><small> {{ $post -> updated_at}} </small></p>
             </div>
-            <div class="dropdown ml-auto">
-                <button class="btn btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-ellipsis-v"></i>
-            </button>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#"><small>Edit</small></a>
-                    <a class="dropdown-item" href="#"><small>Delete</small></a>
+            @if ( App\User::find($post->user_id)->id == Auth::user()->id )
+                <div class="dropdown ml-auto">
+                    <button class="btn btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                        <!---------------EDIT--------------->
+                        <button class="dropdown-item" data-mytitle="{{$post->title}}" data-mycontent="{{$post->content}}"
+                                data-postId="{{$post->id}}" data-toggle="modal" data-target="#editPostModal" >
+                            <small>Edit</small>
+                        </button>
+                        <!---------------END EDIT--------------->
+
+                        <!--------------- DELETE --------------->
+                        <form method="POST" action="{{ route('posts.destroy', ['post'=>$post->id]) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button class="dropdown-item" data-toggle="modal" type="submit">
+                                <small>Delete</small>
+                            </button>
+                        <!--------------- END DELETE --------------->
+                        </form>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
         <div class="post-body p-3">
-            <p class="m-0 text-justify"> Bonsoir chers étudiants, Je tiens à vous informer que je serai disponible demain à 10h du matin. Je vous recommande vivement de terminer les interfaces afin que vous gagniez du temps pour les prochaines étapes qui sont
-                de base plus difficile. Sur ce, il est préférable de booster mainteant tant que vous êtes moins stréssés et que le travail n'est pas aussi acharné. Je vous conseille aussi de modifier en parallèle le rapport, dont
-                la partie analyse et conception. Ceci vous aidera d'avoir la vision bien claire à propos de votre application. Bon courage !
-            </p>
+            <h5> {{ $post -> title}} </h5>
+            <p class="m-0 text-justify"> {{ $post->content }} </p>
         </div>
         
         <hr class="m-1 p-0 ">
-        <form class="post-addComment d-flex align-items-center bg-transparent p-3 ">
+        <form class="post-addComment d-flex align-items-center bg-transparent p-3" method="POST" action=" {{ action('CommentController@store') }}" >
+            @csrf
             <div class="comment-profile-photo ">
-                <img src="{{ asset('images/profile.jpg') }} " alt="... " class="bg-dark rounded-circle ">
+                @if ( Auth::user()->role == 'student' && Auth::user()->gender == 'female')
+                    <img src="{{ asset('images/student_female.jpg') }} " alt="... " class="bg-dark rounded-circle ">
+                @elseif ( Auth::user()->role == 'student' && Auth::user()->gender == 'male')
+                    <img src="{{ asset('images/student_male.jpg') }} " alt="... " class="bg-dark rounded-circle ">
+                @endif
             </div>
             <div class="w-100 mx-2 ">
-                <textarea style="font-size: 0.9rem; " class="form-control addComment d-flex d-block align-items-center " rows="1 " placeholder="Add a comment "></textarea>
+                <textarea style="font-size: 0.9rem; " class="form-control addComment d-flex d-block align-items-center " rows="1 " placeholder="Add a comment" name="content" ></textarea>
+                <input name="post_id" value="{{ $post->id }}" type="hidden">
             </div>
             <div>
-                <button class="btn btn-sm btn-warning " placeholder="Add a comment ">Post</button>
+                <button type="submit" class="btn btn-sm btn-warning">Post</button>
             </div>
         </form>
+        @forelse ($post->comments()->get() as $comment)
         <div class="comment-body-box d-flex d-block align-items-start p-3 ">
             <div class="comment-profile-photo ">
-                <img src=" {{ asset('images/profile.jpg') }} " alt="... " class="bg-dark rounded-circle ">
+                @if ( App\User::find($comment->user_id)->role=='student' && App\User::find($comment->user_id)->gender=='female')
+                    <img src="{{ asset('images/student_female.jpg') }} " alt="... " class="bg-dark rounded-circle ">
+                @elseif ( App\User::find($comment->user_id)->role == 'student'&& App\User::find($comment->user_id)->gender == 'male')
+                    <img src="{{ asset('images/student_male.jpg') }} " alt="... " class="bg-dark rounded-circle ">
+                @elseif ( App\User::find($comment->user_id)->role == 'teacher')
+                    <img src="{{ asset('images/teacher.jpg') }} " alt="... " class="bg-dark rounded-circle ">
+                @endif
             </div>
             <div>
+
                 <div class="comment-body w-100 mx-2 ">
+                    @if ( App\User::find($comment->user_id)->id == Auth::user()->id )
+                        <!--------------- DELETE --------------->
+                        <form method="POST" action="{{ route('comments.destroy', $comment->id ) }}">
+                        @csrf
+                        @method('DELETE')
+                            <button type="submit" class="close" aria-label="Close" >
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </form>
+                        <!--------------- END DELETE --------------->
+                    @endif
                     <div class="m-0 ">
-                        <h6 class="mr-auto "><small class="font-weight-bold "> Salma Bouaouid</small>
+                        <h6 class="mr-auto "><small class="font-weight-bold "> 
+                            {{  App\User::find($comment->user_id)->first_name }} {{  App\User::find($comment->user_id)->last_name }} </small>
                         </h6>
-                        <span class="text-muted float-right "><small>7j</small></span>
                     </div>
-                    <p class="text-justify "><small>D'accord Monsieur, nous serons à l'heure! Merci pour vos efforts!</small>
+                    <p class="text-justify "><small> {{ $comment -> content}} </small>
+                    <span class="text-muted float-right "><small> {{ $comment -> created_at-> diffForHumans() }} </small></span>
                     </p>
                 </div>
             </div>
         </div>
-        <div class="comment-body-box d-flex d-block align-items-start p-3 ">
-            <div class="comment-profile-photo ">
-                <img src="{{ asset('images/profile.jpg') }}" alt="... " class="bg-dark rounded-circle ">
-            </div>
-            <div>
-                <div class="comment-body w-100 mx-2 ">
-                    <div class="m-0 ">
-                        <h6 class="mr-auto "><small class="font-weight-bold "> Kawtar Gourai</small>
-                        </h6>
-                        <span class="text-muted float-right "><small>7j</small></span>
-                    </div>
-                    <p class="text-justify "><small>Bien reçu, merci Monsieur!</small>
-                    </p>
-                </div>
-            </div>
-        </div>
+        @empty
+            
+        @endforelse
+
     </div>
+    @empty
+        <p> No posts yet!</p>
+    @endforelse
 </div>
 
 @endsection

@@ -16,72 +16,125 @@
 <div class="col-md-7">
     <!-- POSTS AND THEIR COMMENTS -->
     <div class="actuality shadow-sm mt-2">
-        <div class="card">
+        @forelse($posts as $post)
+        <div class="card mt-4 shadow">
             <div class="post-header d-flex align-items-center bg-transparent p-3">
                 <div class="post-profile-photo mr-2">
-                    <img src="{{ asset('/images/profile.png') }}" alt="Profile Photo" class="bg-secondary rounded-circle">
+                    @if ( App\User::find($post->user_id)->role=='student' && App\User::find($post->user_id)->gender=='female')
+                        <img src="{{ asset('images/student_female.jpg') }} " alt="... " class="bg-dark rounded-circle ">
+                    @elseif ( App\User::find($post->user_id)->role == 'student'&& App\User::find($post->user_id)->gender == 'male')
+                        <img src="{{ asset('images/student_male.jpg') }} " alt="... " class="bg-dark rounded-circle ">
+                    @elseif ( App\User::find($post->user_id)->role == 'teacher')
+                        <img src="{{ asset('images/teacher.jpg') }} " alt="... " class="bg-dark rounded-circle ">
+                    @endif
                 </div>
                 <div class="post-details">
-                    <h6 class="m-0">Abdessamad BELANGOUR</h6>
-                    <p class="text-muted m-0"><small>11 Février 2020, 19:45</small></p>
+                    <h6 class="m-0">{{ App\User::find($post->user_id)->first_name }} {{ App\User::find($post->user_id)->last_name }}</h6>
+                    <p class="text-muted m-0"><small> {{ $post -> updated_at}} </small></p>
                 </div>
-                <div class="dropdown ml-auto">
-                    <button class="btn btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @if ( App\User::find($post->user_id)->id == Auth::user()->id )
+                    <div class="dropdown ml-auto">
+                        <button class="btn btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addPostModal"><small>Edit</small></a>
-                        <a class="dropdown-item" href="#"><small>Delete</small></a>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                            <!---------------EDIT--------------->
+                            <button class="dropdown-item" data-mytitle="{{$post->title}}" data-mycontent="{{$post->content}}"
+                            data-postId="{{$post->id}}" data-status="{{$post->status}}" data-destination="{{$post->destination}}" 
+                            data-toggle="modal" data-target="#editPostModal" >
+                                <small>Edit</small>
+                            </button>
+                            <!---------------END EDIT--------------->
+
+                            <!--------------- DELETE --------------->
+                            <form method="POST" action="{{ route('posts.destroy', ['post'=>$post->id]) }}">
+                                @csrf
+                                @method('DELETE')
+                                <button class="dropdown-item" data-toggle="modal" type="submit">
+                                    <small>Delete</small>
+                                </button>
+                            <!--------------- END DELETE --------------->
+                            </form>
+                        </div>
                     </div>
-                </div>
+                @else
+                    <!--------------- DELETE --------------->
+                    <div class="container">
+                        <div class="form-group"> 
+                            <form method="POST" action="{{ route('posts.destroy', ['post'=>$post->id] ) }}">
+                            @csrf
+                            @method('DELETE')
+                                <button class="btn float-right close" type="submit" aria-label="Close" >
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <!--------------- END DELETE --------------->
+                @endif
             </div>
             <div class="post-body p-3">
-                <p class="m-0 text-justify"> Bonsoir chers étudiants, Je tiens à vous informer que je serai disponible demain à 10h du matin. Je vous recommande vivement de terminer les interfaces afin que vous gagniez du temps pour les prochaines étapes qui sont
-                    de base plus difficile. Sur ce, il est préférable de booster mainteant tant que vous êtes moins stréssés et que le travail n'est pas aussi acharné. Je vous conseille aussi de modifier en parallèle le rapport, dont la
-                    partie analyse et conception. Ceci vous aidera d'avoir la vision bien claire à propos de votre application. Bon courage !
-                </p>
+                <h5> {{ $post -> title}} </h5>
+                <p class="m-0 text-justify"> {{ $post->content }} </p>
             </div>
-            <hr class="m-1 p-0">
-            <form class="post-addComment d-flex align-items-center bg-transparent p-3">
-                <div class="comment-profile-photo">
-                    <img src="{{ asset('/images/profile.png') }}" alt="..." class="bg-secondary rounded-circle">
+            
+            <hr class="m-1 p-0 ">
+            <form class="post-addComment d-flex align-items-center bg-transparent p-3" method="POST" action=" {{ action('CommentController@store') }}" >
+                @csrf
+                <div class="comment-profile-photo ">
+                    @if ( Auth::user()->role == 'student' && Auth::user()->gender == 'female')
+                        <img src="{{ asset('images/student_female.jpg') }} " alt="... " class="bg-dark rounded-circle ">
+                    @elseif ( Auth::user()->role == 'student' && Auth::user()->gender == 'male')
+                        <img src="{{ asset('images/student_male.jpg') }} " alt="... " class="bg-dark rounded-circle ">
+                    @endif
                 </div>
-                <div class="w-100 mx-2">
-                    <textarea class="form-control addComment d-flex d-block align-items-center" rows="1" placeholder="Add comment.."></textarea>
+                <div class="w-100 mx-2 ">
+                    <textarea style="font-size: 0.9rem; " class="form-control addComment d-flex d-block align-items-center " rows="1 " placeholder="Add a comment" name="content" ></textarea>
+                    <input name="post_id" value="{{ $post->id }}" type="hidden">
                 </div>
                 <div>
-                    <button class="btn btn-sm btn-warning" placeholder="Ajouter une commentaire">Post</button>
+                    <button type="submit" class="btn btn-sm btn-warning">Post</button>
                 </div>
             </form>
-            <div class="comment-body-box d-flex d-block align-items-start p-3">
-                <div class="comment-profile-photo">
-                    <img src="{{ asset('/images/profile.png') }}" alt="..." class="bg-secondary rounded-circle">
+            @forelse ($post->comments()->get() as $comment)
+            <div class="comment-body-box d-flex d-block align-items-start p-3 ">
+                <div class="comment-profile-photo ">
+                    @if ( App\User::find($comment->user_id)->role=='student' && App\User::find($comment->user_id)->gender=='female')
+                        <img src="{{ asset('images/student_female.jpg') }} " alt="... " class="bg-dark rounded-circle ">
+                    @elseif ( App\User::find($comment->user_id)->role == 'student'&& App\User::find($comment->user_id)->gender == 'male')
+                        <img src="{{ asset('images/student_male.jpg') }} " alt="... " class="bg-dark rounded-circle ">
+                    @elseif ( App\User::find($comment->user_id)->role == 'teacher')
+                        <img src="{{ asset('images/teacher.jpg') }} " alt="... " class="bg-dark rounded-circle ">
+                    @endif
                 </div>
                 <div>
-                    <div class="comment-body w-100 mx-2">
-                        <div class="m-0">
-                            <h6 class="mr-auto"><small class="font-weight-bold"> Salma Bouaouid</small></h6>
-                            <span class="text-muted float-right"><small>7j</small></span>
+                    <div class="comment-body w-100 mx-2 ">
+                            <form method="POST" action="{{ route('comments.destroy', $comment->id ) }}">
+                            @csrf
+                            @method('DELETE')
+                                <button type="submit" class="close" aria-label="Close" >
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </form>
+                        <div class="m-0 ">
+                            <h6 class="mr-auto "><small class="font-weight-bold "> 
+                                {{  App\User::find($comment->user_id)->first_name }} {{  App\User::find($comment->user_id)->last_name }} </small>
+                            </h6>
                         </div>
-                        <p class="text-justify"><small>D'accord Monsieur, nous serons à l'heure! Merci pour vos efforts!</small></p>
+                        <p class="text-justify "><small> {{ $comment -> content}} </small>
+                        <span class="text-muted float-right "><small> {{ $comment -> created_at-> diffForHumans() }} </small></span>
+                        </p>
                     </div>
                 </div>
             </div>
-            <div class="comment-body-box d-flex d-block align-items-start p-3">
-                <div class="comment-profile-photo">
-                    <img src="{{ asset('/images/profile.png') }}" alt="..." class="bg-secondary rounded-circle">
-                </div>
-                <div>
-                    <div class="comment-body w-100 mx-2">
-                        <div class="m-0">
-                            <h6 class="mr-auto"><small class="font-weight-bold"> Kawtar Gourai</small></h6>
-                            <span class="text-muted float-right"><small>7j</small></span>
-                        </div>
-                        <p class="text-justify"><small>Bien reçu, merci Monsieur!</small></p>
-                    </div>
-                </div>
-            </div>
+            @empty
+                
+            @endforelse
+    
         </div>
+        @empty
+            <p> No posts yet!</p>
+        @endforelse
     </div>
 </div>
 @endsection
@@ -95,47 +148,65 @@
                 <h5 class="modal-title">Add Post</h5>
                 <button class="close" data-dismiss="modal">
                     <span>&times;</span>
-              </button>
+                </button>
             </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="title">Title</label>
-                        <input type="text" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="category">To</label>
-                        <select class="form-control" id="category">
-                            <option value="all">All</option>
-                            <option value="groups">Groups</option>
-                      </select>
-                    </div>
-                    <div class="form-group" id="gp">
-                        <label for="groups">Choose group</label>
-                        <select class="form-control" id="chooseGroups" disabled>
-                            <option value="group 1">Group 1</option>
-                            <option value="group 2">Group 2</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="image">Upload file</label>
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="file">
-                            <label for="file" class="custom-file-label">Choose File</label>
-                        </div>
-                        <small class="form-text text-muted">Max Size X</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="anno_body">Body</label>
-                        <textarea name="anno_body" class="form-control" cols="20" rows="5"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-dark" data-dismiss="modal">Create</button>
-            </div>
+            <form id="formRegister" class="form-horizontal" role="form" method="POST" action="{{ route('posts.store') }}">
+                @csrf
+                <div class="modal-body">
+                    @include('teacher-posts-form')
+                <div class="modal-footer">
+                    <button class="btn btn-dark" type="submit" >Create</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 <!-- ADD POST MODAL END -->
+
+<!-- EDIT POST MODAL -->
+<div class="modal fade" id="editPostModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title">Edit Post</h5>
+                <button class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <form id="formRegister" class="form-horizontal" role="form" method="POST" action="{{ route('posts.update', 'test') }}">
+                @method('PATCH')
+                @csrf
+                <div class="modal-body">
+                    <input type="hidden" name="postId" id="postId" value="" >
+                    @include('teacher-posts-form')
+                <div class="modal-footer">
+                    <button class="btn btn-dark" type="submit" >Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- EDIT POST MODAL END -->
+
+<!-- SHOW CODE MODAL -->
+<div class="modal fade" id="showCode">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title">Class Access Code </h5>
+                <button class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h1 id="code">bv65s2</h1>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning" data-dismiss="modal">Go back</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./SHOW CODE MODAL -->
+
 @endsection

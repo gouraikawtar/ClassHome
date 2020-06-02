@@ -11,7 +11,7 @@
 <!-- Bootsrap CSS link -->
 <link rel="stylesheet" href="{{ mix('/css/theme.css') }}">
 <!-- Custom CSS link -->
-<link rel="stylesheet" href="{{ mix('/css/mesThemes.css') }}">
+<link rel="stylesheet" href="{{ mix('/css/myCustomTheme.css') }}">
 <!-- Fontawesome CSS link -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
 
@@ -27,31 +27,35 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav">
                     <li class="nav-item px-2">
-                        <a href="{{ route('dashboard') }}" class="nav-link ">My classes</a>
+                        <a href="{{ url('/dashboard') }}" class="nav-link ">My classes</a>
                     </li>
                     <li class="nav-item px-2">
-                        <a href="{{ route('posts') }}" class="nav-link ">Posts</a>
+                        <a href="{{ route('posts.index') }}" class="nav-link ">Posts</a>
                     </li>
                     <li class="nav-item px-2 ">
-                        <a href="{{ route('homework') }}" class="nav-link ">Homework</a>
+                        <a href="{{ url('/homework') }}" class="nav-link ">Homework</a>
                     </li>
                     <li class="nav-item px-2 ">
-                        <a href="{{ route('grades') }}" class="nav-link ">Grades</a>
+                        <a href="{{ url('/grades') }}" class="nav-link ">Grades</a>
                     </li>
                 </ul>
 
                 <ul class="navbar-nav ml-auto ">
                     <li class="nav-item dropdown mr-3">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                            <i class="fas fa-user"></i> Welcome Selo
+                            <i class="fas fa-user"></i> Welcome {{ Auth::user()->first_name }}
                         </a>
                         <div class="dropdown-menu">
-                            <a href="{{ route('profile') }}" class="dropdown-item">
+                            <a href="{{ url('/profile') }}" class="dropdown-item">
                                 <i class="fas fa-user-circle"></i> Profile
                             </a>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-user-times"></i> Logout
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="fas fa-user-times"></i>{{ __('Logout') }}
                             </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
                         </div>
                     </li>
                 </ul>
@@ -100,7 +104,7 @@
                                 <h4 class="display-4">
                                     <i class="fas fa-folder"></i>
                                 </h4>
-                                <a href="{{ route('library') }}" class="btn btn-outline-light btn-sm">View</a>
+                                <a href="{{ url('/library') }}" class="btn btn-outline-light btn-sm">View</a>
                             </div>
                         </div>
                         <div class="card text-center bg-primary text-white mb-3 shadow">
@@ -109,7 +113,7 @@
                                 <h4 class="display-4">
                                     <i class="fas fa-user-check"></i>
                                 </h4>
-                                <a href="{{ route('members') }}" class="btn btn-outline-light btn-sm">View</a>
+                                <a href="{{ route('users.index') }}" class="btn btn-outline-light btn-sm">View</a>
                             </div>
                         </div>
 
@@ -119,7 +123,7 @@
                                 <h4 class="display-4">
                                     <i class="fas fa-users"></i>
                                 </h4>
-                                <a href="{{ route('groups') }}" class="btn btn-outline-light btn-sm">View</a>
+                                <a href="{{ action('GroupController@index') }}" class="btn btn-outline-light btn-sm">View</a>
                             </div>
                         </div>
                     </div>
@@ -137,6 +141,7 @@
     </footer>
     <!-- End copyrights footer -->
 
+    @yield('SendEmailModal')
 
     <script src="{{ mix('/js/theme.js') }}"></script>
 

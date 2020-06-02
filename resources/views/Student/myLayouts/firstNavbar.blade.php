@@ -43,15 +43,19 @@
                 <ul class="navbar-nav ml-auto ">
                     <li class="nav-item dropdown mr-3">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                            <i class="fas fa-user"></i> Welcome Selo
+                            <i class="fas fa-user"></i> Welcome {{ Auth::user()->first_name }}
                         </a>
                         <div class="dropdown-menu">
                             <a href="{{route('profile')}}" class="dropdown-item">
                                 <i class="fas fa-user-circle"></i> Profile
                             </a>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-user-times"></i> Logout
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="fas fa-user-times"></i>{{ __('Logout') }}
                             </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
                         </div>
                     </li>
                 </ul>

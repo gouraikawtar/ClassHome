@@ -46,7 +46,7 @@
                 <ul class="navbar-nav ml-auto ">
                     <li class="nav-item dropdown mr-3">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                            <i class="fas fa-user"></i> Welcome Selo
+                            <i class="fas fa-user"></i> Welcome {{ Auth::user()->first_name }}
                         </a>
                         <div class="dropdown-menu">
                             <a href="{{ url('profile') }}" class="dropdown-item">
@@ -55,9 +55,13 @@
                             <a href="{{ url('settings') }}" class="dropdown-item">
                                 <i class="fas fa-cog"></i> Class Settings
                             </a>
-                            <a href="index.html" class="dropdown-item">
-                                <i class="fas fa-user-times "></i> Logout
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="fas fa-user-times"></i>{{ __('Logout') }}
                             </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
                         </div>
                     </li>
                 </ul>
@@ -73,12 +77,12 @@
             <div class="container ">
                 <div class="row" id="main_header">
                     <div class="col-md-6">
-                        <h2>PFE SMI S6</h2>
+                        <h4>PFE SMI S6</h4>
                     </div>
                     <div class="col-md-3 offset-md-3">
-                        <a href="#" class="btn btn-warning btn-block shadow" data-toggle="modal" data-target="#showCode">
+                        <button class="btn btn-warning btn-block shadow" data-toggle="modal" data-target="#showCode" >
                             Class access code
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -89,7 +93,7 @@
         <section id="actions" class="py-4 mb-4 bg-light shadow-sm">
             <div class="container">
                 <div class="row">
-                   @yield('actions')
+                    @yield('actions')
                 </div>
             </div>
         </section>
@@ -121,7 +125,7 @@
                                 <h4 class="display-4 ">
                                     <i class="fas fa-user-check"></i>
                                 </h4>
-                                <a href="{{ url('members') }}" class="btn btn-outline-light btn-sm ">View</a>
+                                <a href="{{ route('users.index') }}" class="btn btn-outline-light btn-sm ">View</a>
                             </div>
                         </div>
 
@@ -141,7 +145,7 @@
         </section>
         <!-- ./MAIN CONTENT -->
     </div>
-   <!-- ./PAGE CONTENT -->
+    <!-- ./PAGE CONTENT -->
 
     <!-- COPYRIGHT FOOTER -->
     <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
@@ -158,39 +162,42 @@
     @yield('custom-modal')
     <!-- ./CUSTOM MODAL -->
 
-    <!-- SHOW CODE MODAL -->
-    <div class="modal fade" id="showCode">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-warning text-white">
-                    <h5 class="modal-title">Class Access Code </h5>
-                    <button class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                    <h1 id="code">bv65s2</h1>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-warning" data-dismiss="modal">Go back</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ./SHOW CODE MODAL -->
-
-    <!-- ./MODALS -->
-
-    <!-- Jquery link 
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/jquery/jquery.slim.js"></script>-->
-    <!-- Popper link 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    -->
     <!-- Bootstrap JS link -->
-    <script src="{{ mix('js/theme.js')}}"></script>
-    <!-- Custom JS 
-    <script src="js/posts.js"></script>-->
+<script src="{{ mix('js/theme.js')}}"></script>
+
+    <!-- Post destination -->
+<script type="text/javascript">
+    function chooseDestination()
+        {
+            if (document.getElementById("status").value === "public") {
+                document.getElementById("destination").disabled='true';
+            } else {
+                document.getElementById("destination").disabled='';
+            }
+        }
+</script>
+    <!-- Post destination End -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script>
+    $('#editPostModal').on('show.bs.modal', function (event) {
+        console.log('Modal opened');
+        var button = $(event.relatedTarget) 
+        var title = button.data('mytitle') 
+        var content = button.data('mycontent') 
+        var postId = button.data('postId') 
+        var status= button.data('status')
+        var destination= button.data('destination')
+        var modal = $(this);
+        modal.find('.modal-body #title').val(title);
+        modal.find('.modal-body #content').val(content);
+        modal.find('.modal-body #postId').val(postId);
+        modal.find('.modal-body #status').val(status); 
+        modal.find('.modal-body #destination').val(destination); 
+    });
+</script>
+
 
 </body>
 

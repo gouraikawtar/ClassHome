@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Group;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class GroupsController extends Controller
+class GroupController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +15,20 @@ class GroupsController extends Controller
      */
     public function index()
     {
-        //
+        $groups = Group::get();
+        
+        if(Auth::user()->role == 'student'){
+            return view('Student.groups',  [
+                'groups'=>$groups,
+            ]); 
+        } 
+        elseif (Auth::user()->role == 'teacher'){
+            return view('teacher-groups', [
+                'groups'=>$groups,
+        ]) ;
+        }
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -34,28 +47,6 @@ class GroupsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Group  $group
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Group $group)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Group  $group
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Group $group)
     {
         //
     }

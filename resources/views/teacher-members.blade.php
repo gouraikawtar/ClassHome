@@ -30,11 +30,16 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Abdessamad BELANGOUR</td>
-                    <td>belangour@gmail.com </td>
-                </tr>
+                @forelse ($users as $user)
+                    @if ($user->role == 'teacher')
+                        <tr>
+                            <td>{{ $user->id }}</td>
+                            <td>{{ $user-> first_name }} {{ $user-> last_name }}</td>
+                            <td>{{ $user-> email }}</td>
+                        </tr>
+                    @endif
+                @empty
+                @endforelse
             </tbody>
         </table>
     </div>
@@ -53,22 +58,40 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Salma BOUAOUID</td>
-                    <td>salmabouaouid57@gmail.com</td>
-                    <td><i class="fas fa-ban block_user"></i></td>
-                    <td><i class="fas fa-user-minus delete_user"></i></td>
-                    <td><i class="fas fa-envelope email_user" data-toggle="modal"></i></td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Kawtar GOURAI</td>
-                    <td>k.gourai14@gmail.com</td>
-                    <td><i class="fas fa-ban block_user"></i></td>
-                    <td><i class="fas fa-user-minus delete_user"></i></td>
-                    <td><i class="fas fa-envelope email_user" data-toggle="modal"></i></td>
-                </tr>
+                @forelse ($users as $user)
+                    @if ($user->role == 'student')
+                    <tr>
+                        <td> {{ $user->id }} </td>
+                        <td>{{ $user-> first_name }} {{ $user-> last_name }}</td>
+                        <td>{{ $user-> email }}</td>
+                        <td>
+                            <form method="POST" action="{{ route('users.destroy', $user->id ) }}">
+                                @csrf
+                                @method('DELETE')
+                                    <button class="btn btn-light" type="submit">
+                                        <i class="fas fa-ban block_user"></i></i>
+                                    </button>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="POST" action="{{ route('users.destroy', $user->id ) }}">
+                                @csrf
+                                @method('DELETE')
+                                    <button class="btn btn-light" type="submit">
+                                        <i class="fas fa-user-minus delete_user"></i>
+                                    </button>
+                            </form>
+                        </td>
+                        <td>
+                            <button class="btn btn-light" data-toggle="modal" data-target="#sendEmailModal">
+                                <i class="fas fa-envelope email_user"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    @endif
+                @empty
+                @endforelse
+                
             </tbody>
         </table>
     </div>
@@ -84,13 +107,13 @@
                 <h5 class="modal-title">Invite Teacher</h5>
                 <button class="close" data-dismiss="modal">
                     <span>&times;</span>
-              </button>
+                </button>
             </div>
             <div class="modal-body">
                 <form>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control">
+                        <input type="email" class="form-control" placeholder="Teacher's Email" >
                     </div>
                 </form>
             </div>
@@ -116,11 +139,11 @@
                 <form>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" name="email" id="email" class="form-control">
+                        <input type="email" name="email" id="email" class="form-control" placeholder="Email Destination">
                     </div>
                     <div class="form-group">
                         <label for="e_body">Email body</label>
-                        <textarea name="e_body" id="e_body" class="form-control"></textarea>
+                        <textarea name="e_body" rows="7" id="e_body" class="form-control" placeholder="Email Body"></textarea>
                     </div>
                 </form>
             </div>
