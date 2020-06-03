@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePostsTable extends Migration
+class CreateHomeworkDocumentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreatePostsTable extends Migration
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('homework_documents', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('title');
-            $table->text('content'); 
-            $table->enum('status',['public', 'specific'])-> default('public');
-            $table->string('destination')->nullable(); 
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('homework_id')->constrained()->onDelete('cascade');
+            $table->softDeletes();
         });
     }
 
@@ -31,6 +28,6 @@ class CreatePostsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('homework_documents');
     }
 }
