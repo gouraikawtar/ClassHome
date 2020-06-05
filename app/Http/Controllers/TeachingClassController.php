@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\TeachingClass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class TeachingClassController extends Controller
@@ -14,15 +15,20 @@ class TeachingClassController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $classes = TeachingClass::orderBy('created_at','desc')->paginate(9);
-        return view('Teacher.teacher-myclasses',[
-            'classes' => $classes,
-            'active' => 'index', 
-             /* the 'active' parameter is about to define whether
-             * the tab should be active or no
-             */
-        ]);
+    {   
+        if(Auth::user()->role =='student'){
+            return view ('Student.dashboard');
+        }
+        elseif(Auth::user()->role =='teacher'){
+            $classes = TeachingClass::orderBy('created_at','desc')->paginate(9);
+            return view('Teacher.teacher-myclasses',[
+                'classes' => $classes,
+                'active' => 'index', 
+                /* the 'active' parameter is about to define whether
+                * the tab should be active or no
+                */
+            ]);
+            }
     }
 
     /**

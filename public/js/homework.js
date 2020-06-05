@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -163,14 +163,14 @@ window.onload = function () {
 
 /***/ }),
 
-/***/ 1:
+/***/ 2:
 /*!****************************************!*\
   !*** multi ./resources/js/homework.js ***!
   \****************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\ClassHome\resources\js\homework.js */"./resources/js/homework.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\classHome-clone\resources\js\homework.js */"./resources/js/homework.js");
 
 
 /***/ })

@@ -16,6 +16,8 @@ class CreateGroupJunctionsTable extends Migration
         Schema::create('group_junctions', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->foreignId('group_id')->constrained()->cascadeOnDelete(); 
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete(); 
         });
     }
 
