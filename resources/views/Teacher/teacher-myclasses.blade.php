@@ -62,7 +62,7 @@
 </div>
 @empty
 <div class="alert alert-primary" role="alert">
-  No classes created yet
+    <strong>No classes created yet</strong>
 </div>
     
 @endforelse

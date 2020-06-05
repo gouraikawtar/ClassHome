@@ -16,7 +16,7 @@ class CreateHomeworkDocumentsTable extends Migration
         Schema::create('homework_documents', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('title', 100); 
+            $table->string('title',100);
             $table->foreignId('homework_id')->constrained()->onDelete('cascade');
             $table->softDeletes();
         });

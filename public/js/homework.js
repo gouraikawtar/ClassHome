@@ -170,7 +170,11 @@ window.onload = function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 module.exports = __webpack_require__(/*! C:\xampp\htdocs\classHome-clone\resources\js\homework.js */"./resources/js/homework.js");
+=======
+module.exports = __webpack_require__(/*! D:\PFE\ClassHome\resources\js\homework.js */"./resources/js/homework.js");
+>>>>>>> 76b30c265a125556954cb18090fa74513e857da3
 
 
 /***/ })

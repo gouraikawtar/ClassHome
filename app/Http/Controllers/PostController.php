@@ -32,7 +32,7 @@ class PostController extends Controller
             ]); 
         } 
         elseif (Auth::user()->role == 'teacher'){
-            return view('teacher-posts', [
+            return view('Teacher.teacher-posts', [
                 'posts'=>$posts,
         ]) ;
         }

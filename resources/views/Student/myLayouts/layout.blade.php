@@ -27,13 +27,13 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav">
                     <li class="nav-item px-2">
-                        <a href="{{ url('/dashboard') }}" class="nav-link ">My classes</a>
+                        <a href="{{ route('myclasses.index') }}" class="nav-link ">My classes</a>
                     </li>
                     <li class="nav-item px-2">
                         <a href="{{ route('posts.index') }}" class="nav-link ">Posts</a>
                     </li>
                     <li class="nav-item px-2 ">
-                        <a href="{{ url('/homework') }}" class="nav-link ">Homework</a>
+                        <a href="{{route('myclasses.homeworks.index', $teachingClass->id)}}" class="nav-link ">Homework</a>
                     </li>
                     <li class="nav-item px-2 ">
                         <a href="{{ url('/grades') }}" class="nav-link ">Grades</a>
@@ -47,11 +47,11 @@
                         </a>
                         <div class="dropdown-menu">
                             <a href="{{ url('/profile') }}" class="dropdown-item">
-                                <i class="fas fa-user-circle"></i> Profile
+                                <i class="fas fa-user-circle"></i> Profile Settings
                             </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <i class="fas fa-user-times"></i>{{ __('Logout') }}
+                                <i class="fas fa-user-times"></i> {{ __('Logout') }}
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
@@ -69,7 +69,7 @@
             <div class="container ">
                 <div class="row " id="main_header">
                     <div class="col-md-6 ">
-                        <h4>PFE SMI S6</h4>
+                        <h4>{{$teachingClass->name}}</h4>
                     </div>
                 </div>
             </div>
@@ -92,7 +92,7 @@
         <section id="posts">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-md-7">
+                    <div class="col-md-9">
 
                         @yield('content')                        
                     

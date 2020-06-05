@@ -31,7 +31,11 @@ class RegisterController extends Controller
      */
     protected function redirectTo()
     {
+<<<<<<< HEAD
         return route('myclasses.index'); 
+=======
+        return route('myclasses.index');
+>>>>>>> 76b30c265a125556954cb18090fa74513e857da3
     }
 
 
