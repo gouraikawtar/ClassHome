@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\TeachingClass;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TeachingClassController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,14 +20,27 @@ class TeachingClassController extends Controller
      */
     public function index()
     {
-        $classes = TeachingClass::orderBy('created_at','desc')->paginate(9);
-        return view('Teacher.teacher-myclasses',[
-            'classes' => $classes,
-            'active' => 'index', 
-             /* the 'active' parameter is about to define whether
-             * the tab should be active or no
-             */
-        ]);
+        if(Auth::user()->role == 'student'){
+            $subscriptions = Auth::user()->subscriptions()
+                            ->orderBy('created_at','desc')
+                            ->paginate(9);
+            return view('Student.dashboard', [
+                'classes' => $subscriptions,
+                'active' => 'index',
+                /* the 'active' parameter is about to define whether
+                 * the tab should be active or no
+                 */
+            ]);
+        }elseif(Auth::user()->role == 'teacher'){
+            $classes = TeachingClass::where('user_id',Auth::user()->id)->orderBy('created_at','desc')->paginate(9);
+            return view('Teacher.teacher-myclasses',[
+                'classes' => $classes,
+                'active' => 'index', 
+                 /* the 'active' parameter is about to define whether
+                 * the tab should be active or no
+                 */
+            ]);
+        }
     }
 
     /**
@@ -57,7 +75,7 @@ class TeachingClassController extends Controller
         $class->object = $request->input('object');
         $class->description = $request->input('description');
         $class->code = Str::random(6);
-        $class->user_id = 1;
+        $class->user_id = Auth::user()->id;
 
         $class->save();
         $request->session()->flash('class_created', 'Class created successfully');
@@ -135,14 +153,32 @@ class TeachingClassController extends Controller
     }
 
     public function archive(){
-        $archivedClasses = TeachingClass::onlyTrashed()->paginate(9);
-        return view('Teacher.teacher-archive',[
-            'archivedClasses' => $archivedClasses,
-            'active' => 'archive',
-            /* the 'active' parameter is about to define whether
-             * the tab should be active or no
-             */
-        ]);
+        if(Auth::user()->role == 'student'){
+            // $archivedClasses = Auth::user()->subscriptions()
+            //                 ->orderBy('created_at','desc')
+            //                 ->paginate(9);
+            // dd($archivedClasses);
+            // return view('Student.archive', [
+            //     'classes' => $archivedClasses,
+            //     'active' => 'archive',
+            //     /* the 'active' parameter is about to define whether
+            //      * the tab should be active or no
+            //      */
+            // ]);
+            return view('Student.archive',[
+                'active' => 'archive',
+            ]);
+
+        }elseif(Auth::user()->role == 'teacher'){
+            $archivedClasses = TeachingClass::onlyTrashed()->where('user_id',Auth::user()->id)->paginate(9);
+            return view('Teacher.teacher-archive',[
+                'archivedClasses' => $archivedClasses,
+                'active' => 'archive',
+                /* the 'active' parameter is about to define whether
+                * the tab should be active or no
+                */
+            ]);
+        }
     }
 
     public function restore(Request $request, $class_id){

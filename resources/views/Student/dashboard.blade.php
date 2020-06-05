@@ -6,7 +6,7 @@
 
 @section('actions')
 <div class="col-md-4 offset-1">
-    <a href="#" class="btn btn-primary btn-block shadow" data-toggle="modal" data-target="#joinClassModal">
+    <a href="#" class="btn btn-warning btn-block shadow" data-toggle="modal" data-target="#joinClassModal">
         <i class="fas fa-plus"></i> Join Class
     </a>
 </div>
@@ -15,167 +15,79 @@
 </div>
 @endsection
 
+@section('custom-msg')
+@if (session()->has('class_joined'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>{{ session()->get('class_joined') }}</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+@if (session()->has('junction_failed'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>{{ session()->get('junction_failed') }}</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+    
+@endsection
 @section('content')
+@forelse ($classes as $class)
 <div class="col-lg-4 col-sm-6 mb-4">
     <div class="card h-80 shadow-sm">
         <div class="card-body">
-            <h4 class="card-title">JAVA</h4>
-            <p class="card-text">Learn Java programming</p>
-            <a href="#" class="btn btn-warning">Go</a>
+            <input type="hidden" name="class_id" id="class_id" value="{{$class->id}}">
+            <h4 class="card-title">{{$class->name}}</h4>
+            @if ($class->description == null)
+            <p class="card-text">{{$class->name}}</p>
+            @else
+            <p class="card-text">{{$class->description}}</p> 
+            @endif
+            <a href="{{route('myclasses.homeworks.index',$class->id)}}" class="btn btn-primary">Go</a>
         </div>
     </div>
 </div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">JEE</h4>
-            <p class="card-text">Learn web backend developpement</p>
-            <a href="#" class="btn btn-warning">Go</a>
-        </div>
-    </div>
+@empty
+<div class="alert alert-primary" role="alert">
+    <strong>No classes joined yet</strong>
 </div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">PFE SMI S6</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="{{ url('/posts') }}" class="btn btn-warning">Go</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-warning">Go</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-warning">Go</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-warning">Go</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-warning">Go</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-warning">Go</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-warning">Go</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-warning">Go</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-warning">Go</a>
-        </div>
-    </div>
-</div>
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Lorem ipsum</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet</p>
-            <a href="#" class="btn btn-warning">Go</a>
-        </div>
-    </div>
-</div>
+@endforelse
 @endsection
 
 @section('pagination')
-<ul class="pagination justify-content-center">
-    <li class="page-item">
-        <a class="page-link" href="#" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-            <span class="sr-only">Previous</span>
-        </a>
-    </li>
-    <li class="page-item">
-        <a class="page-link" href="#">1</a>
-    </li>
-    <li class="page-item">
-        <a class="page-link" href="#">2</a>
-    </li>
-    <li class="page-item">
-        <a class="page-link" href="#">3</a>
-    </li>
-    <li class="page-item">
-        <a class="page-link" href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-            <span class="sr-only">Next</span>
-        </a>
-    </li>
-</ul>
+<div class="pagination justify-content-center">
+    {{$classes->links()}}
+</div>
 @endsection
 
 @section('custom-modal')
-    <!-- CREATE CLASS MODAL -->
+    <!-- JOIN CLASS MODAL -->
     <div class="modal fade" id="joinClassModal">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header bg-warning text-white">
                     <h5 class="modal-title">Join class</h5>
                     <button class="close" data-dismiss="modal">
                         <span>&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form>
+                <form method="POST" action="{{url('/join')}}">
+                    @csrf
+                    <div class="modal-body">
                         <div class="form-group">
-                            <label for="class_Name">Class code</label>
-                            <input type="text" class="form-control" id="class_Name" required="true">
+                            <label for="class_code">Enter class code to join</label>
+                            <input type="text" class="form-control" id="class_code" name="code">
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" data-dismiss="modal" id="create">Confirm</button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-warning" id="join" type="submit">Join</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <!-- ./CREATE CLASS MODAL -->
+    <!-- ./JOIN CLASS MODAL -->
 @endsection

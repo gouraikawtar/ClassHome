@@ -32,15 +32,14 @@ Route::resource('/groups','GroupController') -> only(['index', 'store', 'update'
 // ------------------------------------ Temporary Routes---------------------------------
 Route::get('/library', function () { return view('Teacher.teacher-library');});
 Route::get('/settings', function () {return view('Teacher.teacher-settings');}); 
-Route::get('/myclasses', function () { return view('Teacher.teacher-myclasses');});
-Route::get('/dashboard', function () { return view('Student.dashboard'); });
+//Route::get('/myclasses', function () { return view('Teacher.teacher-myclasses');});
+//Route::get('/dashboard', function () { return view('Student.dashboard'); });
 Route::get('/contributions', function () {return view('Teacher.teacher-contributions');});
 Route::get('/grades', function () {return view('Teacher.teacher-grades');});
 //----------------------------------------------------------------------------------------
 
 //------------------------------ Routes for Authentification----------------------------
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
 //--------------------------------------------------------------------------------------
 
 
@@ -56,4 +55,4 @@ Route::resource('/myclasses','TeachingClassController')->except(['create','show'
 Route::resource('/myclasses.homeworks','HomeworkController')->only(['index','store','update','destroy','show']);
 Route::get('/download/{name}','HomeworkController@downloadFile')->name('homeworks.download');
 //------------------------------------------------------------------------------------------
-
+Route::post('/join','ClassSubscriptionController@joinClass');

@@ -1,7 +1,7 @@
 @extends('Teacher.layouts.teacher-class-layout')
 
 @section('title')
-<title>ClassHome - Show Homework</title>
+<title>ClassHome - Homework Details</title>
 @endsection
 
 @section('content')

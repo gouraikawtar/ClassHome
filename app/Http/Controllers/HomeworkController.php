@@ -7,9 +7,14 @@ use App\TeachingClass;
 use App\HomeworkDocument;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class HomeworkController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,14 +22,19 @@ class HomeworkController extends Controller
      */
     public function index($class_id)
     {
-        //$homeworks = DB::table('homeworks')->paginate(5);
-        //$homeworks = Homework::get()->sortByDesc('created_at')->paginate(5);
         $teachingClass = TeachingClass::find($class_id);
         $homeworks = Homework::where('teaching_class_id',$class_id)->orderBy('created_at','desc')->paginate(8);
-        return view('Teacher.teacher-homework',[
-            'homeworks' => $homeworks,
-            'teachingClass' =>  $teachingClass,
-        ]);
+        if(Auth::user()->role == 'student'){
+            return view('Student.homework',[
+                'homeworks' => $homeworks,
+                'teachingClass' =>  $teachingClass,
+            ]);
+        }elseif(Auth::user()->role == 'teacher'){
+            return view('Teacher.teacher-homework',[
+                'homeworks' => $homeworks,
+                'teachingClass' =>  $teachingClass,
+            ]);
+        }
     }
 
     /**
@@ -102,11 +112,20 @@ class HomeworkController extends Controller
         $teachingClass = TeachingClass::find($class_id);
         $homework = Homework::find($homework_id);
         $files = $homework->joinedDocuments;
-        return view('Teacher.teacher-view-homework',[
-            'teachingClass' =>  $teachingClass,
-            'homework'  =>  $homework,
-            'files' =>  $files,
-        ]);
+        
+        if (Auth::user()->role == 'student') {
+            return view('Student.homework-details',[
+                'teachingClass' =>  $teachingClass,
+                'homework'  =>  $homework,
+                'files' =>  $files,
+            ]);
+        }elseif (Auth::user()->role == 'teacher') {
+            return view('Teacher.teacher-view-homework',[
+                'teachingClass' =>  $teachingClass,
+                'homework'  =>  $homework,
+                'files' =>  $files,
+            ]);
+        }
     }
 
     /**

@@ -27,7 +27,7 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav">
                     <li class="nav-item px-2">
-                        <a href="{{ url('/dashboard') }}" class="nav-link">My classes</a>
+                        <a href="{{ route('myclasses.index') }}" class="nav-link">My classes</a>
                     </li>
                     <li class="nav-item px-2">
                         <a href="{{ URL('/posts') }}" class="nav-link">Posts</a>
@@ -51,7 +51,7 @@
                             </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <i class="fas fa-user-times"></i>{{ __('Logout') }}
+                                <i class="fas fa-user-times"></i> {{ __('Logout') }}
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf

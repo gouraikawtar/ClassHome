@@ -31,12 +31,7 @@ class RegisterController extends Controller
      */
     protected function redirectTo()
     {
-        if (auth()->user()->role == 'student') {
-            return '/dashboard';
-        }
-        else if (auth()->user()->role == 'teacher'){
-            return '/myclasses';
-        }
+        return route('myclasses.index');
     }
 
 

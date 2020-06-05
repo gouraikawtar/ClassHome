@@ -46,7 +46,7 @@
                     <th>Deadline</th>
                     <th>Expires at</th>
                     <th>Status</th>
-                    <th colspan="3">Options</th>
+                    <th colspan="3">Actions</th>
                 </tr>
             </thead>
             <tbody>
