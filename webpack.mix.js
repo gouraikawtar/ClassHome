@@ -22,3 +22,4 @@ mix.js(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', 'node_modules/
 // mix.js('node_modules/jquery/dist/jquery.js','public/jquery/jquery.js').version();
 // mix.js('node_modules/popper.js/dist/umd/popper.js','public/popper/popper.js').version();
 mix.js('resources/js/homework.js', 'public/js/homework.js').version();
+mix.js('resources/js/student-homework.js', 'public/js/student-homework.js').version();

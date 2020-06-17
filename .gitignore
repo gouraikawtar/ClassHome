@@ -1,6 +1,7 @@
 /node_modules
 /public/hot
 /public/homework_files
+/public/contribution_files
 /public/storage
 /storage/*.key
 /vendor

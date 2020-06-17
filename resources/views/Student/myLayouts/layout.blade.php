@@ -147,6 +147,9 @@
     
     <script src="{{ mix('/js/theme.js') }}"></script>
 
+    {{-- Custom JS --}}
+    @yield('custom-js')
+
 </body>
 
 </html>

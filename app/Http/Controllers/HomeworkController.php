@@ -65,7 +65,7 @@ class HomeworkController extends Controller
         ]);
         //
         $teachingClass = TeachingClass::find($class_id);
-        //Model instanciation
+        //Model instantiation
         $homework = new Homework();
         //Model 
         $homework->title = $request->input('title');
@@ -73,7 +73,7 @@ class HomeworkController extends Controller
         $homework->deadline = $request->input('deadline');
         $homework->expire_at = $request->input('expires_at');
         //$homework->teaching_class_id = $class_id;
-        $homework->user_id = 1;
+        $homework->user_id = Auth::user()->id;
         //Database persistence
         $homework->teachingClass()->associate($teachingClass)->save();
         //$homework->save();
@@ -85,11 +85,11 @@ class HomeworkController extends Controller
         if($request->hasFile('files')){
             //
             $i = 0;
-            foreach ($request->file('files') as $uploadedFile) {;
+            foreach ($request->file('files') as $uploadedFile) {
                 $string = 'homework_doc_'.$idHomework.'_'.++$i;
                 $fileName = $string.'.'.$uploadedFile->extension();
                 $uploadedFile->move(public_path().'/homework_files/', $fileName);
-                //HomeworkDocument instansiation
+                //HomeworkDocument instantiation
                 $file = new HomeworkDocument();
                 $file->title = $fileName;
                 //Database persistence
@@ -156,7 +156,7 @@ class HomeworkController extends Controller
         $homework->description = $request->input('new_desc');
         $homework->deadline = $request->input('new_deadline');
         $homework->expire_at = $request->input('new_exp_at');
-        $homework->user_id = 1;
+        $homework->user_id = Auth::user()->id;
 
         $homework->teachingClass()->associate($teachingClass)->save();
         $request->session()->flash('homework_edited', 'Homework successefully edited');

@@ -55,4 +55,13 @@ Route::resource('/myclasses','TeachingClassController')->except(['create','show'
 Route::resource('/myclasses.homeworks','HomeworkController')->only(['index','store','update','destroy','show']);
 Route::get('/download/{name}','HomeworkController@downloadFile')->name('homeworks.download');
 //------------------------------------------------------------------------------------------
+
+/**---------------------------- Route for ClassSubscriptionController ---------------------------------*/
 Route::post('/join','ClassSubscriptionController@joinClass');
+/**------------------------------------------------------------------------------------------*/
+
+/**----------------------------- Routes for ContributionController ------------------------- */
+Route::resource('/myclasses.contributions', 'ContributionController')->only(['index']);
+Route::post('/import/{homework_id}','ContributionController@importContribution');
+//Route::get('/donwload-contributions/{homework_id}','ContributionController@downloadZipFolder')->name('contributions.download');
+/**----------------------------------------------------------------------------------------- */

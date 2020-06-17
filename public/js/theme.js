@@ -13673,8 +13673,8 @@ module.exports = g;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\PFE\ClassHome\node_modules\bootstrap\dist\js\bootstrap.bundle.min.js */"./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js");
-module.exports = __webpack_require__(/*! D:\PFE\ClassHome\node_modules\bootstrap\dist\js\bootstrap.min.js */"./node_modules/bootstrap/dist/js/bootstrap.min.js");
+__webpack_require__(/*! D:\ClassHome\node_modules\bootstrap\dist\js\bootstrap.bundle.min.js */"./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js");
+module.exports = __webpack_require__(/*! D:\ClassHome\node_modules\bootstrap\dist\js\bootstrap.min.js */"./node_modules/bootstrap/dist/js/bootstrap.min.js");
 
 
 /***/ })
