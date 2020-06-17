@@ -36,7 +36,7 @@ class TeachingClassController extends Controller
             return view('Teacher.teacher-myclasses',[
                 'classes' => $classes,
                 'active' => 'index', 
-                 /* the 'active' parameter is about to define whether
+                /* the 'active' parameter is about to define whether
                  * the tab should be active or no
                  */
             ]);

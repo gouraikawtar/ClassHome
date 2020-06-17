@@ -26,7 +26,6 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->enum('role',['student', 'teacher', 'admin']);
             $table->boolean('responsible')->default(false); 
-            //$table->foreignId('group_id')->nullable()->constrained();
             $table->softDeletes(); 
         });
     }
