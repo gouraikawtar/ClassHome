@@ -150,4 +150,34 @@ class ContributionController extends Controller
         }
         return response()->download(public_path($fileName));
     }*/
+
+    //Functions for grades view
+    public function showGrades($class_id){
+        $teachingClass = TeachingClass::find($class_id);
+        $homeworks = Homework::where('teaching_class_id',$class_id)->orderBy('created_at','desc')->paginate(8);
+        if(Auth::user()->role == 'teacher'){
+            return view('Teacher.teacher-grades',[
+                'teachingClass' => $teachingClass,
+                'homeworks' => $homeworks,
+            ]);
+        }else if(Auth::user()->role == 'student'){
+            return view('Student.grades',[
+                'teachingClass' => $teachingClass,
+                'homeworks' => $homeworks,
+            ]);
+        }
+    }
+
+    public function getStudentsContributions($class_id,$homework_id){
+        $teachingClass = TeachingClass::find($class_id);
+        $students = $teachingClass->students;
+        $contribution = null;
+        if(Auth::user()->role == 'teacher'){
+            return view('Teacher.teacher-gradesheet',[
+                'teachingClass' => $teachingClass,
+                'students' => $students,
+                'homework_id' => $homework_id,
+            ]);
+        }
+    }
 }

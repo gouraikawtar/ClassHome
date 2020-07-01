@@ -48,14 +48,20 @@
             @else
             <p class="card-text">{{$class->description}}</p> 
             @endif
-            <div class="btn-group">
-                <a href="{{route('myclasses.homeworks.index',$class->id)}}" class="btn btn-primary" role="button">Go</a>
-                <form method="POST" action="{{url('/myclasses/'.$class->id)}}">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-warning">Archive</button>
-                </form>
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        <a href="{{route('myclasses.homeworks.index',$class->id)}}" class="btn btn-primary" role="button">Go</a>
+                    </td>
+                    <td>
+                        <form method="POST" action="{{url('/myclasses/'.$class->id)}}">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-warning">Archive</button>
+                        </form>
+                    </td>
+                </tr>
+            </table>
             {{-- <button class="btn btn-warning" data-toggle="modal" data-target="#archiveClassModal">Archive</button> --}}
         </div>
     </div>

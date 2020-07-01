@@ -14,7 +14,7 @@ class Contribution extends Model
     }
 
     public function creator(){
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User','user_id');
     }
 
     public function joinedDocuments(){

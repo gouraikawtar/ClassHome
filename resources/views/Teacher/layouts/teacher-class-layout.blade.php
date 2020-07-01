@@ -37,7 +37,7 @@
                         {{-- {{route('homeworks.index')}} --}}
                     </li>
                     <li class="nav-item px-2 ">
-                        <a href="{{ url('grades') }}" class="nav-link ">Grades</a>
+                        <a href="{{ route('grades',$teachingClass->id) }}" class="nav-link">Grades</a>
                     </li>
                     <li class="nav-item px-2">
                         <a href="{{ route('myclasses.contributions.index', $teachingClass->id) }}" class="nav-link">Contibutions</a>

@@ -43,18 +43,24 @@
             @else
             <p class="card-text">{{$class->description}}</p> 
             @endif
-            <div class="btn-group">
-                <form method="POST" action="{{url('/archive/'.$class->id.'/restore')}}">
-                    @csrf
-                    @method('PATCH')
-                    <button class="btn btn-success">Restore</button>
-                </form>
-                <form method="POST" action="{{url('/archive/'.$class->id.'/delete')}}">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-danger">Delete</button>
-                </form>
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        <form method="POST" action="{{url('/archive/'.$class->id.'/restore')}}">
+                            @csrf
+                            @method('PATCH')
+                            <button class="btn btn-success">Restore</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="POST" action="{{url('/archive/'.$class->id.'/delete')}}">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
