@@ -6,6 +6,7 @@ use App\TeachingClass;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class TeachingClassController extends Controller
 {
@@ -61,25 +62,37 @@ class TeachingClassController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'bail|required||max:50',
             'section' => 'required',
             'object' => 'max:100',
             'description' => 'max:100',
         ]);
+        /*$request->validate([
+            'name' => 'bail|required||max:50',
+            'section' => 'required',
+            'object' => 'max:100',
+            'description' => 'max:100',
+        ]);*/
 
-        $class = new TeachingClass();
+        if($validator->fails()){
+            return response()->json(['errors' => $validator->errors()]);
+        }else{
+            $class = new TeachingClass();
 
-        $class->name = $request->input('name');
-        $class->section = $request->input('section');
-        $class->object = $request->input('object');
-        $class->description = $request->input('description');
-        $class->code = Str::random(6);
-        $class->user_id = Auth::user()->id;
+            $class->name = $request->input('name');
+            $class->section = $request->input('section');
+            $class->object = $request->input('object');
+            $class->description = $request->input('description');
+            $class->code = Str::random(6);
+            $class->user_id = Auth::user()->id;
 
-        $class->save();
-        $request->session()->flash('class_created', 'Class created successfully');
-        return redirect()->route('myclasses.index');
+            $class->save();
+            return response()->json(['success' => '1']);
+        }
+        
+        /*$request->session()->flash('class_created', 'Class created successfully');
+        return redirect()->route('myclasses.index');*/
     }
 
     /**

@@ -263,13 +263,12 @@
                 <p>Are you sure you want to delete this?</p>
             </div>
             <div class="modal-footer">
+                <button class="btn btn-dark" data-dismiss="modal">Back</button>
                 <form id="delete_homework_form" method="POST" action="/homeworks/">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-danger" type="submit">Confirm</button>
                 </form>
-
-                <button class="btn btn-dark" data-dismiss="modal">Back</button>
             </div>
         </div>
     </div>
