@@ -8,10 +8,14 @@
 <div class="col-md-9">
     <div class="card shadow-sm">
         <div class="card-header">
-            <h4>{{$homework->title}}</h4>
+            <h4>Homework details</h4>
         </div>
         <table class="table table-hover">
             <tbody id="hwInfo">
+                <tr>
+                    <th>Title</th>
+                    <td>{{$homework->title}}</td>
+                </tr>
                 <tr>
                     <th>Created at</th>
                     <td id="creatDateView">{{Carbon\Carbon::parse($homework->created_at)->format('Y-m-d')}}</td>

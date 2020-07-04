@@ -52,7 +52,7 @@ Route::resource('/myclasses','TeachingClassController')->except(['create','show'
 //-----------------------------------------------------------------------------------------
 
 //----------------------------Routes for HomeworkController---------------------------------
-Route::resource('/myclasses.homeworks','HomeworkController')->only(['index','store','update','destroy','show']);
+Route::resource('/myclasses.homeworks','HomeworkController')->only(['index','store','update','destroy','show','edit']);
 Route::get('/download/{name}','HomeworkController@downloadFile')->name('homeworks.download');
 //------------------------------------------------------------------------------------------
 
@@ -67,3 +67,5 @@ Route::get('/myclasses/{class_id}/grades','ContributionController@showGrades')->
 Route::get('/myclasses/{class_id}/grading/{homework_id}','ContributionController@getStudentsContributions')->name('grading');
 //Route::get('/donwload-contributions/{homework_id}','ContributionController@downloadZipFolder')->name('contributions.download');
 /**----------------------------------------------------------------------------------------- */
+/**----------------------------- Routes for HomeworkDocumentController ------------------------- */
+Route::resource('/myclasses.homeworks.documents','HomeworkDocumentController')->only(['destroy']);

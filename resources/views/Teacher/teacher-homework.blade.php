@@ -17,14 +17,12 @@
 
 @section('content')
 <div class="col-md-9">
-    @if (session()->has('homework_created'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>{{ session()->get('homework_created') }}</strong>
+    <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-msg" style="display: none;">
+        <strong>Homework created successfully</strong>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    @endif
     @if (session()->has('homework_edited'))
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
         <strong>{{ session()->get('homework_edited') }}</strong>
@@ -66,7 +64,7 @@
                     <td><a href="{{route('myclasses.homeworks.show',[$teachingClass->id,$homework->id])}}"><i class="view_hw fas fa-info-circle" id=""></i></a></td>
                     <td><i class="delete_hw fas fa-trash" id="" data-toggle="modal" data-target="#deleteHwModal"></i></td>
                     @if ($homework->status == 'Active')
-                    <td><i class="edit_hw fas fa-edit" id="" data-toggle="modal" data-target="#editHwModal"></i></td>
+                    <td><a href="{{route('myclasses.homeworks.edit',[$teachingClass->id,$homework->id])}}"><i class="edit_hw fas fa-edit" id=""></i></a></td>
                     @else
                     <td></td>
                     @endif
@@ -80,13 +78,11 @@
     </div>
 </div>
 @endsection
-{{-- {{route('homeworks.show',$homework->id)}} 
-{{ route('homeworks.store') }}--}}
 
 @section('custom-modal')
     <!-- ADD HOMEWORK MODAL -->
     <div class="modal fade" id="addHomeworkModal">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-dark text-white">
                     <h5 class="modal-title">Add Homework</h5>
@@ -94,50 +90,44 @@
                         <span>&times;</span>
                   </button>
                 </div>
-                <form method="POST" action="{{route('myclasses.homeworks.store',$teachingClass->id)}}" enctype="multipart/form-data">
+                <form id="create_homework_form" method="POST" action="{{route('myclasses.homeworks.store',$teachingClass->id)}}" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="title">Title</label>
-                            <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title') }} ">
-                            @error('title')
-                                <div class="invalid-feedback" id="title_error">{{ $message }}</div>
-                            @enderror
+                            <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }} ">
+                            <span class="invalid-feedback">
+                                <strong id="title-error"></strong>
+                            </span>
                         </div>
                         <div class="form-group">
                             <label for="desc">Description</label>
-                            <textarea name="desc"  id="desc" class="form-control @error('desc') is-invalid @enderror" cols="" rows="5">{{ old('desc') }} </textarea>
-                            @error('desc')
-                                <div class="invalid-feedback" id="desc_error">{{ $message }}</div>
-                            @enderror
+                            <textarea name="desc"  id="desc" class="form-control" cols="" rows="5">{{ old('desc') }} </textarea>
+                            <span class="invalid-feedback">
+                                <strong id="description-error"></strong>
+                            </span>
                         </div>
                         <div class="form-group">
                             <label for="deadline">Deadline</label>
-                            <input type="date" class="form-control @error('deadline') is-invalid @enderror" id="deadline" name="deadline" value="{{ old('deadline') }} ">
-                            @error('deadline')
-                                <div class="invalid-feedback" id="deadline_error">{{ $message }}</div>
-                            @enderror
+                            <input type="date" class="form-control" id="deadline" name="deadline" value="{{ old('deadline') }} ">
+                            <span class="invalid-feedback">
+                                <strong id="deadline-error"></strong>
+                            </span>
                         </div>
                         <div class="form-group">
                             <label for="expires_at">Expires at</label>
-                            <input type="time" class="form-control @error('expires_at') is-invalid @enderror" id="expires_at" name="expires_at" value="{{ old('expires_at') }} ">
-                            @error('expires_at')
-                                <div class="invalid-feedback" id="exp_error">{{ $message }}</div>
-                            @enderror
+                            <input type="time" class="form-control" id="expires_at" name="expires_at" value="{{ old('expires_at') }} ">
+                            <span class="invalid-feedback">
+                                <strong id="expat-error"></strong>
+                            </span>
                         </div>
                         <div class="form-group">
-                            <input type="file" class="@error('files') is-invalid @enderror" name="files[]" id="file" multiple="true">
+                            <input type="file" class="" name="files[]" id="file" multiple="true">
                             <small class="form-text text-muted">Max size : 2mb</small>
                             <small class="form-text text-muted">Authorized extensions : pdf,docx,doc,ppt,pptx,xls,xlsx,png,jpg,jpeg,zip</small>
-                            @error('files')
-                                <div class="invalid-feedback" id="files_error">{{ $message }}</div>
-                            @enderror
-                            {{-- <label for="image">Upload file</label>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="file" name="file">
-                                <label for="file" id="file_input" class="custom-file-label">Choose File</label>
-                            </div>
-                            <small class="form-text text-muted">Max Size X</small> --}}
+                            <span class="invalid-feedback">
+                                <strong id="files-error"></strong>
+                            </span>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -150,108 +140,9 @@
     </div>
     <!-- ADD HOMEWORK MODAL END -->
 
-    <!-- EDIT HOMEWORK MODAL -->
-    <div class="modal fade" id="editHwModal">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-dark text-white">
-                    <h5 class="modal-title">Edit Homework</h5>
-                    <button class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
-                </div>
-                <form id="edit_homework_form" method="POST" action="">
-                    @csrf
-                    @method('PUT')
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="new_title">Title</label>
-                            <input type="text" name="new_title" class="form-control" id="new_title">
-                        </div>
-                        <div class="form-group">
-                            <label for="new_desc">Description</label>
-                            <textarea name="new_desc" class="form-control" id="new_desc"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="new_deadline">Deadline</label>
-                            <input type="date" name="new_deadline" class="form-control" id="new_deadline">
-                        </div>
-                        <div class="form-group">
-                            <label for="new_exp_at">Expires at</label>
-                            <input type="time" name="new_exp_at" class="form-control" id="new_exp_at">
-                        </div>
-                        <div class="form-group">
-                            <label for="image">Upload file</label>
-                            <div class="custom-file">
-                                <input type="file" name="new_file" class="custom-file-input" id="new_file">
-                                <label for="new_file" class="custom-file-label">Choose File</label>
-                            </div>
-                            <small class="form-text text-muted">Max Size X</small>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-dark">Save Changes</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- EDIT HOMEWORK MODAL END -->
-
-    <!-- VIEW HOMEWORK MODAL -->
-    {{-- <div class="modal fade" id="viewHwModal">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-dark text-white">
-                    <h5 class="modal-title">Homework details</h5>
-                    <button class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-hover">
-                        <tbody id="hwInfo">
-                            <tr>
-                                <th>Title</th>
-                                <td id="titleView"></td>
-                            </tr>
-                            <tr>
-                                <th>Created at</th>
-                                <td id="creatDateView"></td>
-                            </tr>
-                            <tr>
-                                <th>Description</th>
-                                <td id="descrView"></td>
-                            </tr>
-                            <tr>
-                                <th>Deadline</th>
-                                <td id="deadlineView"></td>
-                            </tr>
-                            <tr>
-                                <th>Expires at</th>
-                                <td id="expView"></td>
-                            </tr>
-                            <tr>
-                                <th>Status</th>
-                                <td id="statusView"></td>
-                            </tr>
-                            <tr>
-                                <th>Joined files</th>
-                                <td id="joinedFiles"><a href="#" class="btn btn-warning">Download files</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-dark" data-dismiss="modal">Back</button>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-    <!-- VIEW HOMEWORK MODAL END -->
-
+    {{-- DELETE HOMEWORK MODAL --}}
 <div class="modal fade" id="deleteHwModal">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white">
                 <h5 class="modal-title">Attention</h5>
@@ -260,27 +151,94 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete this?</p>
+                <p>Do you really want to delete this homework? This process cannot be undone.</p>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-dark" data-dismiss="modal">Back</button>
                 <form id="delete_homework_form" method="POST" action="/homeworks/">
                     @csrf
                     @method('DELETE')
-                    <button class="btn btn-danger" type="submit">Confirm</button>
+                    <button class="btn btn-danger" type="submit">Delete</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+{{-- DELETE HOMEWORK MODAL END --}}
 @endsection
 @section('custom-js')
-<script src="{{ mix('js/homework.js')}}"></script>
-{{-- @if(Session::has('errors'))
-<script>
-jQuery(document).ready(function(){
-    jQuery("#addHomeworkModal").modal("show");
-});
+<script type="text/javascript">
+    function deleteHomework() {
+        var class_id = document.getElementById("class_id").value;
+        var tr = this.parentElement.parentElement;
+        var homework_id = tr.children[0].children[0].value;
+    
+        //Setting up the action for the delete form 
+        document.getElementById("delete_homework_form").action = "/myclasses/"+class_id+"/homeworks/"+homework_id;
+    }
+
+    $(document).ready(function(){
+        if(localStorage.getItem("success")){
+            $('#success-msg').css('display', 'block')
+            localStorage.clear();
+        }
+        //Store data using Ajax
+        var class_id = document.getElementById("class_id").value;
+        $('#create_homework_form').on('submit', function(e){
+            e.preventDefault();
+            $('#title-error').html("");
+            $('#description-error').html("");
+            $('#deadline-error').html("");
+            $('#expat-error').html("");
+            $('#files-error').html("");
+            
+            $.ajax({
+                type:'POST',
+                url:'/myclasses/'+class_id+'/homeworks',
+                data: new FormData(this),
+                dataType: 'JSON',
+                contentType: false,
+                cache: false,
+                processData: false,
+                success:function(data){
+                    if(data.errors) {
+                        if(data.errors.title){
+                            $('#title-error').html(data.errors.title[0]);
+                            $('#title').addClass('is-invalid');
+                        }
+                        if(data.errors.desc){
+                            $('#description-error').html(data.errors.desc[0]);
+                            $('#desc').addClass('is-invalid');
+                        }
+                        if(data.errors.deadline){
+                            $('#deadline-error').html(data.errors.deadline[0]);
+                            $('#deadline').addClass('is-invalid');
+                        }
+                        if(data.errors.expires_at){
+                            $('#expat-error').html(data.errors.expires_at[0]);
+                            $('#expires_at').addClass('is-invalid');
+                        }
+                        if(data.errors.files){
+                            $('#files-error').html(data.errors.files[0]);
+                            $('#file').addClass('is-invalid');
+                        }
+                    }
+                    if(data.success) {
+                        $('#addHomeworkModal').modal('hide');
+                        localStorage.setItem("success",data.OperationStatus)
+                        window.location.reload();
+                    }
+                },
+            })
+        })
+        //alert(1);
+
+        var delete_icon = document.getElementsByClassName("delete_hw");
+
+        for (let i = 0; i < delete_icon.length; i++) {
+            delete_icon[i].addEventListener("click",deleteHomework);
+        }
+    })
 </script>
-@endif --}}
+{{-- <script src="{{ mix('js/homework.js')}}"></script> --}}
 @endsection
