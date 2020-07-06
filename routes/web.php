@@ -63,8 +63,9 @@ Route::post('/join','ClassSubscriptionController@joinClass');
 /**----------------------------- Routes for ContributionController ------------------------- */
 Route::resource('/myclasses.contributions', 'ContributionController')->only(['index']);
 Route::post('/import/{homework_id}','ContributionController@importContribution');
-Route::get('/myclasses/{class_id}/grades','ContributionController@showGrades')->name('grades');
+Route::get('/myclasses/{class_id}/grades','ContributionController@getGradesView')->name('grades');
 Route::get('/myclasses/{class_id}/grading/{homework_id}','ContributionController@getStudentsContributions')->name('grading');
+Route::put('/grading/{contribution_id}','ContributionController@addGrade');
 //Route::get('/donwload-contributions/{homework_id}','ContributionController@downloadZipFolder')->name('contributions.download');
 /**----------------------------------------------------------------------------------------- */
 /**----------------------------- Routes for HomeworkDocumentController ------------------------- */

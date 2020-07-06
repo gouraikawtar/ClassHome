@@ -7,17 +7,21 @@
 @section('content')
 <div class="card shadow-sm">
     <div class="card-header">
-        <h4>{{$homework->title}}</h4>
+        <h4>Homework details</h4>
     </div>
     <table class="table table-hover">
-        <tbody id="hwInfo">
+        <tbody>
+            <tr>
+                <th>Title</th>
+                <td>{{$homework->title}}</td>
+            </tr>
             <tr>
                 <th>Created at</th>
-                <td id="creatDateView">{{Carbon\Carbon::parse($homework->created_at)->format('Y-m-d')}}</td>
+                <td>{{Carbon\Carbon::parse($homework->created_at)->format('Y-m-d')}}</td>
             </tr>
             <tr>
                 <th>Description</th>
-                <td id="descrView">
+                <td>
                     @if ($homework->description!=null)
                         {{$homework->description}}
                     @else
@@ -27,15 +31,7 @@
             </tr>
             <tr>
                 <th>Deadline</th>
-                <td id="deadlineView">{{$homework->deadline}}</td>
-            </tr>
-            <tr>
-                <th>Expires at</th>
-                <td id="expView">{{Carbon\Carbon::parse($homework->expire_at)->format('H:i')}}</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td id="statusView">{{$homework->status}}</td>
+                <td>{{$homework->deadline}}</td>
             </tr>
             <tr>
                 <th rowspan="0">Files</th>

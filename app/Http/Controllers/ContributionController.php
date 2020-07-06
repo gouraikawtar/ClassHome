@@ -10,6 +10,7 @@ use App\TeachingClass;
 use Illuminate\Http\Request;
 use App\ContributionDocument;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ContributionController extends Controller
 {
@@ -84,7 +85,7 @@ class ContributionController extends Controller
      * @param  \App\Contribution  $contribution
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Contribution $contribution)
+    public function update(Request $request, $contribution_id)
     {
         //
     }
@@ -152,7 +153,7 @@ class ContributionController extends Controller
     }*/
 
     //Functions for grades view
-    public function showGrades($class_id){
+    public function getGradesView($class_id){
         $teachingClass = TeachingClass::find($class_id);
         $homeworks = Homework::where('teaching_class_id',$class_id)->orderBy('created_at','desc')->paginate(8);
         if(Auth::user()->role == 'teacher'){
@@ -171,13 +172,22 @@ class ContributionController extends Controller
     public function getStudentsContributions($class_id,$homework_id){
         $teachingClass = TeachingClass::find($class_id);
         $students = $teachingClass->students;
-        $contribution = null;
+        $homework = Homework::find($homework_id);
         if(Auth::user()->role == 'teacher'){
             return view('Teacher.teacher-gradesheet',[
                 'teachingClass' => $teachingClass,
                 'students' => $students,
-                'homework_id' => $homework_id,
+                'homework' => $homework,
             ]);
         }
+    }
+
+    public function addGrade(Request $request, $contribution_id){
+        $contribution = Contribution::find($contribution_id);
+        
+        $contribution->grade = $request->input('grade');
+        $contribution->save();
+
+        return redirect()->back();
     }
 }

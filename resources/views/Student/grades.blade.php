@@ -23,7 +23,11 @@
             <tr>
                 <td></td>
                 <td>{{$homework->title}}</td>
-                <td>15</td>
+                @if ($homework->contributions()->where('user_id','=',Auth::user()->id)->first()!=null)
+                <td>{{$homework->contributions()->where('user_id','=',Auth::user()->id)->first()['grade']}}</td>
+                @else
+                <td>Not graded yet</td>
+                @endif
             </tr>
             @endforeach
         </tbody>

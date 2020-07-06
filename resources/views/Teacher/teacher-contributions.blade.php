@@ -23,7 +23,7 @@
                     <th>Title</th>
                     <th>Created at</th>
                     <th>Deadline</th>
-                    <th>Download contributions folder</th>
+                    <th>Contributions folder</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,10 +33,10 @@
                     <td><i class="fas fa-folder"></i> {{$homework->title}}</td>
                     <td>{{Carbon\Carbon::parse($homework->created_at)->format('Y-m-d')}}</td>
                     <td>{{$homework->deadline}}</td>
-                    @if (Carbon\Carbon::today()->format('Y-m-d') < $homework->deadline)
+                    @if (Carbon\Carbon::now()->format('Y-m-d') <= $homework->deadline)
                     <td>No contributions to download yet</td>
                     @else
-                    <td><a href="#"><i class="fas fa-download"></i></a></td>
+                    <td><a href="#"><i class="fas fa-download"></i> Download</a></td>
                     @endif
                 </tr>
                 @endforeach

@@ -19,8 +19,6 @@ class CreateHomeworksTable extends Migration
             $table->string('title',50);
             $table->string('description',255)->nullable();
             $table->date('deadline');
-            $table->time('expire_at');
-            $table->enum('status',['Active','Expired'])->default('Active');
             $table->foreignId('teaching_class_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained();
             $table->softDeletes();

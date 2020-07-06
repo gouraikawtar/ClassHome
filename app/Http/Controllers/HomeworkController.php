@@ -63,7 +63,6 @@ class HomeworkController extends Controller
             'title' => 'bail|required||max:50',
             'desc'  => 'max:255',
             'deadline' => 'required',
-            'expires_at' => 'required',
             'files' => 'max:2000',
             'files.*' => 'mimes:pdf,docx,doc,ppt,pptx,xls,xlsx,png,jpg,jpeg,zip',
         ]);
@@ -77,7 +76,6 @@ class HomeworkController extends Controller
             $homework->title = $request->input('title');
             $homework->description = $request->input('desc');
             $homework->deadline = $request->input('deadline');
-            $homework->expire_at = $request->input('expires_at');
             //$homework->teaching_class_id = $class_id;
             $homework->user_id = Auth::user()->id;
             //Database persistence
@@ -164,7 +162,6 @@ class HomeworkController extends Controller
             'new_title' => 'bail|required||max:50',
             'new_desc'  => 'max:255',
             'new_deadline' => 'required',
-            'new_exp_at' => 'required',
             'new_files' => 'max:2000',
             'new_files.*' => 'mimes:pdf,docx,doc,ppt,pptx,xls,xlsx,png,jpg,jpeg,zip',
         ]);
@@ -175,7 +172,6 @@ class HomeworkController extends Controller
         $homework->title = $request->input('new_title');
         $homework->description = $request->input('new_desc');
         $homework->deadline = $request->input('new_deadline');
-        $homework->expire_at = $request->input('new_exp_at');
         $homework->user_id = Auth::user()->id;
         //Database persistence
         $homework->teachingClass()->associate($teachingClass)->save();

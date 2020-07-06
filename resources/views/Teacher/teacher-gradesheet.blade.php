@@ -15,6 +15,7 @@
     <div class="card shadow-sm">
         <div class="card-header ">
             <h4>Grades</h4>
+            <h6>{{$homework->title}}</h6>
         </div>
         <table class="table table-hover">
             <thead class="thead-light ">
@@ -26,21 +27,31 @@
             </thead>
             <tbody>
                 @foreach ($students as $student) 
-                {{-- {{$contribution = App\Contribution::where([['user_id','=',$student->id],['homework_id','=',$homework_id],])->first()}} --}}
-                <tr>
-                    <form id="grade_contribution" method="POST" action="">
-                        @csrf
-                        @method('UPDATE')
-                        <td></td>
+                <form method="POST" action="{{ url('/grading/'.$homework->contributions()->where('user_id','=',$student->id)->first()['id']) }}">
+                    @csrf
+                    @method('PUT')
+                    <tr>
+                        <td>
+                            {{-- <input type="hidden" id="id_contr" name="id_contr" value="{{  }}"> --}}
+                        </td>
                         {{--  --}}
                         <td>{{$student->first_name}} {{$student->last_name}}</td>
-                        <td><input type="number" step="0.01" class="form-control" name="grade" id="" value="{{App\Contribution::where([['user_id','=',$student->id],['homework_id','=',$homework_id],])->first()->grade}}"></td>
+                        <td><input type="number" step="0.01"  min="0" max="20" class="form-control @error('grade') is-invalid @enderror" name="grade" value="{{ old('grade',$homework->contributions()->where('user_id','=',$student->id)->first()['grade']) }}"></td>
+                        @error('grade')
+                        <span class="invalid-feedback">
+                            <strong id="grade-error">{{ $message }}</strong>
+                        </span>
+                        @enderror
                         <td><button class="btn btn-success" type="submit">Save</button></td>
-                    </form>
-                </tr>
+                    </tr>
+                </form>
                 @endforeach
             </tbody>
         </table>
     </div>
 </div>
+@endsection
+
+@section('custom-js')
+
 @endsection

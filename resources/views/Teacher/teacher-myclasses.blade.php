@@ -169,13 +169,27 @@
 @section('custom-js')
 
 <script type="text/javascript">
-    function sendData() {
+    function archiveClass() {
+        var tr = this.parentElement.parentElement;
+        var id = tr.children[0].children[0].value;
+        document.getElementById("archive_class_form").action = "/myclasses/"+id;
+    }
+
+    $(document).ready(function(){
+        if(localStorage.getItem("success")){
+            $('#success-msg').css('display', 'block')
+            localStorage.clear();
+        }
         $('#create_class_form').on('submit', function(e){
             e.preventDefault();
             $('#name-error').html("");
+            $('#class_name').removeClass('is-invalid');
             $('#section-error').html("");
+            $('#class_section').removeClass('is-invalid');
             $('#object-error').html("");
+            $('#class_object').removeClass('is-invalid');
             $('#description-error').html("");
+            $('#class_descr').removeClass('is-invalid');
             $.ajax({
                 type:'POST',
                 url:'/myclasses',
@@ -207,22 +221,7 @@
                 },
             })
         })
-    }
-    function archiveClass() {
-        var tr = this.parentElement.parentElement;
-        var id = tr.children[0].children[0].value;
-        document.getElementById("archive_class_form").action = "/myclasses/"+id;
-    }
-
-    $(document).ready(function(){
-        if(localStorage.getItem("success")){
-            $('#success-msg').css('display', 'block')
-            localStorage.clear();
-        }
-
-        document.getElementById('create').addEventListener('click',sendData);
         //alert(1);
-
         var archiveButtons = document.getElementsByClassName('archive-class')
         for (let i = 0; i < archiveButtons.length; i++) {
             archiveButtons[i].addEventListener('click',archiveClass); 

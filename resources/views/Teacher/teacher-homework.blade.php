@@ -42,8 +42,6 @@
                     <th>Title</th>
                     <th>Created at</th>
                     <th>Deadline</th>
-                    <th>Expires at</th>
-                    <th>Status</th>
                     <th colspan="3">Actions</th>
                 </tr>
             </thead>
@@ -57,16 +55,13 @@
                     </td>
                     <td>{{$homework->title}}</td>
                     <td>{{Carbon\Carbon::parse($homework->created_at)->format('Y-m-d')}}</td>
-                    {{-- <td>{{$homework->created_at->format('Y-m-d')}}</td> --}}
                     <td>{{$homework->deadline}}</td>
-                    <td>{{Carbon\Carbon::parse($homework->expire_at)->format('H:i')}}</td>
-                    <td>{{$homework->status}}</td>
                     <td><a href="{{route('myclasses.homeworks.show',[$teachingClass->id,$homework->id])}}"><i class="view_hw fas fa-info-circle" id=""></i></a></td>
                     <td><i class="delete_hw fas fa-trash" id="" data-toggle="modal" data-target="#deleteHwModal"></i></td>
-                    @if ($homework->status == 'Active')
-                    <td><a href="{{route('myclasses.homeworks.edit',[$teachingClass->id,$homework->id])}}"><i class="edit_hw fas fa-edit" id=""></i></a></td>
-                    @else
+                    @if (Carbon\Carbon::now()->format('Y-m-d') > $homework->deadline)
                     <td></td>
+                    @else
+                    <td><a href="{{route('myclasses.homeworks.edit',[$teachingClass->id,$homework->id])}}"><i class="edit_hw fas fa-edit" id=""></i></a></td>
                     @endif
                 </tr>
                 @endforeach
@@ -115,13 +110,6 @@
                             </span>
                         </div>
                         <div class="form-group">
-                            <label for="expires_at">Expires at</label>
-                            <input type="time" class="form-control" id="expires_at" name="expires_at" value="{{ old('expires_at') }} ">
-                            <span class="invalid-feedback">
-                                <strong id="expat-error"></strong>
-                            </span>
-                        </div>
-                        <div class="form-group">
                             <input type="file" class="" name="files[]" id="file" multiple="true">
                             <small class="form-text text-muted">Max size : 2mb</small>
                             <small class="form-text text-muted">Authorized extensions : pdf,docx,doc,ppt,pptx,xls,xlsx,png,jpg,jpeg,zip</small>
@@ -131,7 +119,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button name="create" class="btn btn-dark" type="submit" id="create_homework">Create</button>
+                        <button name="create" class="btn btn-dark" type="submit">Create</button>
                     </div>
                 </form>
 
@@ -187,10 +175,13 @@
         $('#create_homework_form').on('submit', function(e){
             e.preventDefault();
             $('#title-error').html("");
+            $('#title').removeClass('is-invalid');
             $('#description-error').html("");
+            $('#desc').removeClass('is-invalid');
             $('#deadline-error').html("");
-            $('#expat-error').html("");
+            $('#deadline').removeClass('is-invalid');
             $('#files-error').html("");
+            $('#file').removeClass('is-invalid');
             
             $.ajax({
                 type:'POST',
@@ -214,10 +205,6 @@
                             $('#deadline-error').html(data.errors.deadline[0]);
                             $('#deadline').addClass('is-invalid');
                         }
-                        if(data.errors.expires_at){
-                            $('#expat-error').html(data.errors.expires_at[0]);
-                            $('#expires_at').addClass('is-invalid');
-                        }
                         if(data.errors.files){
                             $('#files-error').html(data.errors.files[0]);
                             $('#file').addClass('is-invalid');
@@ -240,5 +227,4 @@
         }
     })
 </script>
-{{-- <script src="{{ mix('js/homework.js')}}"></script> --}}
 @endsection

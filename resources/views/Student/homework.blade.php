@@ -24,8 +24,6 @@
                 <th>Title</th>
                 <th>Created at</th>
                 <th>Deadline</th>
-                <th>Expires at</th>
-                <th>Status</th>
                 <th>Details</th>
                 <th>Contribution</th>
             </tr>
@@ -40,18 +38,26 @@
                 <td>{{$homework->title}}</td>
                 <td>{{Carbon\Carbon::parse($homework->created_at)->format('Y-m-d')}}</td>
                 <td>{{$homework->deadline}}</td>
-                <td>{{Carbon\Carbon::parse($homework->expire_at)->format('H:i')}}</td>
-                <td>{{$homework->status}}</td>
                 <td>
                     <a href="{{route('myclasses.homeworks.show',[$teachingClass->id,$homework->id])}}">
                         <i class="fas fa-angle-double-right"></i> Details
                     </a>
                 </td>
+                @if (Carbon\Carbon::now()->format('Y-m-d') > $homework->deadline)
                 <td>
-                    <a href="#" class="import_contr" data-toggle="modal" data-target="#importModal">
-                        <i class="fas fa-file-import"></i> Import
-                    </a>
+                    Deadline expired
                 </td>
+                @else
+                    @if ($homework->contributions()->where('user_id','=',Auth::user()->id)->first())
+                    <td>Imported</td>                        
+                    @else
+                    <td>
+                        <a href="#" class="import_contr" data-toggle="modal" data-target="#importModal">
+                            <i class="fas fa-file-import"></i> Import
+                        </a>
+                    </td>
+                    @endif
+                @endif
             </tr>
             @endforeach
         </tbody>
@@ -89,5 +95,18 @@
 </div>
 @endsection
 @section('custom-js')
-    <script src="{{ mix('/js/student-homework.js') }}"></script>
+<script type="text/javascript">
+    function importContribution() {
+        var tr = this.parentElement.parentElement;
+        var homework_id = tr.children[0].children[0].value;
+
+        document.getElementById("import_contr_form").action = "/import/"+homework_id;
+    }
+    $(document).ready(function(){
+        var importContr = document.getElementsByClassName('import_contr');
+        for (let i = 0; i < importContr.length; i++) {
+            importContr[i].addEventListener("click", importContribution);
+        }
+    })
+</script>
 @endsection
