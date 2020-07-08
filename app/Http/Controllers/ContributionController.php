@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use File;
 use ZipArchive;
 use App\Homework;
+use Carbon\Carbon;
 use App\Contribution;
 use App\TeachingClass;
 use Illuminate\Http\Request;
 use App\ContributionDocument;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 class ContributionController extends Controller
 {
@@ -135,13 +134,38 @@ class ContributionController extends Controller
         return redirect()->back();
     }
 
-    /*public function downloadZipFolder($homework_id){
+    public function downloadZipFolder($homework_id){
         $homework = Homework::find($homework_id);
+
+        //$files = glob(public_path('contribution_files/'.$homework->title.'/*.*'));
+        //dd($files);
+        //$files = glob(public_path().'/contribution_files/'.$homework->title.'/*.png');
+
+        //dd(glob(public_path('contribution_files/'.$homework->title.'/*')));
+
+        $file = public_path().'/homework_files/oop-mPBFKo.jpeg';
+        dd($file);
+        /*$public_dir = public_path().'/zipFiles';
         $zip = new ZipArchive;
+        $zipFileName = $homework->title.Carbon::now().'.zip';
    
-        $fileName = $homework->title.'.zip';
-   
-        if ($zip->open(public_path($fileName), ZipArchive::CREATE) === TRUE){
+        if ($zip->open($public_dir . '/' . $zipFileName, ZipArchive::CREATE) === TRUE) {  
+            foreach ($files as $file) {
+                $zip->addFile($file, basename($file)); 
+            }    
+            $zip->close();
+        }
+
+        $headers = array(
+            'Content-Type' => 'application/octet-stream',
+        );
+
+        $filetopath = $public_dir.'/'.$zipFileName;
+        if(file_exists($filetopath)){
+            return response()->download($filetopath,$zipFileName,$headers);
+        }*/
+
+        /*if ($zip->open(public_path($fileName), ZipArchive::CREATE) === TRUE){
             $files = glob(public_path('folder/*')'/contribution_files/'.$homework->title.'/*')
             $files = File::files(public_path().'/contribution_files/'.$homework->title.'/*');
             foreach ($files as $file) {
@@ -149,8 +173,8 @@ class ContributionController extends Controller
             }
             $zip->close();
         }
-        return response()->download(public_path($fileName));
-    }*/
+        return response()->download(public_path($fileName));*/
+    }
 
     //Functions for grades view
     public function getGradesView($class_id){

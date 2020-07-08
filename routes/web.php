@@ -49,6 +49,7 @@ Route::delete('/archive/{class_id}/delete','TeachingClassController@forcedelete'
 Route::patch('/archive/{class_id}/restore','TeachingClassController@restore');
 Route::patch('/code/{class_id}/reset','TeachingClassController@resetCode');
 Route::resource('/myclasses','TeachingClassController')->except(['create','show']);
+Route::delete('/myclasses/{class_id}/exit','TeachingClassController@exitClass');
 //-----------------------------------------------------------------------------------------
 
 //----------------------------Routes for HomeworkController---------------------------------
@@ -66,7 +67,7 @@ Route::post('/import/{homework_id}','ContributionController@importContribution')
 Route::get('/myclasses/{class_id}/grades','ContributionController@getGradesView')->name('grades');
 Route::get('/myclasses/{class_id}/grading/{homework_id}','ContributionController@getStudentsContributions')->name('grading');
 Route::put('/grading/{contribution_id}','ContributionController@addGrade');
-//Route::get('/donwload-contributions/{homework_id}','ContributionController@downloadZipFolder')->name('contributions.download');
+Route::get('/donwload-contributions/{homework_id}','ContributionController@downloadZipFolder')->name('contributions.download');
 /**----------------------------------------------------------------------------------------- */
 /**----------------------------- Routes for HomeworkDocumentController ------------------------- */
 Route::resource('/myclasses.homeworks.documents','HomeworkDocumentController')->only(['destroy']);

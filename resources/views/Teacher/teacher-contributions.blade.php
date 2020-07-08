@@ -36,7 +36,7 @@
                     @if (Carbon\Carbon::now()->format('Y-m-d') <= $homework->deadline)
                     <td>No contributions to download yet</td>
                     @else
-                    <td><a href="#"><i class="fas fa-download"></i> Download</a></td>
+                    <td><a href=" {{ route('contributions.download', $homework->id) }} "><i class="fas fa-download"></i> Download</a></td>
                     @endif
                 </tr>
                 @endforeach
