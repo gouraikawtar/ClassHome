@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Homework;
+use Carbon\Carbon;
 use App\TeachingClass;
 use App\HomeworkDocument;
 use Illuminate\Support\Str;
@@ -203,14 +204,32 @@ class HomeworkController extends Controller
      * @param  \App\Homework  $homework
      * @return \Illuminate\Http\Response
      */
-    public function destroy($class_id, $id)
+    public function destroy(Request $request, $class_id, $id)
     {
         $homework = Homework::find($id);
         $homework->delete();
+        $request->session()->flash('homework_deleted', 'Homework successefully deleted');
         return redirect()->route('myclasses.homeworks.index',$class_id);
     }
 
     public function downloadFile($fileName){
         return response()->download(public_path('/homework_files/'.$fileName));
+    }
+
+    public function searchHomeworks(Request $request, $class_id){
+        $value = $request->get('search');
+        $teachingClass = TeachingClass::find($class_id);
+        $homeworks = $teachingClass->homeworks()->where('title','like','%'.$value.'%')->orderBy('created_at','desc')->paginate(8);
+        if(Auth::user()->role == 'student'){
+            return view('Student.homework',[
+                'homeworks' => $homeworks,
+                'teachingClass' =>  $teachingClass,
+            ]);
+        }elseif(Auth::user()->role == 'teacher'){
+            return view('Teacher.teacher-homework',[
+                'homeworks' => $homeworks,
+                'teachingClass' =>  $teachingClass,
+            ]);
+        }
     }
 }

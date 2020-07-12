@@ -18,7 +18,7 @@
 
 <body>
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0 fixed-top">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0 fixed-top shadow">
         <div class="container">
             <span class="navbar-brand">ClassHome</span>
             <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">

@@ -55,6 +55,7 @@ Route::delete('/myclasses/{class_id}/exit','TeachingClassController@exitClass');
 //----------------------------Routes for HomeworkController---------------------------------
 Route::resource('/myclasses.homeworks','HomeworkController')->only(['index','store','update','destroy','show','edit']);
 Route::get('/download/{name}','HomeworkController@downloadFile')->name('homeworks.download');
+Route::get('/myclasses/{class_id}/homeworks-search','HomeworkController@searchHomeworks')->name('homeworks.search');
 //------------------------------------------------------------------------------------------
 
 /**---------------------------- Route for ClassSubscriptionController ---------------------------------*/

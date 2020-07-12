@@ -4,6 +4,19 @@
     <title>ClassHome - Homework</title>
 @endsection
 
+@section('actions')
+<div class="col-md-4 offset-md-4">
+    <form method="GET" action="{{route('homeworks.search',$teachingClass->id)}}">
+        <div class="input-group">
+            <input type="text" name="search" id="search" class="form-control shadow-sm" placeholder="Search">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+            </span>
+        </div>
+    </form>
+</div>
+@endsection
+
 @section('content')
 @if (session()->has('contribution_imported'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -18,6 +31,7 @@
         <h5>Homework</h5>
     </div>
     <table class="table table-hover">
+        <input type="hidden" name="class_id" id="class_id" value="{{$teachingClass->id}}">
         <thead class="thead table-active">
             <tr>
                 <th></th>
@@ -28,8 +42,8 @@
                 <th>Contribution</th>
             </tr>
         </thead>
-        <tbody>
-            <input type="hidden" name="class_id" id="class_id" value="{{$teachingClass->id}}">
+        <tbody id="ajax"></tbody>
+        <tbody id="dynamic-row">
             @foreach ($homeworks as $homework)
             <tr>
                 <td>
@@ -103,6 +117,9 @@
         document.getElementById("import_contr_form").action = "/import/"+homework_id;
     }
     $(document).ready(function(){
+        //Get class id
+        var class_id = document.getElementById("class_id").value;
+        //
         var importContr = document.getElementsByClassName('import_contr');
         for (let i = 0; i < importContr.length; i++) {
             importContr[i].addEventListener("click", importContribution);
