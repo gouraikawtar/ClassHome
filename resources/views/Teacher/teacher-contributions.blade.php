@@ -6,7 +6,14 @@
 
 @section('actions')
 <div class="col-md-4 offset-md-4">
-    <input type="text" name="search" id="search" class="form-control shadow" placeholder="Search">
+    <form method="GET" action="{{route('contributions.search',$teachingClass->id)}}">
+        <div class="input-group">
+            <input type="text" name="search" id="search" class="form-control shadow" placeholder="Search">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+            </span>
+        </div>
+    </form>
 </div>    
 @endsection
 

@@ -68,6 +68,7 @@ Route::put('/grading/{contribution_id}','ContributionController@addGrade');
 Route::get('/donwload-contributions/{homework_id}','ContributionController@downloadZipFolder')->name('contributions.download');
 Route::get('/myclasses/{class_id}/grades-search','ContributionController@searchGrades')->name('grades.search');
 Route::get('/myclasses/{class_id}/grading/{homework_id}/search','ContributionController@searchStudentsGrades')->name('gradesheet.search');
+Route::get('/myclasses/{class_id}/contributions-search','ContributionController@searchContributions')->name('contributions.search');
 /**----------------------------------------------------------------------------------------- */
 /**----------------------------- Routes for HomeworkDocumentController ------------------------- */
 Route::resource('/myclasses.homeworks.documents','HomeworkDocumentController')->only(['destroy']);

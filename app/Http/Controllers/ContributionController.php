@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use ZipArchive;
 use App\Homework;
-use Carbon\Carbon;
 use App\Contribution;
 use App\TeachingClass;
 use Illuminate\Http\Request;
@@ -225,6 +224,27 @@ class ContributionController extends Controller
 
         return redirect()->back();
     }
+
+    /**
+     * Search functions
+     */
+
+    //Search contributions
+    public function searchContributions(Request $request, $class_id){
+        $value = $request->get('search');
+
+        $teachingClass = TeachingClass::find($class_id);
+        $homeworks = $teachingClass->homeworks()
+                    ->where('title','like','%'.$value.'%')
+                    ->orderBy('created_at','desc')
+                    ->paginate(8);
+        if(Auth::user()->role == 'teacher'){
+            return view('Teacher.teacher-contributions',[
+                'teachingClass' => $teachingClass,
+                'homeworks' => $homeworks,
+            ]);
+        }
+    } 
 
     //search grades
     public function searchGrades(Request $request, $class_id){
