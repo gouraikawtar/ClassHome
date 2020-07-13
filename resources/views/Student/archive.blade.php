@@ -5,9 +5,6 @@
 @endsection
 
 @section('actions')
-<div class="col-md-4 offset-4">
-    <input type="text" name="search" id="search" class="form-control shadow" placeholder="Search">
-</div>
 @endsection
 
 @section('content')

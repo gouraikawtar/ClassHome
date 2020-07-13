@@ -50,6 +50,8 @@ Route::patch('/archive/{class_id}/restore','TeachingClassController@restore');
 Route::patch('/code/{class_id}/reset','TeachingClassController@resetCode');
 Route::resource('/myclasses','TeachingClassController')->except(['create','show']);
 Route::delete('/myclasses/{class_id}/exit','TeachingClassController@exitClass');
+Route::get('/myclasses/myclasses-search','TeachingClassController@searchTeachingClasses')->name('myclasses.search');
+Route::get('/archive/archive-search','TeachingClassController@searchArchivedClasses')->name('archive.search');
 //-----------------------------------------------------------------------------------------
 
 //----------------------------Routes for HomeworkController---------------------------------

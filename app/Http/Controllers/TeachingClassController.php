@@ -40,8 +40,12 @@ class TeachingClassController extends Controller
 
         //if it's a teacher
         }elseif(Auth::user()->role == 'teacher'){
+            $teacher = Auth::user();
             //find its created classes
-            $classes = TeachingClass::where('user_id',Auth::user()->id)->orderBy('created_at','desc')->paginate(9);
+            $classes = $teacher->teachingClasses()
+                        ->orderBy('created_at','desc')
+                        ->paginate(9);
+            //$classes = TeachingClass::where('user_id',Auth::user()->id)->orderBy('created_at','desc')->paginate(9);
             return view('Teacher.teacher-myclasses',[
                 'classes' => $classes,
                 'active' => 'index', 
@@ -290,4 +294,60 @@ class TeachingClassController extends Controller
         $request->session()->flash('code_reset', 'Code reset successfully');
         return redirect()->back();
     } 
+
+    //Search TeachingClasses
+    public function searchTeachingClasses(Request $request){
+        $value = $request->get('search');
+
+        //if it's a student
+        if(Auth::user()->role == 'student'){
+            //find its subscriptions
+            $subscriptions = Auth::user()->subscriptions()->where('name','like','%'.$value.'%')
+                            ->orderBy('created_at','desc')
+                            ->paginate(9);
+            return view('Student.dashboard', [
+                'classes' => $subscriptions,
+                'active' => 'index',
+                /* the 'active' parameter is about to define whether
+                 * the tab should be active or no
+                 */
+            ]);
+
+        //if it's a teacher
+        }elseif(Auth::user()->role == 'teacher'){
+            $teacher = Auth::user();
+            //find its created classes
+            $classes = $teacher->teachingClasses()
+                        ->orderBy('created_at','desc')->where('name','like','%'.$value.'%')
+                        ->paginate(9);
+            return view('Teacher.teacher-myclasses',[
+                'classes' => $classes,
+                'active' => 'index', 
+                /* the 'active' parameter is about to define whether
+                 * the tab should be active or no
+                 */
+            ]);
+        }
+    }
+
+    //Search Archived classes for teacher user only
+    public function searchArchivedClasses(Request $request){
+        $value = $request->get('search');
+
+        //if the current authenticated user is a teacher
+        if(Auth::user()->role == 'teacher'){
+            //get its archived classes
+            $archivedClasses = TeachingClass::onlyTrashed()
+                            ->where([['user_id',Auth::user()->id],['name','like','%'.$value.'%']])
+                            ->paginate(9);
+            
+            return view('Teacher.teacher-archive',[
+                'archivedClasses' => $archivedClasses,
+                'active' => 'archive',
+                /* the 'active' parameter is about to define whether
+                * the tab should be active or no
+                */
+            ]);
+        }
+    }
 }

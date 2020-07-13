@@ -11,7 +11,14 @@
     </a>
 </div>
 <div class="col-md-4 offset-2">
-    <input type="text" name="search" id="search" class="form-control shadow" placeholder="Search">
+    <form method="GET" action="{{route('myclasses.search')}}">
+        <div class="input-group">
+            <input type="text" name="search" id="search" class="form-control shadow" placeholder="Search">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+            </span>
+        </div>
+    </form>
 </div>
 @endsection
 
