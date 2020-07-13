@@ -61,7 +61,8 @@ Route::post('/join','ClassSubscriptionController@joinClass');
 
 /**----------------------------- Routes for ContributionController ------------------------- */
 Route::resource('/myclasses.contributions', 'ContributionController')->only(['index']);
-Route::post('/import/{homework_id}','ContributionController@importContribution');
+Route::put('/import/{homework_id}','ContributionController@importContribution');
+Route::put('/delete/{homework_id}/contribution/{contribution_id}', 'ContributionController@deleteContribution');
 Route::get('/myclasses/{class_id}/grades','ContributionController@getGradesView')->name('grades');
 Route::get('/myclasses/{class_id}/grading/{homework_id}','ContributionController@getStudentsContributions')->name('grading');
 Route::put('/grading/{contribution_id}','ContributionController@addGrade');

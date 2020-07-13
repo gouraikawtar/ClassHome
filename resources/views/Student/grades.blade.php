@@ -28,6 +28,7 @@
             <tr>
                 <th></th>
                 <th>Title</th>
+                <th>Contribution status</th>
                 <th>Grade</th>
             </tr>
         </thead>
@@ -36,11 +37,8 @@
             <tr>
                 <td></td>
                 <td>{{$homework->title}}</td>
-                @if ($homework->contributions()->where('user_id','=',Auth::user()->id)->first()!=null)
-                <td>{{$homework->contributions()->where('user_id','=',Auth::user()->id)->first()['grade']}}</td>
-                @else
-                <td>Not graded yet</td>
-                @endif
+                <td>{{$homework->contributions()->where('user_id','=',Auth::user()->id)->first()['status']}}</td>
+                <td>{{$homework->contributions()->where('user_id','=',Auth::user()->id)->first()['grade']}}/20</td>
             </tr>
             @endforeach
         </tbody>

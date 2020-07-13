@@ -32,6 +32,11 @@ class ContributionController extends Controller
                 'teachingClass' => $teachingClass,
                 'homeworks' => $homeworks,
             ]);
+        }else if(Auth::user()->role == 'student'){
+            return view('Student.contributions',[
+                'teachingClass' => $teachingClass,
+                'homeworks' => $homeworks,
+            ]);
         }
     }
 
@@ -106,19 +111,17 @@ class ContributionController extends Controller
             'contributions' => 'bail|required||max:2000',
             'contributions.*' => 'mimes:pdf,docx,doc,ppt,pptx,xls,xlsx,png,jpg,jpeg,zip'
         ]);
-        $homework = Homework::find($homework_id);
         if($request->hasFile('contributions')){
-            //Contribution instantiation
-            $contribution = new Contribution();
-            //
-            $contribution->title = $homework->title;
-            $contribution->user_id = Auth::user()->id;
-            $contribution->homework()->associate($homework)->save();
-            $idContribution = $contribution->id;
+            //Find homework
+            $homework = Homework::find($homework_id);
+            //Get contribution
+            $contribution = $homework->contributions()
+                            ->where('user_id','=',Auth::user()->id)
+                            ->first();
             $i = 0;
             foreach ($request->file('contributions') as $uploadedFile) {
                 //
-                $string = Auth::user()->first_name.'_'.Auth::user()->last_name.'_contribution_'.$idContribution.'_'.++$i;
+                $string = Auth::user()->first_name.'_'.Auth::user()->last_name.'_contribution_'.$contribution->id.'_'.++$i;
                 $fileName = $string.'.'.$uploadedFile->extension();
                 $folderName = $homework->title.'_'.$homework->id;
                 //
@@ -129,9 +132,28 @@ class ContributionController extends Controller
                 //Database persistence
                 $file->contribution()->associate($contribution)->save();
             }
+            $contribution->status = 'Issued';
+            $contribution->save();
             //Confirmation flash message 
-            $request->session()->flash('contribution_imported', 'Contribution successfully imported');
+            $request->session()->flash('contribution_imported', 
+            'Contribution successfully imported. Remember that you can always edit your contribution before the deadline');
         }
+        return redirect()->back();
+    }
+
+    //Delete contribution
+    public function deleteContribution(Request $request, $homework_id,$contribution_id){
+        $homework = Homework::find($homework_id);
+        $contribution = Contribution::find($contribution_id);
+        $files = $contribution->joinedDocuments;
+        foreach ($files as $file) {
+            $file_path = public_path().'/contribution_files/'.$homework->title.'_'.$homework->id.'/'.$file->title;
+            unlink($file_path);
+            $file->delete();
+        }
+        $contribution->status = 'Unissued';
+        $contribution->save();
+        $request->session()->flash('contribution_deleted', 'Contribution successfully deleted. Add new one before the deadline');
         return redirect()->back();
     }
 
@@ -240,6 +262,11 @@ class ContributionController extends Controller
                     ->paginate(8);
         if(Auth::user()->role == 'teacher'){
             return view('Teacher.teacher-contributions',[
+                'teachingClass' => $teachingClass,
+                'homeworks' => $homeworks,
+            ]);
+        }else if(Auth::user()->role == 'student'){
+            return view('Student.contributions',[
                 'teachingClass' => $teachingClass,
                 'homeworks' => $homeworks,
             ]);

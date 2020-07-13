@@ -81,6 +81,8 @@ class HomeworkDocumentController extends Controller
     public function destroy($class_id, $homework_id, $file_id)
     {
         $file = HomeworkDocument::find($file_id);
+        $file_path = public_path().'/homework_files/'.$file->title;
+        unlink($file_path);
         $file->delete();
         return redirect()->route('myclasses.homeworks.edit',[$class_id,$homework_id]);
         //dd($file);

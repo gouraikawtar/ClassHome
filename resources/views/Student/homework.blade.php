@@ -18,14 +18,6 @@
 @endsection
 
 @section('content')
-@if (session()->has('contribution_imported'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>{{ session()->get('contribution_imported') }}</strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-@endif
 <div class="card shadow-sm p-0 mb-5 rounded ">
     <div class="card-header bg-light">
         <h5>Homework</h5>
@@ -39,7 +31,6 @@
                 <th>Created at</th>
                 <th>Deadline</th>
                 <th>Details</th>
-                <th>Contribution</th>
             </tr>
         </thead>
         <tbody>
@@ -56,21 +47,6 @@
                         <i class="fas fa-angle-double-right"></i> Details
                     </a>
                 </td>
-                @if (Carbon\Carbon::now()->format('Y-m-d') > $homework->deadline)
-                <td>
-                    Deadline expired
-                </td>
-                @else
-                    @if ($homework->contributions()->where('user_id','=',Auth::user()->id)->first())
-                    <td>Imported</td>                        
-                    @else
-                    <td>
-                        <a href="#" class="import_contr" data-toggle="modal" data-target="#importModal">
-                            <i class="fas fa-file-import"></i> Import
-                        </a>
-                    </td>
-                    @endif
-                @endif
             </tr>
             @endforeach
         </tbody>
@@ -79,53 +55,6 @@
         {{$homeworks->links()}}
     </div>
 </div>
-
-<!-- IMPORT MODAL -->
-<div class="modal fade" id="importModal">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title">Import contribution</h5>
-                <button class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <form id="import_contr_form" method="POST" action="" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input type="file" name="contributions[]" class="@error('contributions') is-invalid @enderror" id="contributions" multiple="true">
-                        @error('contributions')
-                        <div class="invalid-feedback" id="files_error">{{ $message }}</div>
-                        @enderror
-                        <small class="form-text text-muted">Max size : 2mb</small>
-                        <small class="form-text text-muted">Authorized extensions : pdf,docx,doc,ppt,pptx,xls,xlsx,png,jpg,jpeg,zip</small>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button name="import" class="btn btn-dark" type="submit" id="import_contribution">Import</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 @endsection
 @section('custom-js')
-<script type="text/javascript">
-    function importContribution() {
-        var tr = this.parentElement.parentElement;
-        var homework_id = tr.children[0].children[0].value;
-
-        document.getElementById("import_contr_form").action = "/import/"+homework_id;
-    }
-    $(document).ready(function(){
-        //Get class id
-        var class_id = document.getElementById("class_id").value;
-        //
-        var importContr = document.getElementsByClassName('import_contr');
-        for (let i = 0; i < importContr.length; i++) {
-            importContr[i].addEventListener("click", importContribution);
-        }
-    })
-</script>
 @endsection

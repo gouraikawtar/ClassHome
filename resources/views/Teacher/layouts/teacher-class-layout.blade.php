@@ -35,11 +35,11 @@
                     <li class="nav-item px-2 ">
                         <a href="{{route('myclasses.homeworks.index', $teachingClass->id)}}" class="nav-link ">Homeworks</a>
                     </li>
-                    <li class="nav-item px-2 ">
-                        <a href="{{ route('grades',$teachingClass->id) }}" class="nav-link">Grades</a>
-                    </li>
                     <li class="nav-item px-2">
                         <a href="{{ route('myclasses.contributions.index', $teachingClass->id) }}" class="nav-link">Contibutions</a>
+                    </li>
+                    <li class="nav-item px-2 ">
+                        <a href="{{ route('grades',$teachingClass->id) }}" class="nav-link">Grades</a>
                     </li>
                 </ul>
 

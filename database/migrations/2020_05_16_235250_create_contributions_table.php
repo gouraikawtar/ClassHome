@@ -17,6 +17,7 @@ class CreateContributionsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('title',100);
+            $table->enum('status',['Issued','Unissued'])->default('Unissued');
             $table->float('grade',4,2)->default('0');
             $table->foreignId('homework_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained();
