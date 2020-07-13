@@ -31,11 +31,6 @@ Route::resource('/groups','GroupController') -> only(['index', 'store', 'update'
 
 // ------------------------------------ Temporary Routes---------------------------------
 Route::get('/library', function () { return view('Teacher.teacher-library');});
-Route::get('/settings', function () {return view('Teacher.teacher-settings');}); 
-//Route::get('/myclasses', function () { return view('Teacher.teacher-myclasses');});
-//Route::get('/dashboard', function () { return view('Student.dashboard'); });
-Route::get('/contributions', function () {return view('Teacher.teacher-contributions');});
-Route::get('/grades', function () {return view('Teacher.teacher-grades');});
 //----------------------------------------------------------------------------------------
 
 //------------------------------ Routes for Authentification----------------------------
@@ -71,6 +66,8 @@ Route::get('/myclasses/{class_id}/grades','ContributionController@getGradesView'
 Route::get('/myclasses/{class_id}/grading/{homework_id}','ContributionController@getStudentsContributions')->name('grading');
 Route::put('/grading/{contribution_id}','ContributionController@addGrade');
 Route::get('/donwload-contributions/{homework_id}','ContributionController@downloadZipFolder')->name('contributions.download');
+Route::get('/myclasses/{class_id}/grades-search','ContributionController@searchGrades')->name('grades.search');
+Route::get('/myclasses/{class_id}/grading/{homework_id}/search','ContributionController@searchStudentsGrades')->name('gradesheet.search');
 /**----------------------------------------------------------------------------------------- */
 /**----------------------------- Routes for HomeworkDocumentController ------------------------- */
 Route::resource('/myclasses.homeworks.documents','HomeworkDocumentController')->only(['destroy']);

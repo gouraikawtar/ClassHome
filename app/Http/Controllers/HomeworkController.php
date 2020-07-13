@@ -27,7 +27,9 @@ class HomeworkController extends Controller
     public function index($class_id)
     {
         $teachingClass = TeachingClass::find($class_id);
-        $homeworks = Homework::where('teaching_class_id',$class_id)->orderBy('created_at','desc')->paginate(8);
+        $homeworks = $teachingClass->homeworks()
+                    ->orderBy('created_at','desc')
+                    ->paginate(8);
         if(Auth::user()->role == 'student'){
             return view('Student.homework',[
                 'homeworks' => $homeworks,
@@ -219,7 +221,10 @@ class HomeworkController extends Controller
     public function searchHomeworks(Request $request, $class_id){
         $value = $request->get('search');
         $teachingClass = TeachingClass::find($class_id);
-        $homeworks = $teachingClass->homeworks()->where('title','like','%'.$value.'%')->orderBy('created_at','desc')->paginate(8);
+        $homeworks = $teachingClass->homeworks()
+                    ->where('title','like','%'.$value.'%')
+                    ->orderBy('created_at','desc')
+                    ->paginate(8);
         if(Auth::user()->role == 'student'){
             return view('Student.homework',[
                 'homeworks' => $homeworks,

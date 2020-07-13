@@ -25,7 +25,9 @@ class ContributionController extends Controller
     public function index($class_id)
     {
         $teachingClass = TeachingClass::find($class_id);
-        $homeworks = Homework::where('teaching_class_id',$class_id)->orderBy('created_at','desc')->paginate(8);
+        $homeworks = $teachingClass->homeworks()
+                    ->orderBy('created_at','desc')
+                    ->paginate(8);
         if(Auth::user()->role == 'teacher'){
             return view('Teacher.teacher-contributions',[
                 'teachingClass' => $teachingClass,
@@ -176,10 +178,15 @@ class ContributionController extends Controller
         return response()->download(public_path($fileName));*/
     }
 
-    //Functions for grades view
+    /**
+     * Functions for grades views
+     */
+    //Get grades view
     public function getGradesView($class_id){
         $teachingClass = TeachingClass::find($class_id);
-        $homeworks = Homework::where('teaching_class_id',$class_id)->orderBy('created_at','desc')->paginate(8);
+        $homeworks = $teachingClass->homeworks()
+                    ->orderBy('created_at','desc')
+                    ->paginate(8);
         if(Auth::user()->role == 'teacher'){
             return view('Teacher.teacher-grades',[
                 'teachingClass' => $teachingClass,
@@ -193,9 +200,12 @@ class ContributionController extends Controller
         }
     }
 
+    //get gradesheets view
     public function getStudentsContributions($class_id,$homework_id){
         $teachingClass = TeachingClass::find($class_id);
-        $students = $teachingClass->students;
+        $students = $teachingClass->students()
+                    ->orderBy('last_name','asc')
+                    ->paginate(8);
         $homework = Homework::find($homework_id);
         if(Auth::user()->role == 'teacher'){
             return view('Teacher.teacher-gradesheet',[
@@ -206,6 +216,7 @@ class ContributionController extends Controller
         }
     }
 
+    //grade contribution
     public function addGrade(Request $request, $contribution_id){
         $contribution = Contribution::find($contribution_id);
         
@@ -213,5 +224,46 @@ class ContributionController extends Controller
         $contribution->save();
 
         return redirect()->back();
+    }
+
+    //search grades
+    public function searchGrades(Request $request, $class_id){
+        $value = $request->get('search');
+
+        $teachingClass = TeachingClass::find($class_id);
+        $homeworks = $teachingClass->homeworks()
+                    ->where('title','like','%'.$value.'%')
+                    ->orderBy('created_at','desc')
+                    ->paginate(8);
+        if(Auth::user()->role == 'teacher'){
+            return view('Teacher.teacher-grades',[
+                'teachingClass' => $teachingClass,
+                'homeworks' => $homeworks,
+            ]);
+        }else if(Auth::user()->role == 'student'){
+            return view('Student.grades',[
+                'teachingClass' => $teachingClass,
+                'homeworks' => $homeworks,
+            ]);
+        }
+    }
+
+    //Search students in gradesheet view
+    public function searchStudentsGrades(Request $request, $class_id, $homework_id){
+        $value = $request->get('search');
+
+        $teachingClass = TeachingClass::find($class_id);
+        $students = $teachingClass->students()
+                    ->where('last_name','like','%'.$value.'%')
+                    ->orderBy('last_name','asc')
+                    ->paginate(8);
+        $homework = Homework::find($homework_id);
+        if(Auth::user()->role == 'teacher'){
+            return view('Teacher.teacher-gradesheet',[
+                'teachingClass' => $teachingClass,
+                'students' => $students,
+                'homework' => $homework,
+            ]);
+        }
     }
 }

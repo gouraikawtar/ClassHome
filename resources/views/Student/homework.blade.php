@@ -42,8 +42,7 @@
                 <th>Contribution</th>
             </tr>
         </thead>
-        <tbody id="ajax"></tbody>
-        <tbody id="dynamic-row">
+        <tbody>
             @foreach ($homeworks as $homework)
             <tr>
                 <td>
@@ -76,6 +75,9 @@
             @endforeach
         </tbody>
     </table>
+    <div class="pagination justify-content-center">
+        {{$homeworks->links()}}
+    </div>
 </div>
 
 <!-- IMPORT MODAL -->

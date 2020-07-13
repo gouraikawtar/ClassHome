@@ -6,7 +6,14 @@
 
 @section('actions')
 <div class="col-md-4 offset-4">
-    <input type="text" name="search" id="search" class="form-control shadow" placeholder="Search">
+    <form method="GET" action="{{route('gradesheet.search',[$teachingClass->id, $homework->id])}}">
+        <div class="input-group">
+            <input type="text" name="search" id="search" class="form-control shadow" placeholder="Search">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+            </span>
+        </div>
+    </form>
 </div>
 @endsection
 
@@ -31,23 +38,18 @@
                     @csrf
                     @method('PUT')
                     <tr>
-                        <td>
-                            {{-- <input type="hidden" id="id_contr" name="id_contr" value="{{  }}"> --}}
-                        </td>
-                        {{--  --}}
+                        <td></td>
                         <td>{{$student->first_name}} {{$student->last_name}}</td>
-                        <td><input type="number" step="0.01"  min="0" max="20" class="form-control @error('grade') is-invalid @enderror" name="grade" value="{{ old('grade',$homework->contributions()->where('user_id','=',$student->id)->first()['grade']) }}"></td>
-                        @error('grade')
-                        <span class="invalid-feedback">
-                            <strong id="grade-error">{{ $message }}</strong>
-                        </span>
-                        @enderror
+                        <td><input type="number" step="0.01"  min="0" max="20" class="form-control" name="grade" value="{{ old('grade',$homework->contributions()->where('user_id','=',$student->id)->first()['grade']) }}"></td>
                         <td><button class="btn btn-success" type="submit">Save</button></td>
                     </tr>
                 </form>
                 @endforeach
             </tbody>
         </table>
+        <div class="pagination justify-content-center">
+            {{$students->links()}}
+        </div>
     </div>
 </div>
 @endsection
