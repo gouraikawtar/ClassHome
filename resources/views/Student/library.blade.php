@@ -4,6 +4,19 @@
     <title> ClassHome - Library</title>
 @endsection
 
+@section('actions')
+<div class="col-md-4 offset-md-4">
+    <form method="GET" action="{{route('library.search',$teachingClass->id)}}">
+        <div class="input-group">
+            <input type="text" name="search" id="search" class="form-control shadow-sm" placeholder="Search">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+            </span>
+        </div>
+    </form>
+</div>
+@endsection
+
 @section('content')
     
 <div class="card shadow-sm p-0 mb-5 rounded ">
@@ -13,35 +26,30 @@
     <table class="table table-hover">
         <thead class="thead-light">
             <tr>
-                <th>#</th>
-                <th>Title</th>
-                <th>Date</th>
                 <th></th>
+                <th>Title</th>
+                <th>Created at</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>First</td>
-                <td>10-02-2020</td>
-                <td>
-                    <a href="#">
-                        <i class="fas fa-download"></i>
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Second</td>
-                <td>11-02-2020</td>
-                <td>
-                    <a href="details.html">
-                        <i class="fas fa-download"></i>
-                    </a>
-                </td>
-            </tr>
+            @foreach ($files as $file)
+                <tr>
+                    <td></td>
+                    <td>{{$file->title}}</td>
+                    <td>{{Carbon\Carbon::parse($file->created_at)->format('Y-m-d')}}</td>
+                    <td>
+                        <a href="{{route('homeworks.download',$file->title)}}">
+                            <i class="fas fa-download"></i> Download 
+                        </a>
+                    </td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
+    <div class="pagination justify-content-center">
+        {{$files->links()}}
+    </div>
 </div>
 
 @endsection

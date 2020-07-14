@@ -73,3 +73,6 @@ Route::get('/myclasses/{class_id}/contributions-search','ContributionController@
 /**----------------------------------------------------------------------------------------- */
 /**----------------------------- Routes for HomeworkDocumentController ------------------------- */
 Route::resource('/myclasses.homeworks.documents','HomeworkDocumentController')->only(['destroy']);
+/**----------------------------------------------------------------------------------------- */
+Route::resource('/myclasses.library', 'LibraryController')->only(['index']);
+Route::get('/myclasses/{class_id}/library-search','LibraryController@searchDocuments')->name('library.search');

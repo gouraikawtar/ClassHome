@@ -103,7 +103,7 @@
                                 <h4 class="display-4">
                                     <i class="fas fa-folder"></i>
                                 </h4>
-                                <a href="{{ url('/library') }}" class="btn btn-outline-light btn-sm">View</a>
+                                <a href="{{ route('myclasses.library.index',$teachingClass->id) }}" class="btn btn-outline-light btn-sm">View</a>
                             </div>
                         </div>
                         <div class="card text-center bg-primary text-white mb-3 shadow">
