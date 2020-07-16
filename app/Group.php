@@ -6,7 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Group extends Model
 {
-    public function members(){
-        return $this->belongsToMany('App\User'); 
+
+    protected $fillable = ['name', 'teaching_class_id'];
+
+    public function users(){
+        return $this->belongsToMany('App\User', 'group_junctions', 'group_id', 'user_id'); 
     }
+
+    public function responsible(){
+        return $this->belongsTo('App\User'); 
+    }
+
+    public function posts(){
+        return $this->hasMany('App\posts'); 
+    }
+
 }

@@ -46,7 +46,7 @@
                             <i class="fas fa-user"></i> Welcome {{ Auth::user()->first_name }}
                         </a>
                         <div class="dropdown-menu">
-                            <a href="{{ URL('/profile') }}" class="dropdown-item">
+                            <a href="{{ route('profile') }}" class="dropdown-item">
                                 <i class="fas fa-user-circle"></i> Profile
                             </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
@@ -119,7 +119,7 @@
                                 <h4 class="display-4">
                                     <i class="fas fa-user-check"></i>
                                 </h4>
-                                <a href="{{ route('users.index') }}" class="btn btn-outline-light btn-sm">View</a>
+                                <a href="{{ route('myclasses.members.index',$teachingClass->id) }}" class="btn btn-outline-light btn-sm">View</a>
                             </div>
                         </div>
 
@@ -129,7 +129,7 @@
                                 <h4 class="display-4">
                                     <i class="fas fa-users"></i>
                                 </h4>
-                                <a href="{{ route('groups.index') }}" class="btn btn-outline-light btn-sm">View</a>
+                                <a href="{{ route('myclasses.groups.index', $teachingClass->id) }}" class="btn btn-outline-light btn-sm">View</a>
                             </div>
                         </div>
                         <!-- END BOXES -->
@@ -159,10 +159,11 @@
                         <span>&times;</span>
                     </button>
                 </div>
-                <form  method="POST" action="{{ action('PostController@store') }}" >
+                <form  method="POST" action="{{ route('myclasses.posts.store', $teachingClass->id) }}" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         @include('Student.forms.postsForms')
+                    </div>
                     <div class="modal-footer ">
                         <button type="submit" class="btn btn-primary"> Create </button>
                     </div>
@@ -173,34 +174,93 @@
     <!-- ADD POST MODAL END -->
 
     <!-- EDIT POST MODAL -->
-<div class="modal fade " id="editPostModal" role="dialog" >
-    <div class="modal-dialog modal-lg " role="document" >
-        <div class="modal-content ">
-            <div class="modal-header bsg-primary text-white ">
-                <h5 class="modal-title ">Edit post</h5>
+    <div class="modal fade" id="editPostModal" role="dialog" >
+        <div class="modal-dialog modal-lg " role="document" >
+            <div class="modal-content ">
+                <div class="modal-header bg-primary text-white ">
+                    <h5 class="modal-title ">Edit post</h5>
+                    <button class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="{{route('editPost')}}" >
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="classId" value="{{ $teachingClass->id}}" >
+                        <input type="hidden" name="postId" id="postId" value="" >
+                        @include('Student.forms.postsForms')
+                    </div>
+                    <div class="modal-footer ">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<!-- EDIT POST MODAL END -->
+
+<!-- DELETE POST MODAL -->
+<div class="modal fade" id="deletePostModal">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title">Attention</h5>
                 <button class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
             </div>
-            <form method="POST" action="{{ route('posts.update', 'test' ) }}" >
-                @method('PATCH')
-                @csrf
-                <div class="modal-body">
+            <div class="modal-body">
+                <p>Are you sure you want to delete this?</p>
+            </div>
+            <div class="modal-footer">
+                <form method="POST" action="{{ route('deletePost') }}">
+                    @csrf
+                    <input type="hidden" name="classId" value="{{ $teachingClass->id}}" >
                     <input type="hidden" name="postId" id="postId" value="" >
-                    @include('Student.forms.postsForms')
-                </div>
-                <div class="modal-footer ">
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
+                    <button class="btn btn-warning" type="submit">Confirm</button>
+                </form>
+
+                <button class="btn btn-dark" data-dismiss="modal">Back</button>
+            </div>
         </div>
     </div>
 </div>
-<!-- EDIT POST MODAL END -->
+<!-- END DELETE POST MODAL --> 
+
+<!-- DELETE COMMENT MODAL -->
+<div class="modal fade" id="deleteCommentModal">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title">Attention</h5>
+                <button class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this?</p>
+            </div>
+            <div class="modal-footer">
+                <form method="POST" action="{{ route('deleteComment') }}">
+                    @csrf
+                    <input type="hidden" name="classId" value="{{ $teachingClass->id}}" >
+                    <input type="hidden" name="commentId" id="commentId" value="" >
+                    <button class="btn btn-warning" type="submit">Confirm</button>
+                </form>
+
+                <button class="btn btn-dark" data-dismiss="modal">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END DELETE POST MODAL -->
 
     <script src="{{ mix('/js/theme.js') }}"></script>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+
 
     <script>
         $('#editPostModal').on('show.bs.modal', function (event) {
@@ -208,12 +268,33 @@
             var button = $(event.relatedTarget) 
             var title = button.data('mytitle') 
             var content = button.data('mycontent') 
-            var postId = button.data('postId') 
+            var postId = button.data('postid') 
+
             var modal = $(this);
+
             modal.find('.modal-body #title').val(title);
             modal.find('.modal-body #content').val(content);
             modal.find('.modal-body #postId').val(postId);
         });
+    
+        $('#deletePostModal').on('shown.bs.modal', function(event){
+        var button = $(event.relatedTarget) 
+        var postId = button.data('postid') 
+
+        var modal = $(this);
+
+        modal.find('.modal-footer #postId').val(postId);
+    });
+
+    $('#deleteCommentModal').on('shown.bs.modal', function(event){
+        var button = $(event.relatedTarget) 
+        var commentId = button.data('commentid') 
+
+        var modal = $(this);
+
+        modal.find('.modal-footer #commentId').val(commentId);
+    });
+        
     </script>
 
 </body>

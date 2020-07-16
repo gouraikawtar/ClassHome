@@ -24,20 +24,35 @@
         <table class="table table-hover">
             <thead class="thead-light">
                 <tr>
-                    <th>#</th>
                     <th>Full Name</th>
                     <th>Email</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                @forelse ($users as $user)
-                    @if ($user->role == 'teacher')
-                        <tr>
-                            <td>{{ $user->id }}</td>
-                            <td>{{ $user-> first_name }} {{ $user-> last_name }}</td>
-                            <td>{{ $user-> email }}</td>
-                        </tr>
-                    @endif
+                <tr>
+                    <td>{{ App\User::find($teachingClass->user_id)->first_name }} {{ App\User::find($teachingClass->user_id)->last_name }}</td>
+                    <td>{{ App\User::find($teachingClass->user_id)->email }}</td>
+                    <td>
+                        @if ( App\User::find($teachingClass->user_id)->id != Auth::user()->id)
+                            <button class="btn btn-light" data-toggle="modal" data-target="#sendEmailModal">
+                                <i class="fas fa-envelope email_user"></i>
+                            </button>
+                        @endif
+                    </td>
+                </tr>
+                @forelse ($teachers as $teacher)
+                    <tr>
+                        <td>{{ $teacher->first_name }} {{ $teacher->last_name }}</td>
+                        <td>{{ $teacher->email }}</td>
+                        <td>
+                            @if ( $teacher->id != Auth::user()->id)
+                                <button class="btn btn-light" data-useremail="{{$teacher->email}}" data-toggle="modal" data-target="#sendEmailModal">
+                                    <i class="fas fa-envelope email_user"></i>
+                                </button>
+                            @endif
+                        </td>
+                    </tr>
                 @empty
                 @endforelse
             </tbody>
@@ -51,47 +66,31 @@
         <table class="table table-hover">
             <thead class="thead-light">
                 <tr>
-                    <th>#</th>
                     <th>Full Name</th>
                     <th>Email</th>
-                    <th colspan="3">Options</th>
+                    <th colspan="2">Options</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse ($users as $user)
-                    @if ($user->role == 'student')
-                    <tr>
-                        <td> {{ $user->id }} </td>
-                        <td>{{ $user-> first_name }} {{ $user-> last_name }}</td>
-                        <td>{{ $user-> email }}</td>
-                        <td>
-                            <form method="POST" action="{{ route('users.destroy', $user->id ) }}">
-                                @csrf
-                                @method('DELETE')
-                                    <button class="btn btn-light" type="submit">
-                                        <i class="fas fa-ban block_user"></i></i>
-                                    </button>
-                            </form>
-                        </td>
-                        <td>
-                            <form method="POST" action="{{ route('users.destroy', $user->id ) }}">
-                                @csrf
-                                @method('DELETE')
-                                    <button class="btn btn-light" type="submit">
+                    @forelse ($members as $student)
+                        @if ($student->role == 'student')     
+                            <tr>
+                                <td>{{ $student-> first_name }} {{ $student-> last_name }}</td>
+                                <td>{{ $student-> email }}</td>
+                                <td>
+                                    <button class="btn btn-light" data-userid="{{$student->id}}" data-toggle="modal" data-target="#deleteStudentModal">
                                         <i class="fas fa-user-minus delete_user"></i>
                                     </button>
-                            </form>
-                        </td>
-                        <td>
-                            <button class="btn btn-light" data-toggle="modal" data-target="#sendEmailModal">
-                                <i class="fas fa-envelope email_user"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    @endif
-                @empty
-                @endforelse
-                
+                                </td>
+                                <td>
+                                    <button class="btn btn-light" data-useremail="{{$student->email}}" data-toggle="modal" data-target="#sendEmailModal">
+                                        <i class="fas fa-envelope email_user"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        @endif
+                    @empty
+                    @endforelse
             </tbody>
         </table>
     </div>
@@ -109,17 +108,21 @@
                     <span>&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form>
+            <form method="GET" action="{{ route('invitation', $teachingClass->id) }}" >
+                @csrf
+                <div class="modal-body">
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" placeholder="Teacher's Email" >
-                    </div>
-                </form>
+                        <input name="email" type="email" class="form-control" placeholder="Teacher's Email" >
+                        <input type="hidden" name="senderName" value=" {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}" >
+                        <input type="hidden" name="senderEmail" value=" {{ Auth::user()->email}}" >
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit">Send invitation</button>
+                </div>
+            </form>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" data-dismiss="modal">Send invitation</button>
-            </div>
+            
         </div>
     </div>
 </div>
@@ -135,23 +138,77 @@
                     <span>&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form>
+            <form method="GET" action="{{ route('sendingEmail', $teachingClass->id) }}" >
+                @csrf
+                <div class="modal-body">
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" name="email" id="email" class="form-control" placeholder="Email Destination">
+                        <label for="destination">Email destination</label>
+                        <input type="email" name="destination" id="destination" class="form-control" placeholder="Email destination" >
+                        <input type="hidden" name="senderName" value=" {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}" >
+                        <input type="hidden" name="senderEmail" value=" {{ Auth::user()->email}}" >
                     </div>
                     <div class="form-group">
-                        <label for="e_body">Email body</label>
-                        <textarea name="e_body" rows="7" id="e_body" class="form-control" placeholder="Email Body"></textarea>
+                        <label for="body">Email body</label>
+                        <textarea name="body" rows="7" id="body" class="form-control" placeholder="E-mail Body"></textarea>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-dark" data-dismiss="modal">Send</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-dark" type="submit">Send</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 <!-- ./SEND EMAIL MODAL -->
+
+<!-- DELETE STUDENT MODAL -->
+<div class="modal fade" id="deleteStudentModal">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title">Attention</h5>
+                <button class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this?</p>
+            </div>
+            <div class="modal-footer">
+                <form method="POST" action="{{ route('deleteStudent') }}">
+                    @csrf
+                    <input type="hidden" name="classId" value="{{ $teachingClass->id}}" >
+                    <input type="hidden" name="userId" id="userId" value="" >
+                    <button class="btn btn-warning" type="submit">Confirm</button>
+                </form>
+
+                <button class="btn btn-dark" data-dismiss="modal">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END DELETE POST MODAL -->
+
+@endsection
+
+@section('scripts')
+    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+
+<script>   
+
+    $('#deleteStudentModal').on('shown.bs.modal', function(event){
+        var button = $(event.relatedTarget) 
+        var userId = button.data('userid') 
+
+        var modal = $(this);
+
+        modal.find('.modal-footer #userId').val(userId);
+    });
+
+
+</script>
+
 @endsection

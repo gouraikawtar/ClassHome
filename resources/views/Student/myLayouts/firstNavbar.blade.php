@@ -27,16 +27,7 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav">
                     <li class="nav-item px-2">
-                        <a href="{{ route('dashboard') }}" class="nav-link ">My classes</a>
-                    </li>
-                    <li class="nav-item px-2">
-                        <a href="{{ route('posts') }}" class="nav-link ">Posts</a>
-                    </li>
-                    <li class="nav-item px-2 ">
-                        <a href="{{ route('homework') }}" class="nav-link ">Homework</a>
-                    </li>
-                    <li class="nav-item px-2 ">
-                        <a href="{{ route('grades') }}" class="nav-link ">Grades</a>
+                        <a href="{{ route('myclasses.index') }}" class="nav-link ">My classes</a>
                     </li>
                 </ul>
 

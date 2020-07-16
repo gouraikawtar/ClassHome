@@ -30,7 +30,7 @@
                         <a href="{{ route('myclasses.index') }}" class="nav-link ">My classes</a>
                     </li>
                     <li class="nav-item px-2">
-                        <a href="{{ route('posts.index') }}" class="nav-link ">Posts</a>
+                        <a href="{{ route('myclasses.posts.index', $teachingClass->id) }}" class="nav-link ">Posts</a>
                     </li>
                     <li class="nav-item px-2 ">
                         <a href="{{route('myclasses.homeworks.index', $teachingClass->id)}}" class="nav-link ">Homework</a>
@@ -46,7 +46,7 @@
                             <i class="fas fa-user"></i> Welcome {{ Auth::user()->first_name }}
                         </a>
                         <div class="dropdown-menu">
-                            <a href="{{ url('/profile') }}" class="dropdown-item">
+                            <a href="{{ route('profile')}}" class="dropdown-item">
                                 <i class="fas fa-user-circle"></i> Profile Settings
                             </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
@@ -113,7 +113,7 @@
                                 <h4 class="display-4">
                                     <i class="fas fa-user-check"></i>
                                 </h4>
-                                <a href="{{ route('users.index') }}" class="btn btn-outline-light btn-sm">View</a>
+                                <a href="{{ route('myclasses.members.index', $teachingClass->id) }}" class="btn btn-outline-light btn-sm">View</a>
                             </div>
                         </div>
 
@@ -123,7 +123,7 @@
                                 <h4 class="display-4">
                                     <i class="fas fa-users"></i>
                                 </h4>
-                                <a href="{{ route('groups.index') }}" class="btn btn-outline-light btn-sm">View</a>
+                                <a href="{{ route('myclasses.groups.index', $teachingClass->id) }}" class="btn btn-outline-light btn-sm">View</a>
                             </div>
                         </div>
                     </div>
@@ -146,6 +146,8 @@
     <!---------------------->
     
     <script src="{{ mix('/js/theme.js') }}"></script>
+
+    @yield('scripts')
 
 </body>
 

@@ -83,7 +83,7 @@ class ClassSubscriptionController extends Controller
      */
     public function destroy(ClassSubscription $classSubscription)
     {
-        //
+        
     }
 
     public function joinClass(Request $request){
@@ -106,4 +106,48 @@ class ClassSubscriptionController extends Controller
         }
         return redirect()->back();
     }
+
+
+    /**
+     * Co-teach a class.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function collaborate(Request $request){
+        $teacherId = Auth::user()->id;
+        $class_code = $request->input('code');
+        $teachingClass = DB::table('teaching_classes')
+                            ->select('id')
+                            ->where('code',$class_code)
+                            ->first();
+        if($teachingClass){
+            $subscription = new ClassSubscription();
+            $subscription->user_id = $teacherId;
+            $subscription->teaching_class_id = $teachingClass->id;
+            $subscription->save();
+            $request->session()->flash('class_joined', 'Class joined successfully');
+        }else{
+            $request->session()->flash('Collaboration_failed', 'Class not found');
+        }
+        return redirect()->back();
+    }
+
+    /**
+     * Delete student
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteStudent(Request $request){
+
+        $class_id = $request->input('classId');
+        $user_id = $request->input('userId');
+        $subscription= ClassSubscription::where('teaching_class_id', $class_id)->where('user_id',$user_id)->first(); 
+
+        ClassSubscription::destroy($subscription->id);
+        
+        return redirect()-> route('myclasses.members.index', $class_id); 
+    }
+
 }

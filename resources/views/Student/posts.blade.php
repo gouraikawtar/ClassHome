@@ -3,6 +3,7 @@
 
 <div class="actuality shadow-sm mt-2">
     @forelse($posts as $post)
+    @if ( $post->status=='public' || Auth::user()->groups->contains(App\Group::find($post->group_id)) )
     <div class="card mt-4 shadow">
         <div class="post-header d-flex align-items-center bg-transparent p-3">
             <div class="post-profile-photo mr-2">
@@ -26,18 +27,15 @@
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                         <!---------------EDIT--------------->
                         <button class="dropdown-item" data-mytitle="{{$post->title}}" data-mycontent="{{$post->content}}"
-                                data-postId="{{$post->id}}" data-toggle="modal" data-target="#editPostModal" >
+                                data-postid="{{$post->id}}" data-toggle="modal" data-target="#editPostModal" >
                             <small>Edit</small>
                         </button>
                         <!---------------END EDIT--------------->
 
                         <!--------------- DELETE --------------->
-                        <form method="POST" action="{{ route('posts.destroy', ['post'=>$post->id]) }}">
-                            @csrf
-                            @method('DELETE')
-                            <button class="dropdown-item" data-toggle="modal" type="submit">
-                                <small>Delete</small>
-                            </button>
+                        <button class="dropdown-item" data-postid="{{$post->id}}" data-toggle="modal" data-target="#deletePostModal">
+                            <small>Delete</small>
+                        </button>
                         <!--------------- END DELETE --------------->
                         </form>
                     </div>
@@ -47,10 +45,25 @@
         <div class="post-body p-3">
             <h5> {{ $post -> title}} </h5>
             <p class="m-0 text-justify"> {{ $post->content }} </p>
+            <!------------------------ FILES --------------------->
+            @forelse ($post->files as $file)
+            <div class="row mt-2">
+                <div class="col-md-6">
+                    <div class="card p-0 bg-light">
+                        <div class="card-body d-flex justify-content-between align-items-center p-2">
+                                <p class="m-0">{{ $file->title }}</p>
+                                <a href="{{route('files.download',$file->title)}}" class="p-1"><i class="fas fa-upload" style="font-size: 1.3rem"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @empty
+            @endforelse
+            <!------------------------END FILES --------------------->
         </div>
         
         <hr class="m-1 p-0 ">
-        <form class="post-addComment d-flex align-items-center bg-transparent p-3" method="POST" action=" {{ action('CommentController@store') }}" >
+        <form class="post-addComment d-flex align-items-center bg-transparent p-3" method="POST" action=" {{ route('myclasses.comments.store', $teachingClass->id) }}" >
             @csrf
             <div class="comment-profile-photo ">
                 @if ( Auth::user()->role == 'student' && Auth::user()->gender == 'female')
@@ -83,13 +96,9 @@
                 <div class="comment-body w-100 mx-2 ">
                     @if ( App\User::find($comment->user_id)->id == Auth::user()->id )
                         <!--------------- DELETE --------------->
-                        <form method="POST" action="{{ route('comments.destroy', $comment->id ) }}">
-                        @csrf
-                        @method('DELETE')
-                            <button type="submit" class="close" aria-label="Close" >
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </form>
+                        <button type="submit" class="close" aria-label="Close" data-commentid="{{$comment->id}}" data-toggle="modal" data-target="#deleteCommentModal" >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                         <!--------------- END DELETE --------------->
                     @endif
                     <div class="m-0 ">
@@ -108,6 +117,7 @@
         @endforelse
 
     </div>
+    @endif
     @empty
         <p> No posts yet!</p>
     @endforelse

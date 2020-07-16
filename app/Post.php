@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-    protected $fillable = ['title' , 'content', 'status', 'destination'];
+    protected $fillable = ['title' , 'content', 'status'];
 
     public function comments(){
         return $this->hasMany('App\Comment'); 
@@ -17,12 +17,16 @@ class Post extends Model
         return $this->hasMany('App\File'); 
     }
 
-    // public function teachingClass(){
-    //     return $this->belongsTo('App\TeachingClass'); 
-    // }
+    public function teachingClass(){
+        return $this->belongsTo('App\TeachingClass'); 
+    }
 
     public function user(){
         return $this->belongsTo('App\User'); 
+    }
+
+    public function group(){
+        return $this->belongsTo('App\group');
     }
 
     public static function boot(){

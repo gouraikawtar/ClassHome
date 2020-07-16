@@ -1,15 +1,10 @@
 {
-<<<<<<< HEAD
-    "/js/app.js": "/js/app.js?id=6a12bd65cdf3a4d49bce",
-    "/css/app.css": "/css/app.css?id=e76706239d2ba39661d6",
-    "/js/homework.js": "/js/homework.js?id=21fcb087a2647dbf39fc",
-    "/js/theme.js": "/js/theme.js?id=5b124004796109c8815a",
-=======
-    "/js/homework.js": "/js/homework.js?id=0de4ea9b44bed4145a6e",
-    "/js/theme.js": "/js/theme.js?id=05e7b9adf9a935cf72ae",
->>>>>>> 76b30c265a125556954cb18090fa74513e857da3
+    "/jquery/jquery.js": "/jquery/jquery.js?id=4575339e2620c36e0c57",
+    "/js/homework.js": "/js/homework.js?id=853239ae134ae0368da5",
+    "/js/theme.js": "/js/theme.js?id=756991bfa798f3c98315",
+    "/popper/popper.js": "/popper/popper.js?id=5ceb2cc22ad5360c18f2",
     "/css/myCustomTheme.css": "/css/myCustomTheme.css?id=2b970e29167618bfa2cd",
     "/css/formsTheme.css": "/css/formsTheme.css?id=da5de38f8c74d640c1bb",
-    "/css/theme.css": "/css/theme.css?id=e04beb39d48812a0b98a",
+    "/css/theme.css": "/css/theme.css?id=df40d6e4c661bcd1790d",
     "/css/mesThemes.css": "/css/mesThemes.css?id=83beb997c81d567e953e"
 }

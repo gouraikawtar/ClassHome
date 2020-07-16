@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\File;
+use App\Group;
 use App\Http\Requests\StorePost;
 use App\Post;
+use App\TeachingClass;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,18 +25,24 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($class_id)
     {
-        $posts=Post::with('comments')->orderBy('updated_at','desc')->get();
+        $teachingClass = TeachingClass::find($class_id);
+        $groups=$teachingClass->groups()->get(); 
+        $posts=Post::where('teaching_class_id', $class_id)->with('comments')->orderBy('updated_at', 'desc')->get();
         
         if(Auth::user()->role == 'student'){
             return view('Student.posts',  [
                 'posts'=>$posts,
+                'teachingClass'=>$teachingClass, 
+                'groups'=>$groups
             ]); 
         } 
         elseif (Auth::user()->role == 'teacher'){
             return view('Teacher.teacher-posts', [
                 'posts'=>$posts,
+                'teachingClass'=>$teachingClass, 
+                'groups'=>$groups
         ]) ;
         }
 
@@ -46,28 +55,40 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     
-    public function store(Request $request)
+    public function store(Request $request, $class_id)
     {
         $this->validate($request, [
             'title'=>'required',
-            'content' => 'required' 
+            'content' => 'required',
+            'files.*' => 'bail|max:2000||mimes:pdf,docx,doc,ppt,pptx,xls,xlsx,png,jpg,jpeg,zip'
         ]);
 
-        $post = new Post(); 
-        $post->title = $request->input('title'); 
-        $post->content = $request->input('content'); 
-        $post->user_id=Auth::user()->id;  
-        $post->files()-> content = $request -> input('file');
-
-        if (Auth::user()->role == 'teacher') {
+        $post = new Post();
+        $post->title = $request->input('title');
+        $post->content = $request->input('content');
+        $post->user_id=Auth::user()->id;
+        $post->teaching_class_id= $class_id;
+        if (Auth::user()->role=='teacher') {
             $post->status = $request->input('status');
-            $post->destination= $request->input('destination');
+            $post->group_id=$request->get('destination');
         }
-        
         $post->save();
 
-        return redirect()-> route('posts.index'); 
+        $idPost = $post->id;
+        if ($request->hasFile('files')) {
+            $i = 0;
+            foreach ($request->file('files') as $uploadedFile) {
+                ;
+                $string = 'post_doc_'.$idPost.'_'.++$i;
+                $fileName = $string.'.'.$uploadedFile->extension();
+                $uploadedFile->move(public_path().'/post_files/', $fileName);
+                $file = new File();
+                $file->title = $fileName;
+                $file->post()->associate($post)->save();
+            }
+        }
 
+        return redirect()-> route('myclasses.posts.index', $class_id);
     }
 
     /**
@@ -77,19 +98,38 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StorePost $request)
+    public function update(Request $request)
     {
-        $post = Post::findOrFail($request -> postId); 
+        $this->validate($request, [
+            'title'=>'required',
+            'content' => 'required',
+        ]);
+        
+        $class_id = $request->input('classId');
+        $post_id = $request->input('postId');
+        $post = Post::findOrFail($post_id); 
         $post -> title = $request->input('title');
         $post -> content = $request->input('content');
-
-
-        if (User::find($request -> post_id)->role == 'teacher') {
+        if (Auth::user()->role=='teacher') {
             $post -> status = $request->input('status');
-            $post -> destination = $request -> input('destination');
+            $post->group_id=$request->get('destination');
         }
         $post->save(); 
-        return redirect()-> route('posts.index'); 
+
+        if ($request->hasFile('files')) {
+            $i = 0;
+            foreach ($request->file('files') as $uploadedFile) {
+                ;
+                $string = 'post_doc_'.$post_id.'_'.++$i;
+                $fileName = $string.'.'.$uploadedFile->extension();
+                $uploadedFile->move(public_path().'/post_files/', $fileName);
+                $file = new File();
+                $file->title = $fileName;
+                $file->post()->associate($post)->save();
+            }
+        }
+
+        return redirect()-> route('myclasses.posts.index', $class_id); 
     }
 
     /**
@@ -98,10 +138,17 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request)
     {
-        Post::destroy($id);
-        return redirect()-> route('posts.index'); 
+        $class_id = $request->input('classId');
+        Post::destroy($request->input('postId'));
+        
+        return redirect()-> route('myclasses.posts.index', $class_id); 
+    }
+
+
+    public function downloadFile($fileName){
+        return response()->download(public_path('/post_files/'.$fileName));
     }
 
 }

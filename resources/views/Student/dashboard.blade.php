@@ -46,7 +46,7 @@
             @else
             <p class="card-text">{{$class->description}}</p> 
             @endif
-            <a href="{{route('myclasses.homeworks.index',$class->id)}}" class="btn btn-primary">Go</a>
+            <a href="{{route('myclasses.posts.index',$class->id)}}" class="btn btn-primary">Go</a>
         </div>
     </div>
 </div>

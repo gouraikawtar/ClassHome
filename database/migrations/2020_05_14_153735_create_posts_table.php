@@ -19,8 +19,9 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->text('content'); 
             $table->enum('status',['public', 'specific'])-> default('public');
-            $table->string('destination')->nullable(); 
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('group_id')->nullable()->constrained(); 
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('teaching_class_id')->constrained();
         });
     }
 

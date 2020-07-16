@@ -29,12 +29,17 @@ class User extends Authenticatable
     }
 
     public function groups(){
-        return $this->belongsToMany('App\Group'); 
+        return $this->belongsToMany('App\Group', 'group_junctions', 'user_id', 'group_id'); 
+    }
+
+    public function leadingGroups(){
+        return $this->hasMany('App\Group'); 
     }
 
     public function subscriptions(){
         return $this->belongsToMany('App\TeachingClass', 'class_subscriptions', 'user_id', 'teaching_class_id');
     }
+
 
     /**
      * The attributes that should be hidden for arrays.

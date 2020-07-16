@@ -15,7 +15,7 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $class_id)
     {
         $this->validate(request(),[
             'content'=>'min:2|max:100'
@@ -26,7 +26,7 @@ class CommentController extends Controller
         $data['post_id'] = $request->input('post_id');  
 
         $comment = Comment::create($data);
-        return redirect()-> route('posts.index');
+        return redirect()-> route('myclasses.posts.index', $class_id);
     }
 
     /**
@@ -35,9 +35,11 @@ class CommentController extends Controller
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        Comment::destroy($id);
-        return redirect()-> route('posts.index'); 
+        $class_id = $request->input('classId');
+        Comment::destroy($request->input('commentId'));
+        
+        return redirect()-> route('myclasses.posts.index', $class_id); 
     }
 }

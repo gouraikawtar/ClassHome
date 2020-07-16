@@ -25,10 +25,10 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav">                   
-                    <li class="nav-item px-2 @if ($active == 'index') active @endif" id="myClasses">
+                    <li class="nav-item px-2" id="myClasses">
                         <a href="{{ route('myclasses.index') }}" class="nav-link">My Classes</a>
                     </li>
-                    <li class="nav-item px-2 @if ($active == 'archive') active @endif" id="archivedClasses">
+                    <li class="nav-item px-2" id="archivedClasses">
                         <a href="{{ route('myclasses.archive') }}" class="nav-link ">Archived Classes</a>
                     </li>
                 </ul>
