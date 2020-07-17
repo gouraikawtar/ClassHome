@@ -36,25 +36,35 @@
 <div class="col-lg-4 col-sm-6 mb-4">
     <div class="card h-80 shadow-sm">
         <div class="card-body">
-            <input type="hidden" name="class_id" id="class_id" value="{{$class->id}}">
             <h4 class="card-title">{{$class->name}}</h4>
             @if ($class->description == null)
             <p class="card-text">{{$class->name}}</p>
             @else
             <p class="card-text">{{$class->description}}</p> 
             @endif
-            <div class="btn-group">
-                <form method="POST" action="{{url('/archive/'.$class->id.'/restore')}}">
-                    @csrf
-                    @method('PATCH')
-                    <button class="btn btn-success">Restore</button>
-                </form>
-                <form method="POST" action="{{url('/archive/'.$class->id.'/delete')}}">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-danger">Delete</button>
-                </form>
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        <input type="hidden" name="class_id" id="class_id" value="{{$class->id}}">
+                    </td>
+                    <td>
+                        <button class="btn btn-success restore-class" data-toggle="modal" data-target="#restoreClassModal">Restore</button>
+                        {{-- <form method="POST" action="{{url('/archive/'.$class->id.'/restore')}}">
+                            @csrf
+                            @method('PATCH')
+                            <button class="btn btn-success">Restore</button>
+                        </form> --}}
+                    </td>
+                    <td>
+                        <button class="btn btn-danger delete-class" data-toggle="modal" data-target="#deleteClassModal">Delete</button>
+                        {{-- <form method="POST" action="{{url('/archive/'.$class->id.'/delete')}}">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger">Delete</button>
+                        </form> --}}
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -74,7 +84,7 @@
 @section('custom-modal')
     <!-- RESTORE CLASS MODAL -->
     <div class="modal fade" id="restoreClassModal">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-success text-white">
                     <h5 class="modal-title">Attention</h5>
@@ -83,17 +93,15 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to restore this?</p>
+                    <p>Do you really want to restore this class?</p>
                 </div>
                 <div class="modal-footer">
-                    {{-- <form id="restore_class_form" method="POST" action="">
+                    <button class="btn btn-dark" data-dismiss="modal">Back</button>
+                    <form id="restore_class_form" method="POST" action="">
                         @csrf
                         @method('PATCH')
-                        
-                    </form> --}}
-                    <button class="btn btn-success" type="submit" id="restore_class">Confirm</button>
-    
-                    <button class="btn btn-dark" data-dismiss="modal">Back</button>
+                        <button class="btn btn-success" type="submit" id="restore_class">Restore</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -102,7 +110,7 @@
 
     <!-- DELETE CLASS MODAL -->
     <div class="modal fade" id="deleteClassModal">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title">Attention</h5>
@@ -111,19 +119,45 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to delete this?</p>
+                    <p>Do you really want to delete this class? This process cannot be undone.</p>
                 </div>
                 <div class="modal-footer">
+                    <button class="btn btn-dark" data-dismiss="modal">Back</button>
                     <form id="delete_class_form" method="POST" action="">
                         @csrf
                         @method('DELETE')
-                        <button class="btn btn-danger" type="submit" id="delete_class">Confirm</button>
+                        <button class="btn btn-danger" type="submit" id="delete_class">Delete</button>
                     </form>
-    
-                    <button class="btn btn-dark" data-dismiss="modal">Back</button>
                 </div>
             </div>
         </div>
     </div>
     <!-- DELETE CLASS MODAL END -->
+@endsection
+@section('custom-js')
+<script type="text/javascript">
+    function restoreClass() {
+        var tr = this.parentElement.parentElement;
+        var id = tr.children[0].children[0].value;
+        document.getElementById("restore_class_form").action = "/archive/"+id+"/restore";
+    }
+    function deleteClass() {
+        var tr = this.parentElement.parentElement;
+        var id = tr.children[0].children[0].value;
+        document.getElementById("delete_class_form").action = "/archive/"+id+"/delete";
+    }
+    $(document).ready(function(){
+        var restoreButtons = document.getElementsByClassName('restore-class')
+        var deleteButtons = document.getElementsByClassName('delete-class')
+
+        for (let i = 0; i < restoreButtons.length; i++) {
+            restoreButtons[i].addEventListener('click',restoreClass);
+        }
+        for (let i = 0; i < deleteButtons.length; i++) {
+            deleteButtons[i].addEventListener('click',deleteClass);
+        }
+
+    })
+</script>
+    
 @endsection

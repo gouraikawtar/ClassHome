@@ -11,7 +11,7 @@
 <!-- Bootsrap CSS link -->
 <link rel="stylesheet" href="{{ mix('/css/theme.css') }}">
 <!-- Custom CSS link -->
-<link rel="stylesheet" href="{{ mix('/css/mesThemes.css') }}">
+<link rel="stylesheet" href="{{ mix('/css/myCustomTheme.css')}}"> 
 <!-- Fontawesome CSS link -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
 
@@ -37,8 +37,8 @@
                             <i class="fas fa-user"></i> Welcome {{ Auth::user()->first_name }}
                         </a>
                         <div class="dropdown-menu">
-                            <a href="{{route('profile')}}" class="dropdown-item">
-                                <i class="fas fa-user-circle"></i> Profile
+                            <a href="{{route('profile', Auth::user()->id)}}" class="dropdown-item">
+                                <i class="fas fa-user-circle"></i> Profile settings
                             </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -66,6 +66,9 @@
     <!-- End copyrights footer -->
 
     <script src="{{ mix('/js/theme.js') }}"></script>
+
+    <!-- Custom JS -->
+    @yield('scripts')
 
 </body>
 

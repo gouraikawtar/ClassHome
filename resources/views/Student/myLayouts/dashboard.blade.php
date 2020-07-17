@@ -39,7 +39,7 @@
                             <i class="fas fa-user"></i> Welcome {{ Auth::user()->first_name }}
                         </a>
                         <div class="dropdown-menu">
-                            <a href="{{ route('profile') }}" class="dropdown-item">
+                            <a href="{{route('profile', Auth::user()->id)}}" class="dropdown-item">
                                 <i class="fas fa-user-circle"></i> Profile Settings
                             </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
@@ -93,17 +93,14 @@
     @yield('custom-modal')
     <!-- MODALS END -->
 
-    <!-- Jquery link 
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/jquery/jquery.slim.js"></script>-->
-    <!-- Popper link 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    --> 
+    <!-- Jquery link -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>    
+    <!-- Popper link -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <!-- Bootstrap JS link -->
-    <script src="{{ mix('js/theme.js')}}"></script>
-    <!-- Custom JS -->
-    {{-- <script src="js/teacherDashboard.js"></script> --}}
-    <!-- <script src="js/createClass.js"></script> -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- Custom JS link -->
+    @yield('custom-js')
 
 </body>
 

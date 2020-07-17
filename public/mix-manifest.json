@@ -1,9 +1,10 @@
 {
-    "/jquery/jquery.js": "/jquery/jquery.js?id=4575339e2620c36e0c57",
-    "/js/homework.js": "/js/homework.js?id=853239ae134ae0368da5",
-    "/js/theme.js": "/js/theme.js?id=756991bfa798f3c98315",
-    "/popper/popper.js": "/popper/popper.js?id=5ceb2cc22ad5360c18f2",
-    "/css/myCustomTheme.css": "/css/myCustomTheme.css?id=2b970e29167618bfa2cd",
+    "/jquery/jquery.js": "/jquery/jquery.js?id=8bf2703aa0f7e4fc7713",
+    "/js/app.js": "/js/app.js?id=6a12bd65cdf3a4d49bce",
+    "/css/app.css": "/css/app.css?id=e76706239d2ba39661d6",
+    "/js/theme.js": "/js/theme.js?id=2d1d69ac2e4186635d7e",
+    "/popper/popper.js": "/popper/popper.js?id=a5f9270519cebcbc8cad",
+    "/css/myCustomTheme.css": "/css/myCustomTheme.css?id=31d294658ed972ad529a",
     "/css/formsTheme.css": "/css/formsTheme.css?id=da5de38f8c74d640c1bb",
     "/css/theme.css": "/css/theme.css?id=df40d6e4c661bcd1790d",
     "/css/mesThemes.css": "/css/mesThemes.css?id=83beb997c81d567e953e"

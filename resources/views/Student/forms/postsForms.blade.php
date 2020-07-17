@@ -1,11 +1,11 @@
 <div class="form-group">
     <label for="title">Title</label>
-    <input type="text" id="title" name="title" class="form-control" placeholder="Post's title" >
+    <input type="text" id="title" name="title" class="form-control" placeholder="Post's title" required>
 </div>
 
 <div class="form-group">
     <label for="content">Body</label>
-    <textarea name="content" id="content" rows="5" class="form-control" placeholder="Post's body" ></textarea>
+    <textarea name="content" id="content" rows="5" class="form-control" placeholder="Post's body" required></textarea>
 </div>
 
 <div class="form-group">

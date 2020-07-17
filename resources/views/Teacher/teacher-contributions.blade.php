@@ -19,30 +19,32 @@
         <table class="table table-hover">
             <thead class="thead-light">
                 <tr>
-                    <th>#</th>
+                    <th></th>
                     <th>Title</th>
-                    <th>Creation date</th>
+                    <th>Created at</th>
                     <th>Deadline</th>
-                    <th>Download folder</th>
+                    <th>Contributions folder</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach ($homeworks as $homework)
                 <tr>
-                    <td>1</td>
-                    <td>Web developpement</td>
-                    <td>02/10/2020</td>
-                    <td>02/18/2020</td>
-                    <td><i class="fas fa-download"></i></td>
+                    <td></td>
+                    <td><i class="fas fa-folder"></i> {{$homework->title}}</td>
+                    <td>{{Carbon\Carbon::parse($homework->created_at)->format('Y-m-d')}}</td>
+                    <td>{{$homework->deadline}}</td>
+                    @if (Carbon\Carbon::now()->format('Y-m-d') <= $homework->deadline)
+                    <td>No contributions to download yet</td>
+                    @else
+                    <td><a href=" {{ route('contributions.download', $homework->id) }} "><i class="fas fa-download"></i> Download</a></td>
+                    @endif
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Java</td>
-                    <td>02/22/2020</td>
-                    <td>02/28/2020</td>
-                    <td><i class="fas fa-download"></i></td>
-                </tr>
+                @endforeach
             </tbody>
         </table>
+        <div class="pagination justify-content-center">
+            {{$homeworks->links()}}
+        </div>
     </div>
 </div>
 @endsection

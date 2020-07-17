@@ -13,6 +13,7 @@
     <table class="table table-hover">
         <thead class="thead-light">
             <tr>
+                <th></th>
                 <th>Name</th>
                 <th>Group leader</th>
                 <th>Email</th>
@@ -22,6 +23,7 @@
         <tbody>
             @forelse ($groups as $group)
                 <tr>
+                    <td></td>
                     <td>{{ $group->name }}</td>
                     <td>{{ App\User::find($group->user_id)->first_name }} {{ App\User::find($group->user_id)->last_name }}</td>
                     <td>{{ App\User::find($group->user_id)->email }}</td>
@@ -96,7 +98,7 @@
     
 @endsection
 
-@section('scripts')
+@section('custom-js')
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>

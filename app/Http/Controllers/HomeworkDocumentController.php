@@ -78,8 +78,11 @@ class HomeworkDocumentController extends Controller
      * @param  \App\HomeworkDocument  $homeworkDocument
      * @return \Illuminate\Http\Response
      */
-    public function destroy(HomeworkDocument $homeworkDocument)
+    public function destroy($class_id, $homework_id, $file_id)
     {
-        //
+        $file = HomeworkDocument::find($file_id);
+        $file->delete();
+        return redirect()->route('myclasses.homeworks.edit',[$class_id,$homework_id]);
+        //dd($file);
     }
 }

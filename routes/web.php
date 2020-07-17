@@ -31,8 +31,10 @@ Route::get('/FileDownload/{name}','PostController@downloadFile')->name('files.do
 Route::resource('/myclasses.comments','CommentController') -> only('store'); 
 Route::post('/deleteComment', 'CommentController@destroy')->name('deleteComment');
 
-Route::resource('/myclasses.members','UserController') -> only(['index', 'update', 'destroy']); 
-Route::get('/profile', 'UserController@show')->name('profile');
+Route::resource('/myclasses.members','UserController') -> only(['index', 'destroy']); 
+Route::get('/profile/{user_id}', 'UserController@edit')->name('profile');
+Route::put('/updateInformation/{user_id}', 'UserController@updateInformation')->name('updateInformation');
+Route::put('/updatePassword/{user_id}', 'UserController@updatePassword')->name('updatePassword');
 Route::get('/myclasses/{class}/invitation', 'UserController@inviteTeacher')->name('invitation'); 
 Route::get('/sendingEmail', 'UserController@sendingEmail')->name('sendingEmail'); 
 
@@ -60,12 +62,27 @@ Route::delete('/archive/{class_id}/delete','TeachingClassController@forcedelete'
 Route::patch('/archive/{class_id}/restore','TeachingClassController@restore');
 Route::patch('/code/{class_id}/reset','TeachingClassController@resetCode');
 Route::resource('/myclasses','TeachingClassController')->except(['create','show']);
+Route::delete('/myclasses/{class_id}/exit','TeachingClassController@exitClass');
 //-----------------------------------------------------------------------------------------
 
 //----------------------------Routes for HomeworkController---------------------------------
-Route::resource('/myclasses.homeworks','HomeworkController')->only(['index','store','update','destroy','show']);
+Route::resource('/myclasses.homeworks','HomeworkController')->only(['index','store','update','destroy','show','edit']);
 Route::get('/download/{name}','HomeworkController@downloadFile')->name('homeworks.download');
 //------------------------------------------------------------------------------------------
-Route::post('/join','ClassSubscriptionController@joinClass');
 Route::post('/collaborate','ClassSubscriptionController@collaborate')->name('collaboration'); 
 Route::post('/deleteStudent', 'ClassSubscriptionController@deleteStudent')->name('deleteStudent');
+
+/**---------------------------- Route for ClassSubscriptionController ---------------------------------*/
+Route::post('/join','ClassSubscriptionController@joinClass');
+/**------------------------------------------------------------------------------------------*/
+
+/**----------------------------- Routes for ContributionController ------------------------- */
+Route::resource('/myclasses.contributions', 'ContributionController')->only(['index']);
+Route::post('/import/{homework_id}','ContributionController@importContribution');
+Route::get('/myclasses/{class_id}/grades','ContributionController@getGradesView')->name('grades');
+Route::get('/myclasses/{class_id}/grading/{homework_id}','ContributionController@getStudentsContributions')->name('grading');
+Route::put('/grading/{contribution_id}','ContributionController@addGrade');
+Route::get('/donwload-contributions/{homework_id}','ContributionController@downloadZipFolder')->name('contributions.download');
+/**----------------------------------------------------------------------------------------- */
+/**----------------------------- Routes for HomeworkDocumentController ------------------------- */
+Route::resource('/myclasses.homeworks.documents','HomeworkDocumentController')->only(['destroy']);

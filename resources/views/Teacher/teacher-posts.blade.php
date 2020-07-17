@@ -252,7 +252,7 @@
 
 @endsection
 
-@section('scripts')
+@section('custom-js')
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>

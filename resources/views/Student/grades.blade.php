@@ -13,44 +13,28 @@
     <table class="table table-hover">
         <thead class="thead-light">
             <tr>
-                <th>#</th>
+                <th></th>
                 <th>Title</th>
                 <th>Grade</th>
             </tr>
         </thead>
         <tbody>
+            @foreach ($homeworks as $homework)
             <tr>
-                <td>1</td>
-                <td>First</td>
-                <td>15</td>
+                <td></td>
+                <td>{{$homework->title}}</td>
+                @if ($homework->contributions()->where('user_id','=',Auth::user()->id)->first()!=null)
+                <td>{{$homework->contributions()->where('user_id','=',Auth::user()->id)->first()['grade']}}</td>
+                @else
+                <td>Not graded yet</td>
+                @endif
             </tr>
-            <tr>
-                <td>2</td>
-                <td>Second</td>
-                <td>20</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Third</td>
-                <td>18</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>Fourth</td>
-                <td>17</td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>Fifth</td>
-                <td>16</td>
-            </tr>
-            <tr>
-                <td>6</td>
-                <td>Sixth</td>
-                <td>19</td>
-            </tr>
+            @endforeach
         </tbody>
     </table>
+    <div class="pagination justify-content-center">
+        {{$homeworks->links()}}
+    </div>
 </div>
     
 @endsection

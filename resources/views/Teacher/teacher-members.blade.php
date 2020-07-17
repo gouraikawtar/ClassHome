@@ -24,6 +24,7 @@
         <table class="table table-hover">
             <thead class="thead-light">
                 <tr>
+                    <th></th>
                     <th>Full Name</th>
                     <th>Email</th>
                     <th></th>
@@ -31,6 +32,7 @@
             </thead>
             <tbody>
                 <tr>
+                    <td></td>
                     <td>{{ App\User::find($teachingClass->user_id)->first_name }} {{ App\User::find($teachingClass->user_id)->last_name }}</td>
                     <td>{{ App\User::find($teachingClass->user_id)->email }}</td>
                     <td>
@@ -43,6 +45,7 @@
                 </tr>
                 @forelse ($teachers as $teacher)
                     <tr>
+                        <td></td>
                         <td>{{ $teacher->first_name }} {{ $teacher->last_name }}</td>
                         <td>{{ $teacher->email }}</td>
                         <td>
@@ -66,6 +69,7 @@
         <table class="table table-hover">
             <thead class="thead-light">
                 <tr>
+                    <th></th>
                     <th>Full Name</th>
                     <th>Email</th>
                     <th colspan="2">Options</th>
@@ -75,6 +79,7 @@
                     @forelse ($members as $student)
                         @if ($student->role == 'student')     
                             <tr>
+                                <td></td>
                                 <td>{{ $student-> first_name }} {{ $student-> last_name }}</td>
                                 <td>{{ $student-> email }}</td>
                                 <td>
@@ -113,7 +118,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input name="email" type="email" class="form-control" placeholder="Teacher's Email" >
+                        <input name="email" type="email" class="form-control" placeholder="Teacher's Email" required>
                         <input type="hidden" name="senderName" value=" {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}" >
                         <input type="hidden" name="senderEmail" value=" {{ Auth::user()->email}}" >
                 </div>
@@ -143,13 +148,13 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="destination">Email destination</label>
-                        <input type="email" name="destination" id="destination" class="form-control" placeholder="Email destination" >
+                        <input type="email" name="destination" id="destination" class="form-control" placeholder="Email destination" required>
                         <input type="hidden" name="senderName" value=" {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}" >
                         <input type="hidden" name="senderEmail" value=" {{ Auth::user()->email}}" >
                     </div>
                     <div class="form-group">
                         <label for="body">Email body</label>
-                        <textarea name="body" rows="7" id="body" class="form-control" placeholder="E-mail Body"></textarea>
+                        <textarea name="body" rows="7" id="body" class="form-control" placeholder="E-mail Body" required></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -187,7 +192,7 @@
         </div>
     </div>
 </div>
-<!-- END DELETE POST MODAL -->
+<!-- END DELETE STUDENT MODAL -->
 
 @endsection
 

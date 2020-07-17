@@ -93,7 +93,6 @@ class ClassSubscriptionController extends Controller
                             ->select('id')
                             ->where('code',$class_code)
                             ->first();
-        //dd($teachingClassId);
         if($teachingClass){
             $subscription = new ClassSubscription();
             $subscription->user_id = $studentId;
@@ -101,7 +100,6 @@ class ClassSubscriptionController extends Controller
             $subscription->save();
             $request->session()->flash('class_joined', 'Class joined successfully');
         }else{
-            //dd('je suis dans le else');
             $request->session()->flash('junction_failed', 'Class not found');
         }
         return redirect()->back();

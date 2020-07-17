@@ -36,7 +36,7 @@
                         <a href="{{route('myclasses.homeworks.index', $teachingClass->id)}}" class="nav-link ">Homework</a>
                     </li>
                     <li class="nav-item px-2 ">
-                        <a href="{{ url('/grades') }}" class="nav-link ">Grades</a>
+                        <a href="{{ route('grades',$teachingClass->id) }}" class="nav-link">Grades</a>
                     </li>
                 </ul>
 
@@ -46,7 +46,7 @@
                             <i class="fas fa-user"></i> Welcome {{ Auth::user()->first_name }}
                         </a>
                         <div class="dropdown-menu">
-                            <a href="{{ route('profile')}}" class="dropdown-item">
+                            <a href="{{route('profile', Auth::user()->id)}}" class="dropdown-item">
                                 <i class="fas fa-user-circle"></i> Profile Settings
                             </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
@@ -145,9 +145,15 @@
     @yield('SendEmailModal')
     <!---------------------->
     
-    <script src="{{ mix('/js/theme.js') }}"></script>
+    <!-- Jquery link -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>    
+    <!-- Popper link -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS link -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-    @yield('scripts')
+    {{-- Custom JS --}}
+    @yield('custom-js')
 
 </body>
 

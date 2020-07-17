@@ -1,11 +1,11 @@
 <div class="form-group">
     <label for="title">Title</label>
-    <input type="text" id="title" name="title" class="form-control" placeholder="Post's Title">
+    <input type="text" id="title" name="title" class="form-control" placeholder="Post's Title" required>
 </div>
 
 <div class="form-group">
     <label for="status">To</label>
-    <select class="form-control" id="status" name="status" onChange="chooseDestination();" >
+    <select class="form-control" id="status" name="status" onChange="chooseDestination();" required>
         <option selected disabled value="">-- Please choose an option --</option>
         <option value="specific">Groups</option>
         <option value="public">All</option>

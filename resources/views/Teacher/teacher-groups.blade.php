@@ -24,6 +24,7 @@
         <table class="table table-hover">
             <thead class="thead-light">
                 <tr>
+                    <th></th>
                     <th>Name</th>
                     <th>Group leader</th>
                     <th>Email</th>
@@ -33,6 +34,7 @@
             <tbody>
                 @forelse ($groups as $group)
                     <tr>
+                        <td></td>
                         <td>{{ $group->name }}</td>
                         <td>{{ App\User::find($group->user_id)->first_name }} {{ App\User::find($group->user_id)->last_name }}</td>
                         <td>{{ App\User::find($group->user_id)->email }}</td>
@@ -84,13 +86,13 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="destination">Email destination</label>
-                            <input type="email" name="destination" id="destination" class="form-control" placeholder="Email destination" >
+                            <input type="email" name="destination" id="destination" class="form-control" placeholder="Email destination" required>
                             <input type="hidden" name="senderName" value=" {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}" >
                             <input type="hidden" name="senderEmail" value=" {{ Auth::user()->email}}" >
                         </div>
                         <div class="form-group">
                             <label for="body">Email body</label>
-                            <textarea name="body" class="form-control" id="body" rows="7" placeholder="E-mail body" ></textarea>
+                            <textarea name="body" class="form-control" id="body" rows="7" placeholder="E-mail body" required></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -234,7 +236,7 @@
         </div>
     </div>
 </div>
-<!-- END DELETE POST MODAL -->
+<!-- END DELETE GROUP MODAL -->
 @endsection
 
 @section('custom-js')

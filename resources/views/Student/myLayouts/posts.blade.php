@@ -46,8 +46,8 @@
                             <i class="fas fa-user"></i> Welcome {{ Auth::user()->first_name }}
                         </a>
                         <div class="dropdown-menu">
-                            <a href="{{ route('profile') }}" class="dropdown-item">
-                                <i class="fas fa-user-circle"></i> Profile
+                            <a href="{{ route('profile', Auth::user()->id) }}" class="dropdown-item">
+                                <i class="fas fa-user-circle"></i> Profile settings
                             </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

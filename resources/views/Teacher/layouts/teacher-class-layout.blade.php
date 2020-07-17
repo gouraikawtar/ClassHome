@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     <!-- Custom CSS link -->
     <link rel="stylesheet" href="{{ mix('/css/myCustomTheme.css')}}"> 
+
 </head>
 
 <body>
@@ -33,14 +34,13 @@
                         <a href="{{ route('myclasses.posts.index', $teachingClass->id) }}" class="nav-link ">Posts</a>
                     </li>
                     <li class="nav-item px-2 ">
-                        <a href="{{route('myclasses.homeworks.index', $teachingClass->id)}}" class="nav-link ">Homework</a>
-                        {{-- {{route('homeworks.index')}} --}}
+                        <a href="{{route('myclasses.homeworks.index', $teachingClass->id)}}" class="nav-link ">Homeworks</a>
                     </li>
                     <li class="nav-item px-2 ">
-                        <a href="{{ url('grades') }}" class="nav-link ">Grades</a>
+                        <a href="{{ route('grades',$teachingClass->id) }}" class="nav-link">Grades</a>
                     </li>
                     <li class="nav-item px-2">
-                        <a href="{{ url('contributions') }}" class="nav-link">Contibutions</a>
+                        <a href="{{ route('myclasses.contributions.index', $teachingClass->id) }}" class="nav-link">Contibutions</a>
                     </li>
                 </ul>
 
@@ -50,7 +50,7 @@
                             <i class="fas fa-user"></i> Welcome {{ Auth::user()->first_name }}
                         </a>
                         <div class="dropdown-menu">
-                            <a href="{{ route('profile') }}" class="dropdown-item">
+                            <a href="{{ route('profile', Auth::user()->id ) }}" class="dropdown-item">
                                 <i class="fas fa-user-circle"></i> Profile Settings
                             </a>
                             <a href="{{ route('myclasses.edit',$teachingClass->id) }}" class="dropdown-item">
@@ -196,7 +196,6 @@
     
     <!-- Custom JS -->
     @yield('custom-js')
-    @yield('scripts')
 
 </body>
 

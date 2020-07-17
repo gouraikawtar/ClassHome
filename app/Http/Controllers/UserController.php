@@ -43,19 +43,19 @@ class UserController extends Controller
 
 
     /**
-     * Display the specified resource.
+     * Edit the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function edit($user_id)
     {
-        if(Auth::user()->role == 'student'){
-            return view('Student.profile'); 
-        } 
-        elseif (Auth::user()->role == 'teacher'){
-            return view('Teacher.profile');
-        }
+        $user_information = User::find($user_id); 
+        
+        return view('Student.profile', [
+            'information' => $user_information
+        ]); 
+        
     }
 
     /**
@@ -65,9 +65,42 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateInformation(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'email' =>['unique:users'],
+        ]);
+
+        $user = User::find($id); 
+
+        $user->first_name= $request->input('first_name');
+        $user->last_name= $request->input('last_name');
+        $user->email= $request->input('email');
+        $user->phone_number= $request->input('phone');
+
+        $user->save();
+
+        return redirect()->back();
+    }
+
+    /**
+     * Update the password of the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePassword(Request $request, $id)
+    {       
+
+        $user = User::find($id); 
+
+        $user->password = $request->input('password');
+
+        $user->save();
+
+        return redirect()->back();
+
     }
 
 
@@ -125,7 +158,6 @@ class UserController extends Controller
         return redirect()-> route('myclasses.members.index', $class_id);
 
     }
-
 
     /**
      * Sending email to member of the class

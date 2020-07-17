@@ -56,12 +56,21 @@ class PostController extends Controller
      */
     
     public function store(Request $request, $class_id)
-    {
-        $this->validate($request, [
-            'title'=>'required',
-            'content' => 'required',
-            'files.*' => 'bail|max:2000||mimes:pdf,docx,doc,ppt,pptx,xls,xlsx,png,jpg,jpeg,zip'
-        ]);
+    {   
+        if (Auth::user()->role=='student') {
+            $this->validate($request, [
+                'title'=>'required',
+                'content' => 'required',
+                'files.*' => 'bail|max:2000||mimes:pdf,docx,doc,ppt,pptx,xls,xlsx,png,jpg,jpeg,zip'
+            ]);
+        } elseif (Auth::user()->role == 'teacher'){
+            $this->validate($request, [
+                'title'=>'required',
+                'content' => 'required',
+                'status' => 'required',
+                'files.*' => 'bail|max:2000||mimes:pdf,docx,doc,ppt,pptx,xls,xlsx,png,jpg,jpeg,zip'
+            ]);
+        }
 
         $post = new Post();
         $post->title = $request->input('title');
@@ -132,6 +141,7 @@ class PostController extends Controller
         return redirect()-> route('myclasses.posts.index', $class_id); 
     }
 
+    
     /**
      * Remove the specified resource from storage.
      *
@@ -147,6 +157,12 @@ class PostController extends Controller
     }
 
 
+    /**
+     * Download post's file
+     *
+     * @param  string  $fileName
+     * @return \Illuminate\Http\Response
+     */
     public function downloadFile($fileName){
         return response()->download(public_path('/post_files/'.$fileName));
     }

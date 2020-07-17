@@ -11,10 +11,8 @@
 @endsection
 
 @section('content')
-<div class="alert alert-primary" role="alert">
-    <strong>No archived classes yet</strong>
-</div>
-{{-- @forelse ($archivedClasses as $class)
+
+@forelse ($archivedClasses as $class)
 <div class="col-lg-4 col-sm-6 mb-4">
     <div class="card h-80 shadow-sm">
         <div class="card-body">
@@ -33,12 +31,12 @@
 <div class="alert alert-primary" role="alert">
     <strong>No archived classes yet</strong>
 </div>
-    
-@endforelse --}}
+@endforelse
+
 @endsection
 
 @section('pagination')
-{{-- <div class="pagination justify-content-center">
+<div class="pagination justify-content-center">
     {{$archivedClasses->links()}}
-</div> --}}
+</div>
 @endsection
