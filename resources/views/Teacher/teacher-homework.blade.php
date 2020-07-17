@@ -182,19 +182,23 @@
         var class_id = document.getElementById("class_id").value;
         var tr = this.parentElement.parentElement;
         var homework_id = tr.children[0].children[0].value;
-
+        
         //Setting up the action for the delete form 
         document.getElementById("delete_homework_form").action = "/myclasses/"+class_id+"/homeworks/"+homework_id;
+    }
+
+    function clickOnDelete(){
+        var deleteButtons = document.getElementsByClassName("delete_hw");
+        for (let i = 0; i < deleteButtons.length; i++) {
+            deleteButtons[i].addEventListener("click",deleteHomework);
+        }
     }
 
     $(document).ready(function(){
         //Get class id
         var class_id = document.getElementById("class_id").value;
         //
-        var deleteButtons = document.getElementsByClassName("delete_hw");
-        for (let i = 0; i < deleteButtons.length; i++) {
-            deleteButtons[i].addEventListener("click",deleteHomework);
-        }
+        clickOnDelete();
         //
         if(localStorage.getItem("success")){
             $('#success-msg').css('display', 'block')
@@ -247,7 +251,6 @@
                 },
             })
         })
-
         //alert(1);
     })
 </script>

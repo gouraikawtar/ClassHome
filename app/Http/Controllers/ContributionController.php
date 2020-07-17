@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use ZipArchive;
+use File;
 use App\Homework;
+use Carbon\Carbon;
 use App\Contribution;
 use App\TeachingClass;
 use Illuminate\Http\Request;
@@ -156,47 +158,28 @@ class ContributionController extends Controller
         $request->session()->flash('contribution_deleted', 'Contribution successfully deleted. Add new one before the deadline');
         return redirect()->back();
     }
-
+    /**
+     * Download contributions folder in zip format
+     */
     public function downloadZipFolder($homework_id){
         $homework = Homework::find($homework_id);
-
-        //$files = glob(public_path('contribution_files/'.$homework->title.'/*.*'));
-        //dd($files);
-        //$files = glob(public_path().'/contribution_files/'.$homework->title.'/*.png');
-
-        //dd(glob(public_path('contribution_files/'.$homework->title.'/*')));
-
-        $file = public_path().'/homework_files/oop-mPBFKo.jpeg';
-        dd($file);
-        /*$public_dir = public_path().'/zipFiles';
+        
         $zip = new ZipArchive;
-        $zipFileName = $homework->title.Carbon::now().'.zip';
+        $zipFileName = $homework->title.'.zip';
+
+        if ($zip->open(public_path($zipFileName), ZipArchive::CREATE) === TRUE)
+        {
+            $files = File::files(public_path('contribution_files/'.$homework->title.'_'.$homework->id));
    
-        if ($zip->open($public_dir . '/' . $zipFileName, ZipArchive::CREATE) === TRUE) {  
             foreach ($files as $file) {
-                $zip->addFile($file, basename($file)); 
-            }    
-            $zip->close();
-        }
-
-        $headers = array(
-            'Content-Type' => 'application/octet-stream',
-        );
-
-        $filetopath = $public_dir.'/'.$zipFileName;
-        if(file_exists($filetopath)){
-            return response()->download($filetopath,$zipFileName,$headers);
-        }*/
-
-        /*if ($zip->open(public_path($fileName), ZipArchive::CREATE) === TRUE){
-            $files = glob(public_path('folder/*')'/contribution_files/'.$homework->title.'/*')
-            $files = File::files(public_path().'/contribution_files/'.$homework->title.'/*');
-            foreach ($files as $file) {
-                $zip->addFile($file);
+                $relativeNameInZipFile = basename($file);
+                $zip->addFile($file, $relativeNameInZipFile);
             }
+             
             $zip->close();
         }
-        return response()->download(public_path($fileName));*/
+    
+        return response()->download(public_path($zipFileName));
     }
 
     /**

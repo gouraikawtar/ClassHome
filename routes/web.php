@@ -15,9 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/',function(){
+    return view('index');
+})->middleware('guest');
 
 Route::resource('/posts','PostController')-> only(['index', 'store', 'update', 'destroy']); 
 

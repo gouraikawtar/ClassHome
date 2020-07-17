@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Contribution;
 use App\Homework;
-use Carbon\Carbon;
 use App\TeachingClass;
 use App\HomeworkDocument;
 use Illuminate\Support\Str;
@@ -24,7 +23,7 @@ class HomeworkController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($class_id)
+    public function index(Request $request,$class_id)
     {
         $teachingClass = TeachingClass::find($class_id);
         $homeworks = $teachingClass->homeworks()

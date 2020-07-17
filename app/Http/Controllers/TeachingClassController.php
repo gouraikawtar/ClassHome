@@ -150,7 +150,7 @@ class TeachingClassController extends Controller
             'class_name' => 'bail|required||max:50',
             'class_section' => 'required',
             'class_object' => 'max:100',
-            'class_description' => 'max:100',
+            'class_desc' => 'max:100',
         ]);
         
         //if the validation passes, we will find the appropriate teachingClass
@@ -160,7 +160,7 @@ class TeachingClassController extends Controller
         $teachingClass->name = $request->input('class_name');
         $teachingClass->section = $request->input('class_section');
         $teachingClass->object = $request->input('class_object');
-        $teachingClass->description = $request->input('class_description');
+        $teachingClass->description = $request->input('class_desc');
 
         //save the update
         $teachingClass->save();
