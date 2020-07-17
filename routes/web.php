@@ -21,25 +21,32 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/email', function () { return view('emails.collaboration'); });
+Route::middleware('auth')->group(function() {
+    Route::resource('/myclasses.posts','PostController')-> only(['index', 'store']); 
+    Route::post('/editPost', 'PostController@update')->name('editPost');
+    Route::post('/deletePost', 'PostController@destroy')->name('deletePost');
+    Route::get('/FileDownload/{name}','PostController@downloadFile')->name('files.download');
 
-Route::resource('/myclasses.posts','PostController')-> only(['index', 'store']); 
-Route::post('/editPost', 'PostController@update')->name('editPost');
-Route::post('/deletePost', 'PostController@destroy')->name('deletePost');
-Route::get('/FileDownload/{name}','PostController@downloadFile')->name('files.download');
+});
 
-Route::resource('/myclasses.comments','CommentController') -> only('store'); 
-Route::post('/deleteComment', 'CommentController@destroy')->name('deleteComment');
+Route::middleware('auth')->group(function() {
+    Route::resource('/myclasses.comments', 'CommentController') -> only('store');
+    Route::post('/deleteComment', 'CommentController@destroy')->name('deleteComment');
+});
 
-Route::resource('/myclasses.members','UserController') -> only(['index', 'destroy']); 
-Route::get('/profile/{user_id}', 'UserController@edit')->name('profile');
-Route::put('/updateInformation/{user_id}', 'UserController@updateInformation')->name('updateInformation');
-Route::put('/updatePassword/{user_id}', 'UserController@updatePassword')->name('updatePassword');
-Route::get('/myclasses/{class}/invitation', 'UserController@inviteTeacher')->name('invitation'); 
-Route::get('/sendingEmail', 'UserController@sendingEmail')->name('sendingEmail'); 
+Route::middleware('auth')->group(function() {
+    Route::resource('/myclasses.members', 'UserController') -> only(['index', 'destroy']);
+    Route::get('/profile/{user_id}', 'UserController@edit')->name('profile');
+    Route::put('/updateInformation/{user_id}', 'UserController@updateInformation')->name('updateInformation');
+    Route::put('/updatePassword/{user_id}', 'UserController@updatePassword')->name('updatePassword');
+    Route::get('/myclasses/{class}/invitation', 'UserController@inviteTeacher')->name('invitation');
+    Route::get('/sendingEmail', 'UserController@sendingEmail')->name('sendingEmail');
+});
 
-Route::resource('/myclasses.groups','GroupController') -> only(['index', 'store', 'update']); 
-Route::post('/deleteGroup', 'GroupController@destroy')->name('deleteGroup');
+Route::middleware('auth')->group(function() {
+    Route::resource('/myclasses.groups', 'GroupController') -> only(['index', 'store', 'update']);
+    Route::post('/deleteGroup', 'GroupController@destroy')->name('deleteGroup');
+});
 
 
 // ------------------------------------ Temporary Routes---------------------------------
