@@ -205,7 +205,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete this?</p>
+                <p>Are you sure you want to delete this post ?</p>
             </div>
             <div class="modal-footer">
                 <form method="POST" action="{{ route('deletePost') }}">
@@ -233,7 +233,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete this?</p>
+                <p>Are you sure you want to delete this comment ?</p>
             </div>
             <div class="modal-footer">
                 <form method="POST" action="{{ route('deleteComment') }}">

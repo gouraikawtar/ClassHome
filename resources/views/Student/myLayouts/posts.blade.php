@@ -69,7 +69,7 @@
             <div class="container ">
                 <div class="row " id="main_header">
                     <div class="col-md-6 ">
-                        <h4>PFE SMI S6</h4>
+                        <h4> {{ $teachingClass->name }} </h4>
                     </div>
                 </div>
             </div>
@@ -210,7 +210,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete this?</p>
+                <p>Are you sure you want to delete this post ?</p>
             </div>
             <div class="modal-footer">
                 <form method="POST" action="{{ route('deletePost') }}">
@@ -238,7 +238,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete this?</p>
+                <p>Are you sure you want to delete this comment ?</p>
             </div>
             <div class="modal-footer">
                 <form method="POST" action="{{ route('deleteComment') }}">

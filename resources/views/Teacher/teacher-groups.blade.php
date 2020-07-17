@@ -221,7 +221,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete this?</p>
+                <p>Are you sure you want to delete this group ?</p>
             </div>
             <div class="modal-footer">
                 <form method="POST" action="{{ route('deleteGroup') }}">

@@ -41,6 +41,16 @@ class User extends Authenticatable
     }
 
 
+    public static function boot(){
+        parent::boot();
+
+        static::deleting(function (User  $user) {
+            $user->posts()->delete();
+            $user->comments()->delete();
+            $user->leadingGroups()->delete();
+        });
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *

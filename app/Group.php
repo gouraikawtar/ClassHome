@@ -18,7 +18,15 @@ class Group extends Model
     }
 
     public function posts(){
-        return $this->hasMany('App\posts'); 
+        return $this->hasMany('App\Post'); 
+    }
+
+    public static function boot(){
+        parent::boot();
+
+        static::deleting(function (Group  $group) {
+            $group->posts()->delete();
+        });
     }
 
 }

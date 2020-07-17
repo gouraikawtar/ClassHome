@@ -50,7 +50,7 @@
                         <td>{{ $teacher->email }}</td>
                         <td>
                             @if ( $teacher->id != Auth::user()->id)
-                                <button class="btn btn-light" data-useremail="{{$teacher->email}}" data-toggle="modal" data-target="#sendEmailModal">
+                                <button class="btn btn-light" data-toggle="modal" data-target="#sendEmailModal">
                                     <i class="fas fa-envelope email_user"></i>
                                 </button>
                             @endif
@@ -88,7 +88,7 @@
                                     </button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-light" data-useremail="{{$student->email}}" data-toggle="modal" data-target="#sendEmailModal">
+                                    <button class="btn btn-light" data-toggle="modal" data-target="#sendEmailModal">
                                         <i class="fas fa-envelope email_user"></i>
                                     </button>
                                 </td>
@@ -177,7 +177,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete this?</p>
+                <p>Are you sure you want to delete this member?</p>
             </div>
             <div class="modal-footer">
                 <form method="POST" action="{{ route('deleteStudent') }}">
