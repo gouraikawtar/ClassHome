@@ -13,29 +13,38 @@
     <table class="table table-hover">
         <thead class="thead-light">
             <tr>
-                <th>#</th>
+                <th></th>
                 <th>Full Name</th>
                 <th>Email</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @forelse ($users as $user)
-                @if ($user->role == 'teacher')
-                    <tr>
-                        <td>{{ $user->id }}</td>
-                        <td>{{ $user-> first_name }} {{ $user-> last_name }}</td>
-                        <td>{{ $user-> email }}</td>
-                        <td>
-                            <button class="btn btn-light" data-toggle="modal" data-target="#sendEmailModal">
+            <tr>
+                <td></td>
+                <td>{{ App\User::find($teachingClass->user_id)->first_name }} {{ App\User::find($teachingClass->user_id)->last_name }}</td>
+                <td>{{ App\User::find($teachingClass->user_id)->email }}</td>
+                <td>
+                    <button class="btn btn-light" data-toggle="modal" data-target="#sendEmailModal">
+                        <i class="fas fa-envelope" style="color:dodgerblue"></i>
+                    </button>
+                </td>
+            </tr>
+            @forelse ($teachers as $teacher)
+                <tr>
+                    <td></td>
+                    <td>{{ $teacher->first_name }} {{ $teacher->last_name }}</td>
+                    <td>{{ $teacher->email }}</td>
+                    <td>
+                        @if ( $teacher->id != Auth::user()->id)
+                            <button class="btn btn-light" data-useremail="{{$teacher->email}}" data-toggle="modal" data-target="#sendEmailModal">
                                 <i class="fas fa-envelope" style="color:dodgerblue"></i>
                             </button>
-                        </td>
-                    </tr>
-                @endif
+                        @endif
+                    </td>
+                </tr>
             @empty
             @endforelse
-            </tr>
         </tbody>
     </table>
 </div>
@@ -47,24 +56,28 @@
     <table class="table">
         <thead class="thead table-active">
             <tr>
-                <th>#</th>
+                <th></th>
                 <th>Full Name</th>
                 <th>Email</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @forelse ($users as $user)
-                @if ($user->role == 'student')
+            @forelse ($members as $student)
+                @if ($student->role == 'student')
                     <tr>
-                        <td>{{ $user->id }}</td>
-                        <td>{{ $user-> first_name }} {{ $user-> last_name }}</td>
-                        <td>{{ $user-> email }}</td>
-                        <td>
-                            <button class="btn btn-light" data-toggle="modal" data-target="#sendEmailModal">
-                                <i class="fas fa-envelope" style="color:dodgerblue"></i>
-                            </button>
-                        </td>
+                        <td></td>
+                        <td>{{ $student-> first_name }} {{ $student-> last_name }}</td>
+                        <td>{{ $student-> email }}</td>
+                        @if ($student->id != Auth::user()->id)
+                            <td>
+                                <button class="btn btn-light" data-toggle="modal" data-target="#sendEmailModal">
+                                    <i class="fas fa-envelope" style="color:dodgerblue"></i>
+                                </button>
+                            </td>
+                        @else 
+                        <td></td>
+                        @endif
                     </tr>
                 @endif
             @empty
@@ -76,7 +89,7 @@
 @endsection
 
 @section('SendEmailModal')
-
+    <!-- SEND EMAIL MODAL -->
 <div class="modal fade" id="sendEmailModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -86,22 +99,26 @@
                     <span>&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form>
+            <form method="GET" action="{{ route('sendingEmail', $teachingClass->id) }}" >
+                @csrf
+                <div class="modal-body">
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" name="email" id="email" class="form-control" placeholder="Email Destination">
+                        <label for="destination">Email destination</label>
+                        <input type="email" name="destination" id="destination" class="form-control" placeholder="Email destination" required>
+                        <input type="hidden" name="senderName" value=" {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}" >
+                        <input type="hidden" name="senderEmail" value=" {{ Auth::user()->email}}" >
                     </div>
                     <div class="form-group">
-                        <label for="e_body">Email body</label>
-                        <textarea name="e_body" rows="7" id="e_body" class="form-control" placeholder="Email Body"></textarea>
+                        <label for="body">Email body</label>
+                        <textarea name="body" rows="7" id="body" class="form-control" placeholder="E-mail Body" required></textarea>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" data-dismiss="modal">Send</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit">Send</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+<!-- ./SEND EMAIL MODAL -->
 @endsection

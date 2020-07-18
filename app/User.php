@@ -29,7 +29,11 @@ class User extends Authenticatable
     }
 
     public function groups(){
-        return $this->belongsToMany('App\Group'); 
+        return $this->belongsToMany('App\Group', 'group_junctions', 'user_id', 'group_id'); 
+    }
+
+    public function leadingGroups(){
+        return $this->hasMany('App\Group'); 
     }
 
     public function teachingClasses(){
@@ -40,8 +44,15 @@ class User extends Authenticatable
         return $this->belongsToMany('App\TeachingClass', 'class_subscriptions', 'user_id', 'teaching_class_id');
     }
 
-    public function contributions(){
-        return $this->hasMany('App\Contribution','id');
+
+    public static function boot(){
+        parent::boot();
+
+        static::deleting(function (User  $user) {
+            $user->posts()->delete();
+            $user->comments()->delete();
+            $user->leadingGroups()->delete();
+        });
     }
 
     /**

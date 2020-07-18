@@ -16,7 +16,7 @@ class CreateClassSubscriptionsTable extends Migration
         Schema::create('class_subscriptions', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('teaching_class_id')->constrained()->onDelete('cascade');
             $table->softDeletes();
         });

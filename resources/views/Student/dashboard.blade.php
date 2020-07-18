@@ -67,14 +67,13 @@
                         <input type="hidden" name="class_id" id="class_id" value="{{$class->id}}">
                     </td>
                     <td>
-                        <a href="{{route('myclasses.homeworks.index',$class->id)}}" class="btn btn-primary">Go</a> 
+                        <a href="{{route('myclasses.posts.index',$class->id)}}" class="btn btn-primary">Go</a> 
                     </td>
                     <td>
                         <button class="btn btn-danger exit-class" data-toggle="modal" data-target="#exitClassModal">Exit</button>
                     </td>
                 </tr>
             </table>
-            
         </div>
     </div>
 </div>

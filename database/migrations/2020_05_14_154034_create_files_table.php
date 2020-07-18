@@ -17,7 +17,6 @@ class CreateFilesTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('title');
-            $table->binary('content'); 
             $table->foreignId('post_id')->constrained();
         });
     }

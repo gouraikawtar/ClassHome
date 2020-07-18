@@ -2,6 +2,7 @@
 /public/hot
 /public/homework_files
 /public/contribution_files
+/public/post_files
 /public/storage
 /storage/*.key
 /vendor

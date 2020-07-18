@@ -39,7 +39,7 @@
                             <i class="fas fa-user"></i> Welcome {{ Auth::user()->first_name }}
                         </a>
                         <div class="dropdown-menu">
-                            <a href="{{ url('profile') }}" class="dropdown-item">
+                            <a href="{{route('profile', Auth::user()->id)}}" class="dropdown-item">
                                 <i class="fas fa-user-circle"></i> Profile Settings
                             </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"

@@ -11,7 +11,7 @@
 <!-- Bootsrap CSS link -->
 <link rel="stylesheet" href="{{ mix('/css/theme.css') }}">
 <!-- Custom CSS link -->
-<link rel="stylesheet" href="{{ mix('/css/mesThemes.css') }}">
+<link rel="stylesheet" href="{{ mix('/css/myCustomTheme.css')}}"> 
 <!-- Fontawesome CSS link -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
 
@@ -26,17 +26,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav">
-                    <li class="nav-item px-2">
-                        <a href="{{ route('dashboard') }}" class="nav-link ">My classes</a>
+                    <li class="nav-item px-2" id="myClasses">
+                        <a href="{{ route('myclasses.index') }}" class="nav-link">My Classes</a>
                     </li>
-                    <li class="nav-item px-2">
-                        <a href="{{ route('posts') }}" class="nav-link ">Posts</a>
-                    </li>
-                    <li class="nav-item px-2 ">
-                        <a href="{{ route('homework') }}" class="nav-link ">Homework</a>
-                    </li>
-                    <li class="nav-item px-2 ">
-                        <a href="{{ route('grades') }}" class="nav-link ">Grades</a>
+                    <li class="nav-item px-2" id="archivedClasses">
+                        <a href="{{ route('myclasses.archive') }}" class="nav-link">Archived Classes</a>
                     </li>
                 </ul>
 
@@ -46,8 +40,8 @@
                             <i class="fas fa-user"></i> Welcome {{ Auth::user()->first_name }}
                         </a>
                         <div class="dropdown-menu">
-                            <a href="{{route('profile')}}" class="dropdown-item">
-                                <i class="fas fa-user-circle"></i> Profile
+                            <a href="{{route('profile', Auth::user()->id)}}" class="dropdown-item">
+                                <i class="fas fa-user-circle"></i> Profile settings
                             </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -74,7 +68,15 @@
     </footer>
     <!-- End copyrights footer -->
 
-    <script src="{{ mix('/js/theme.js') }}"></script>
+    <!-- Jquery link -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>    
+    <!-- Popper link -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS link -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!-- Custom JS -->
+    @yield('scripts')
 
 </body>
 

@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeworkController;
+use App\Mail\InvitationMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,14 +25,32 @@ Route::get('/',function(){
     return view('index');
 })->middleware('guest');
 
-Route::resource('/posts','PostController')-> only(['index', 'store', 'update', 'destroy']); 
+Route::middleware('auth')->group(function() {
+    Route::resource('/myclasses.posts','PostController')-> only(['index', 'store']); 
+    Route::post('/editPost', 'PostController@update')->name('editPost');
+    Route::post('/deletePost', 'PostController@destroy')->name('deletePost');
+    Route::get('/FileDownload/{name}','PostController@downloadFile')->name('files.download');
 
-Route::resource('/comments','CommentController') -> only(['store', 'destroy']); 
+});
 
-Route::resource('/users','UserController') -> only(['index', 'show', 'update', 'destroy']); 
+Route::middleware('auth')->group(function() {
+    Route::resource('/myclasses.comments', 'CommentController') -> only('store');
+    Route::post('/deleteComment', 'CommentController@destroy')->name('deleteComment');
+});
 
-Route::resource('/groups','GroupController') -> only(['index', 'store', 'update', 'destroy']); 
+Route::middleware('auth')->group(function() {
+    Route::resource('/myclasses.members', 'UserController') -> only(['index', 'destroy']);
+    Route::get('/profile/{user_id}', 'UserController@edit')->name('profile');
+    Route::put('/updateInformation/{user_id}', 'UserController@updateInformation')->name('updateInformation');
+    Route::put('/updatePassword/{user_id}', 'UserController@updatePassword')->name('updatePassword');
+    Route::get('/myclasses/{class}/invitation', 'UserController@inviteTeacher')->name('invitation');
+    Route::get('/sendingEmail', 'UserController@sendingEmail')->name('sendingEmail');
+});
 
+Route::middleware('auth')->group(function() {
+    Route::resource('/myclasses.groups', 'GroupController') -> only(['index', 'store', 'update']);
+    Route::post('/deleteGroup', 'GroupController@destroy')->name('deleteGroup');
+});
 
 
 // ------------------------------------ Temporary Routes---------------------------------
@@ -58,6 +78,8 @@ Route::resource('/myclasses.homeworks','HomeworkController')->only(['index','sto
 Route::get('/download/{name}','HomeworkController@downloadFile')->name('homeworks.download');
 Route::get('/myclasses/{class_id}/homeworks-search','HomeworkController@searchHomeworks')->name('homeworks.search');
 //------------------------------------------------------------------------------------------
+Route::post('/collaborate','ClassSubscriptionController@collaborate')->name('collaboration'); 
+Route::post('/deleteStudent', 'ClassSubscriptionController@deleteStudent')->name('deleteStudent');
 
 /**---------------------------- Route for ClassSubscriptionController ---------------------------------*/
 Route::post('/join','ClassSubscriptionController@joinClass');

@@ -1,18 +1,21 @@
 <div class="form-group">
     <label for="title">Title</label>
-    <input type="text" id="title" name="title" class="form-control">
+    <input type="text" id="title" name="title" class="form-control" placeholder="Post's title" required>
 </div>
 
 <div class="form-group">
-    <label>Upload file</label>
-        <div class="custom-file ">
-            <input id="file" type="file" name="file" class="custom-file-input">
-            <label for="file" class="custom-file-label ">Choose File</label>
+    <label for="content">Body</label>
+    <textarea name="content" id="content" rows="5" class="form-control" placeholder="Post's body" required></textarea>
+</div>
+
+<div class="form-group">
+    <div class="custom-file ">
+        <input type="file" class="@error('files') is-invalid @enderror" name="files[]" id="file" multiple="true">
+        <small class="form-text text-muted">Max size : 2mb</small>
+        <small class="form-text text-muted">Authorized extensions : pdf,docx,doc,ppt,pptx,xls,xlsx,png,jpg,jpeg,zip</small>
+            @error('files')
+                <div class="invalid-feedback" id="files_error">{{ $message }}</div>
+            @enderror
         </div>
-    <small class="form-text text-muted ">Max Size X</small>
 </div>
 
-<div class="form-group">
-    <label for="content">Content</label>
-    <textarea name="content" id="content" rows="7" class="form-control"></textarea>
-</div>

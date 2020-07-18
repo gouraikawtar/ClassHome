@@ -42,13 +42,12 @@ class TeachingClassController extends Controller
         }elseif(Auth::user()->role == 'teacher'){
             $teacher = Auth::user();
             //find its created classes
-            $classes = $teacher->teachingClasses()
-                        ->orderBy('created_at','desc')
-                        ->paginate(9);
-            //$classes = TeachingClass::where('user_id',Auth::user()->id)->orderBy('created_at','desc')->paginate(9);
+            $classes = TeachingClass::where('user_id',Auth::user()->id)->orderBy('created_at','desc')->paginate(9);
+            $subscriptions = Auth::user()->subscriptions()->orderBy('created_at','desc')->paginate(9);
             return view('Teacher.teacher-myclasses',[
                 'classes' => $classes,
-                'active' => 'index', 
+                'active' => 'index',
+                'collaboration' => $subscriptions
                 /* the 'active' parameter is about to define whether
                  * the tab should be active or no
                  */

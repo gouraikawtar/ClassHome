@@ -9,7 +9,7 @@
     @yield('title')
 
     <!-- Bootsrap CSS link -->
-    <link rel="stylesheet" href="{{ mix('/css/theme.css')}}">
+    <link rel="stylesheet" href="{{ mix('/css/theme.css')}}"
     <!-- Fontawesome CSS link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     <!-- Custom CSS link -->
@@ -39,7 +39,7 @@
                             <i class="fas fa-user"></i> Welcome {{ Auth::user()->first_name }}
                         </a>
                         <div class="dropdown-menu">
-                            <a href="{{ url('profile') }}" class="dropdown-item">
+                            <a href="{{ route('profile', Auth::user()->id ) }}" class="dropdown-item">
                                 <i class="fas fa-user-circle"></i> Profile Settings
                             </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"

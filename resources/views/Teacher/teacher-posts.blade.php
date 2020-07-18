@@ -40,34 +40,27 @@
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                             <!---------------EDIT--------------->
                             <button class="dropdown-item" data-mytitle="{{$post->title}}" data-mycontent="{{$post->content}}"
-                            data-postId="{{$post->id}}" data-status="{{$post->status}}" data-destination="{{$post->destination}}" 
+                            data-id="{{$post->id}}" data-status="{{$post->status}}" data-destination="{{$post->destination}}" 
                             data-toggle="modal" data-target="#editPostModal" >
                                 <small>Edit</small>
                             </button>
                             <!---------------END EDIT--------------->
 
                             <!--------------- DELETE --------------->
-                            <form method="POST" action="{{ route('posts.destroy', ['post'=>$post->id]) }}">
-                                @csrf
-                                @method('DELETE')
-                                <button class="dropdown-item" data-toggle="modal" type="submit">
-                                    <small>Delete</small>
-                                </button>
+                            <button class="dropdown-item" data-postid="{{$post->id}}" data-toggle="modal" data-target="#deletePostModal" >
+                                <small>Delete</small>
+                            </button>
                             <!--------------- END DELETE --------------->
                             </form>
                         </div>
                     </div>
                 @else
                     <!--------------- DELETE --------------->
-                    <div class="container">
+                    <div class="dropdown ml-auto">
                         <div class="form-group"> 
-                            <form method="POST" action="{{ route('posts.destroy', ['post'=>$post->id] ) }}">
-                            @csrf
-                            @method('DELETE')
-                                <button class="btn float-right close" type="submit" aria-label="Close" >
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </form>
+                            <button class="btn btn-light" data-postid="{{$post->id}}" data-toggle="modal" data-target="#deletePostModal" >
+                                <b><span class="glyphicon" aria-hidden="true">&times;</span></b>
+                            </button>
                         </div>
                     </div>
                     <!--------------- END DELETE --------------->
@@ -76,10 +69,25 @@
             <div class="post-body p-3">
                 <h5> {{ $post -> title}} </h5>
                 <p class="m-0 text-justify"> {{ $post->content }} </p>
+                <!------------------------ FILES --------------------->
+                @forelse ($post->files as $file)
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <div class="card p-0 bg-light">
+                            <div class="card-body d-flex justify-content-between align-items-center p-2">
+                                    <p class="m-0">{{ $file->title }}</p>
+                                    <a href="{{route('files.download',$file->title)}}" class="p-1"><i class="fas fa-upload" style="font-size: 1.3rem"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                @endforelse
+                <!------------------------END FILES --------------------->
             </div>
             
             <hr class="m-1 p-0 ">
-            <form class="post-addComment d-flex align-items-center bg-transparent p-3" method="POST" action=" {{ action('CommentController@store') }}" >
+            <form class="post-addComment d-flex align-items-center bg-transparent p-3" method="POST" action=" {{ route('myclasses.comments.store', $teachingClass->id) }}" >
                 @csrf
                 <div class="comment-profile-photo ">
                     @if ( Auth::user()->role == 'student' && Auth::user()->gender == 'female')
@@ -109,13 +117,9 @@
                 </div>
                 <div>
                     <div class="comment-body w-100 mx-2 ">
-                            <form method="POST" action="{{ route('comments.destroy', $comment->id ) }}">
-                            @csrf
-                            @method('DELETE')
-                                <button type="submit" class="close" aria-label="Close" >
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </form>
+                        <button type="submit" class="close" aria-label="Close" data-commentid="{{$comment->id}}" data-toggle="modal" data-target="#deleteCommentModal">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                         <div class="m-0 ">
                             <h6 class="mr-auto "><small class="font-weight-bold "> 
                                 {{  App\User::find($comment->user_id)->first_name }} {{  App\User::find($comment->user_id)->last_name }} </small>
@@ -150,10 +154,11 @@
                     <span>&times;</span>
                 </button>
             </div>
-            <form id="formRegister" class="form-horizontal" role="form" method="POST" action="{{ route('posts.store') }}">
+            <form id="formRegister" class="form-horizontal" role="form" method="POST" action="{{ route('myclasses.posts.store', $teachingClass->id) }}" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     @include('teacher-posts-form')
+                </div>
                 <div class="modal-footer">
                     <button class="btn btn-dark" type="submit" >Create</button>
                 </div>
@@ -173,12 +178,13 @@
                     <span>&times;</span>
                 </button>
             </div>
-            <form id="formRegister" class="form-horizontal" role="form" method="POST" action="{{ route('posts.update', 'test') }}">
-                @method('PATCH')
+            <form method="POST" action="{{route('editPost')}}" >
                 @csrf
                 <div class="modal-body">
+                    <input type="hidden" name="classId" value="{{ $teachingClass->id}}" >
                     <input type="hidden" name="postId" id="postId" value="" >
                     @include('teacher-posts-form')
+                </div>
                 <div class="modal-footer">
                     <button class="btn btn-dark" type="submit" >Save changes</button>
                 </div>
@@ -188,25 +194,122 @@
 </div>
 <!-- EDIT POST MODAL END -->
 
-<!-- SHOW CODE MODAL -->
-<div class="modal fade" id="showCode">
-    <div class="modal-dialog modal-lg">
+<!-- DELETE POST MODAL -->
+<div class="modal fade" id="deletePostModal">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header bg-warning text-white">
-                <h5 class="modal-title">Class Access Code </h5>
+                <h5 class="modal-title">Attention</h5>
                 <button class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <h1 id="code">bv65s2</h1>
+                <p>Are you sure you want to delete this post ?</p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-warning" data-dismiss="modal">Go back</button>
+                <form method="POST" action="{{ route('deletePost') }}">
+                    @csrf
+                    <input type="hidden" name="classId" value="{{ $teachingClass->id}}" >
+                    <input type="hidden" name="postId" id="postId" value="" >
+                    <button class="btn btn-warning" type="submit">Confirm</button>
+                </form>
+
+                <button class="btn btn-dark" data-dismiss="modal">Back</button>
             </div>
         </div>
     </div>
 </div>
-<!-- ./SHOW CODE MODAL -->
+<!-- END DELETE POST MODAL --> 
 
+<!-- DELETE COMMENT MODAL -->
+<div class="modal fade" id="deleteCommentModal">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title">Attention</h5>
+                <button class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this comment ?</p>
+            </div>
+            <div class="modal-footer">
+                <form method="POST" action="{{ route('deleteComment') }}">
+                    @csrf
+                    <input type="hidden" name="classId" value="{{ $teachingClass->id}}" >
+                    <input type="hidden" name="commentId" id="commentId" value="" >
+                    <button class="btn btn-warning" type="submit">Confirm</button>
+                </form>
+
+                <button class="btn btn-dark" data-dismiss="modal">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END DELETE POST MODAL -->
+
+@endsection
+
+@section('custom-js')
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+
+<!------------------------------------------ POST DESTINATION ---------------------------------->
+<script type="text/javascript">
+    function chooseDestination()
+        {
+            if (document.getElementById("status").value === "public") {
+                document.getElementById("destination").disabled='true';
+            } else {
+                document.getElementById("destination").disabled='';
+            }
+        }
+</script>
+<!--------------------------------------- POST DESTINATION END --------------------------------->
+
+<!-------------------------------------------- EDIT POST--------------------------------------->
+<script>
+    
+    $('#editPostModal').on('shown.bs.modal', function (event) {
+        var button = $(event.relatedTarget) 
+        var postId = button.data('id') 
+        var title = button.data('mytitle') 
+        var content = button.data('mycontent') 
+        var status= button.data('status')
+        var destination= button.data('destination')
+
+        var modal = $(this);
+
+        modal.find('.modal-body #postId').val(postId);
+        modal.find('.modal-body #title').val(title);
+        modal.find('.modal-body #content').val(content);
+        modal.find('.modal-body #status').val(status); 
+        modal.find('.modal-body #destination').val(destination); 
+
+    });
+
+    $('#deletePostModal').on('shown.bs.modal', function(event){
+        var button = $(event.relatedTarget) 
+        var postId = button.data('postid') 
+
+        var modal = $(this);
+
+        modal.find('.modal-footer #postId').val(postId);
+    });
+
+    $('#deleteCommentModal').on('shown.bs.modal', function(event){
+        var button = $(event.relatedTarget) 
+        var commentId = button.data('commentid') 
+
+        var modal = $(this);
+
+        modal.find('.modal-footer #commentId').val(commentId);
+    });
+
+</script>
+<!--------------------------------------EDIT POST END------------------------------------------>
 @endsection

@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     <!-- Custom CSS link -->
     <link rel="stylesheet" href="{{ mix('/css/myCustomTheme.css')}}"> 
+
 </head>
 
 <body>
@@ -30,7 +31,7 @@
                         <a href="{{ route('myclasses.index') }}" class="nav-link ">My Classes</a>
                     </li>
                     <li class="nav-item px-2">
-                        <a href="{{ url('posts') }}" class="nav-link ">Posts</a>
+                        <a href="{{ route('myclasses.posts.index', $teachingClass->id) }}" class="nav-link ">Posts</a>
                     </li>
                     <li class="nav-item px-2 ">
                         <a href="{{route('myclasses.homeworks.index', $teachingClass->id)}}" class="nav-link ">Homeworks</a>
@@ -49,7 +50,7 @@
                             <i class="fas fa-user"></i> Welcome {{ Auth::user()->first_name }}
                         </a>
                         <div class="dropdown-menu">
-                            <a href="{{ url('profile') }}" class="dropdown-item">
+                            <a href="{{ route('profile', Auth::user()->id ) }}" class="dropdown-item">
                                 <i class="fas fa-user-circle"></i> Profile Settings
                             </a>
                             <a href="{{ route('myclasses.edit',$teachingClass->id) }}" class="dropdown-item">
@@ -125,7 +126,7 @@
                                 <h4 class="display-4 ">
                                     <i class="fas fa-user-check"></i>
                                 </h4>
-                                <a href="{{ route('users.index') }}" class="btn btn-outline-light btn-sm ">View</a>
+                                <a href="{{ route('myclasses.members.index', $teachingClass->id) }}" class="btn btn-outline-light btn-sm ">View</a>
                             </div>
                         </div>
 
@@ -135,7 +136,7 @@
                                 <h4 class="display-4 ">
                                     <i class="fas fa-users "></i>
                                 </h4>
-                                <a href="{{ url('groups') }}" class="btn btn-outline-light btn-sm ">View</a>
+                                <a href="{{ route('myclasses.groups.index', $teachingClass->id) }}" class="btn btn-outline-light btn-sm ">View</a>
                             </div>
                         </div>
                     </div>
@@ -186,40 +187,6 @@
     <!---------------------------------------- END MODALS -------------------------------------->
 
 
-<!------------------------------------------ POST DESTINATION ---------------------------------->
-<script type="text/javascript">
-    function chooseDestination()
-        {
-            if (document.getElementById("status").value === "public") {
-                document.getElementById("destination").disabled='true';
-            } else {
-                document.getElementById("destination").disabled='';
-            }
-        }
-</script>
-<!--------------------------------------- POST DESTINATION END --------------------------------->
-
-
-<!-------------------------------------------- EDIT POST--------------------------------------->
-<script>
-    $('#editPostModal').on('show.bs.modal', function (event) {
-        console.log('Modal opened');
-        var button = $(event.relatedTarget) 
-        var title = button.data('mytitle') 
-        var content = button.data('mycontent') 
-        var postId = button.data('postId') 
-        var status= button.data('status')
-        var destination= button.data('destination')
-        var modal = $(this);
-        modal.find('.modal-body #title').val(title);
-        modal.find('.modal-body #content').val(content);
-        modal.find('.modal-body #postId').val(postId);
-        modal.find('.modal-body #status').val(status); 
-        modal.find('.modal-body #destination').val(destination); 
-    });
-</script>
-<!--------------------------------------EDIT POST END------------------------------------------>
- 
     <!-- Jquery link -->
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>    
     <!-- Popper link -->

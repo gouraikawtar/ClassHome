@@ -25,7 +25,6 @@ class CreateUsersTable extends Migration
             $table->string('phone_number');
             $table->string('password');
             $table->enum('role',['student', 'teacher', 'admin']);
-            $table->boolean('responsible')->default(false); 
             $table->softDeletes(); 
         });
     }
