@@ -44,8 +44,9 @@ Route::middleware('auth')->group(function() {
 });
 
 Route::middleware('auth')->group(function() {
-    Route::resource('/myclasses.groups', 'GroupController') -> only(['index', 'store', 'update']);
+    Route::resource('/myclasses.groups', 'GroupController') -> only(['index', 'store']);
     Route::post('/deleteGroup', 'GroupController@destroy')->name('deleteGroup');
+    Route::post('/updateName', 'GroupController@updateName')->name('updateName');
 });
 
 
@@ -76,11 +77,11 @@ Route::delete('/myclasses/{class_id}/exit','TeachingClassController@exitClass');
 Route::resource('/myclasses.homeworks','HomeworkController')->only(['index','store','update','destroy','show','edit']);
 Route::get('/download/{name}','HomeworkController@downloadFile')->name('homeworks.download');
 //------------------------------------------------------------------------------------------
-Route::post('/collaborate','ClassSubscriptionController@collaborate')->name('collaboration'); 
-Route::post('/deleteStudent', 'ClassSubscriptionController@deleteStudent')->name('deleteStudent');
 
 /**---------------------------- Route for ClassSubscriptionController ---------------------------------*/
 Route::post('/join','ClassSubscriptionController@joinClass');
+Route::post('/collaborate','ClassSubscriptionController@collaborate')->name('collaboration'); 
+Route::post('/deleteMember', 'ClassSubscriptionController@deleteMember')->name('deleteMember');
 /**------------------------------------------------------------------------------------------*/
 
 /**----------------------------- Routes for ContributionController ------------------------- */

@@ -28,7 +28,7 @@
                     <th>Name</th>
                     <th>Group leader</th>
                     <th>Email</th>
-                    <th colspan="3">Options</th>
+                    <th colspan="4">Options</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,8 +50,9 @@
                             </button>
                         </td>
                         <td>
-                        <button class="btn btn-light" data-groupid="{{$group->id}}" data-toggle="modal" data-target="#deleteGroupModal">
-                                <i class="fas fa-trash group_del"></i>
+                            <button class="btn btn-light" data-toggle="modal" data-target="#editNameGroupModal" data-groupid="{{ $group->id }}" 
+                                data-groupname="{{ $group->name }}">
+                                <i class="fa fa-edit"></i>
                             </button>
                         </td>
                         <td>
@@ -59,6 +60,11 @@
                                 <i class="fas fa-envelope group_em"></i>
                             </button>
                         </td>
+                        <td>
+                            <button class="btn btn-light" data-groupid="{{$group->id}}" data-toggle="modal" data-target="#deleteGroupModal">
+                                    <i class="fas fa-trash group_del"></i>
+                                </button>
+                            </td>
                     </tr>
                 @empty
                     
@@ -71,6 +77,141 @@
 @endsection
 
 @section('custom-modal')
+
+    <!-- ADD GROUP MODAL -->
+<div class="modal fade" id="addGroupModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title">Add Group</h5>
+                <button class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            
+            <form method="POST" action="{{ action('GroupController@store', $teachingClass->id) }}" >
+                @csrf
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" class="form-control" name="groupName" placeholder="Enter name of the group" required>
+                    </div>
+
+                    <div class="form-group">
+                        <select class="custom-select" class="form-control" name="groupLeader" required>
+                            <option selected disabled value="">Group leader</option>
+                            @forelse ($members as $member)
+                                <option value="{{ $member->id }}"> {{$member->first_name}} {{ $member->last_name }} </option>
+                            @empty
+                            @endforelse
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <select class="custom-select" class="form-control" name="member2" required>
+                            <option selected disabled value="">Member 2</option>
+                            @forelse ($members as $member)
+                                <option value="{{ $member->id }}"> {{$member->first_name}} {{ $member->last_name }} </option>
+                            @empty
+                            @endforelse
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <select class="custom-select" class="form-control" name="member3" required>
+                            <option selected disabled value="">Member 3</option>
+                            @forelse ($members as $member)
+                                <option value="{{ $member->id }}"> {{$member->first_name}} {{ $member->last_name }} </option>
+                            @empty
+                            @endforelse
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-warning" value="Create group">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+    <!-- ./ADD GROUP MODAL -->
+
+    <!-- VIEW GROUP DETAILS MODAL -->
+<div class="modal fade" id="viewGroupModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title">Group details</h5>
+                <button class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Group members</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gpInfo">
+                        <tr>
+                            <td>1</td>
+                            <td><input type="text" id="firststudentName" value="" class="form-control" readonly /></td>
+                            <td><input type="text" id="firststudentEmail" value="" class="form-control" disabled /></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><input type="text" id="secondstudentName" value="" class="form-control" disabled /></td>
+                            <td><input type="email" id="secondstudentEmail" value="" class="form-control" disabled /></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><input type="text" id="thirdstudentName" value="" class="form-control" disabled /></td>
+                            <td><input type="email" id="thirdstudentEmail" value="" class="form-control" disabled /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-dark btn-md" data-dismiss="modal">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- ./VIEW GROUP DETAILS -->
+
+    <!-- EDIT GROUP'S NAME MODAL -->
+<div class="modal fade" id="editNameGroupModal">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title">Attention</h5>
+                <button class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ route('updateName') }}" >
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Group's Name</label>
+                        <input type="text" class="form-control" name="groupName" id="groupName" required>
+                        <input type="hidden" class="form-control" name="groupId" id="groupId">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- END EDIT GROUP'S NAME MODAL -->   
+
     <!-- SEND EMAIL TO GROUP MODAL -->
     <div class="modal fade" id="emailGpModal">
         <div class="modal-dialog modal-lg">
@@ -104,112 +245,6 @@
     </div>
     <!-- ./SEND EMAIL TO GROUP MODAL -->
 
-    <!-- VIEW GROUP DETAILS MODAL -->
-    <div class="modal fade" id="viewGroupModal">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-dark text-white">
-                    <h5 class="modal-title">Group details</h5>
-                    <button class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-hover">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>#</th>
-                                <th>Group members</th>
-                                <th>Email</th>
-                            </tr>
-                        </thead>
-                        <tbody id="gpInfo">
-                            <tr>
-                                <td>1</td>
-                                <td><input type="text" id="firststudentName" value="" class="form-control" readonly /></td>
-                                <td><input type="text" id="firststudentEmail" value="" class="form-control" disabled /></td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td><input type="text" id="secondstudentName" value="" class="form-control" disabled /></td>
-                                <td><input type="email" id="secondstudentEmail" value="" class="form-control" disabled /></td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td><input type="text" id="thirdstudentName" value="" class="form-control" disabled /></td>
-                                <td><input type="email" id="thirdstudentEmail" value="" class="form-control" disabled /></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-dark btn-md" data-dismiss="modal">Back</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ./VIEW GROUP DETAILS -->
-    
-    <!-- ADD GROUP MODAL -->
-    <div class="modal fade" id="addGroupModal">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-warning text-white">
-                    <h5 class="modal-title">Add Group</h5>
-                    <button class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
-                </div>
-                
-                <form method="POST" action="{{ action('GroupController@store', $teachingClass->id) }}" >
-                    @csrf
-                    <div class="modal-body">
-
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" class="form-control" name="groupName" placeholder="Enter name of the group" required>
-                        </div>
-
-                        <div class="form-group">
-                            <select class="custom-select" class="form-control" name="groupLeader" required>
-                                <option selected disabled value="">Group leader</option>
-                                @forelse ($members as $member)
-                                    <option value="{{ $member->id }}"> {{$member->first_name}} {{ $member->last_name }} </option>
-                                @empty
-                                @endforelse
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <select class="custom-select" class="form-control" name="member2" required>
-                                <option selected disabled value="">Member 2</option>
-                                @forelse ($members as $member)
-                                    <option value="{{ $member->id }}"> {{$member->first_name}} {{ $member->last_name }} </option>
-                                @empty
-                                @endforelse
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <select class="custom-select" class="form-control" name="member3" required>
-                                <option selected disabled value="">Member 3</option>
-                                @forelse ($members as $member)
-                                    <option value="{{ $member->id }}"> {{$member->first_name}} {{ $member->last_name }} </option>
-                                @empty
-                                @endforelse
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <input type="submit" class="btn btn-warning" value="Create group">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- ./ADD GROUP MODAL -->
-
     <!-- DELETE GROUP MODAL -->
 <div class="modal fade" id="deleteGroupModal">
     <div class="modal-dialog modal-md">
@@ -236,7 +271,7 @@
         </div>
     </div>
 </div>
-<!-- END DELETE GROUP MODAL -->
+    <!-- END DELETE GROUP MODAL -->
 @endsection
 
 @section('custom-js')
@@ -275,6 +310,17 @@
         var modal = $(this);
 
         modal.find('.modal-footer #groupId').val(groupId);
+    });
+
+    $('#editNameGroupModal').on('shown.bs.modal', function(event){
+        var button = $(event.relatedTarget) 
+        var groupName = button.data('groupname') 
+        var groupId = button.data('groupid')
+
+        var modal = $(this);
+
+        modal.find('.modal-body #groupName').val(groupName);
+        modal.find('.modal-body #groupId').val(groupId);
     });
 
 </script>

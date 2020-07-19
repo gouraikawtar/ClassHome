@@ -137,7 +137,7 @@ class ClassSubscriptionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function deleteStudent(Request $request){
+    public function deleteMember(Request $request){
 
         $class_id = $request->input('classId');
         $user_id = $request->input('userId');

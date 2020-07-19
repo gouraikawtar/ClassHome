@@ -37,17 +37,6 @@ class GroupController extends Controller
         }
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -85,9 +74,14 @@ class GroupController extends Controller
      * @param  \App\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Group $group)
+    public function updateName(Request $request)
     {
-        //
+        $group = Group::find( $request->input('groupId') );
+        $group->name = $request->input('groupName'); 
+
+        $group->save(); 
+
+        return redirect()->back();
     }
 
     /**

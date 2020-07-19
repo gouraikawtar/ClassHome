@@ -18,7 +18,6 @@ class CreateClassSubscriptionsTable extends Migration
             $table->timestamps();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('teaching_class_id')->constrained()->onDelete('cascade');
-            $table->softDeletes();
         });
     }
 

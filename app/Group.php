@@ -21,6 +21,11 @@ class Group extends Model
         return $this->hasMany('App\Post'); 
     }
 
+    public function teachingClass(){
+        return $this->belongsTo('App\TeachingClass');
+    }
+
+    
     public static function boot(){
         parent::boot();
 

@@ -20,8 +20,8 @@ class CreatePostsTable extends Migration
             $table->text('content'); 
             $table->enum('status',['public', 'specific'])-> default('public');
             $table->foreignId('group_id')->nullable()->constrained(); 
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('teaching_class_id')->constrained();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('teaching_class_id')->constrained()->cascadeOnDelete();
         });
     }
 

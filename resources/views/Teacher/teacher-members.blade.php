@@ -27,7 +27,7 @@
                     <th></th>
                     <th>Full Name</th>
                     <th>Email</th>
-                    <th></th>
+                    <th colspan="2">Options</th>
                 </tr>
             </thead>
             <tbody>
@@ -48,6 +48,13 @@
                         <td></td>
                         <td>{{ $teacher->first_name }} {{ $teacher->last_name }}</td>
                         <td>{{ $teacher->email }}</td>
+                        <td>
+                            @if ( App\User::find($teachingClass->user_id)->id == Auth::user()->id)
+                                <button class="btn btn-light" data-userid="{{$teacher->id}}" data-toggle="modal" data-target="#deleteMemberModal">
+                                    <i class="fas fa-user-minus delete_user"></i>
+                                </button>
+                                @endif
+                        </td>
                         <td>
                             @if ( $teacher->id != Auth::user()->id)
                                 <button class="btn btn-light" data-toggle="modal" data-target="#sendEmailModal">
@@ -83,7 +90,7 @@
                                 <td>{{ $student-> first_name }} {{ $student-> last_name }}</td>
                                 <td>{{ $student-> email }}</td>
                                 <td>
-                                    <button class="btn btn-light" data-userid="{{$student->id}}" data-toggle="modal" data-target="#deleteStudentModal">
+                                    <button class="btn btn-light" data-userid="{{$student->id}}" data-toggle="modal" data-target="#deleteMemberModal">
                                         <i class="fas fa-user-minus delete_user"></i>
                                     </button>
                                 </td>
@@ -166,8 +173,8 @@
 </div>
 <!-- ./SEND EMAIL MODAL -->
 
-<!-- DELETE STUDENT MODAL -->
-<div class="modal fade" id="deleteStudentModal">
+<!-- DELETE MEMBER MODAL -->
+<div class="modal fade" id="deleteMemberModal">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header bg-warning text-white">
@@ -180,23 +187,22 @@
                 <p>Are you sure you want to delete this member?</p>
             </div>
             <div class="modal-footer">
-                <form method="POST" action="{{ route('deleteStudent') }}">
+                <form method="POST" action="{{ route('deleteMember') }}">
                     @csrf
                     <input type="hidden" name="classId" value="{{ $teachingClass->id}}" >
                     <input type="hidden" name="userId" id="userId" value="" >
                     <button class="btn btn-warning" type="submit">Confirm</button>
                 </form>
-
                 <button class="btn btn-dark" data-dismiss="modal">Back</button>
             </div>
         </div>
     </div>
 </div>
-<!-- END DELETE STUDENT MODAL -->
+<!-- END DELETE MEMBER MODAL -->
 
 @endsection
 
-@section('scripts')
+@section('custom-js')
     
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
@@ -204,7 +210,7 @@
 
 <script>   
 
-    $('#deleteStudentModal').on('shown.bs.modal', function(event){
+    $('#deleteMemberModal').on('shown.bs.modal', function(event){
         var button = $(event.relatedTarget) 
         var userId = button.data('userid') 
 
