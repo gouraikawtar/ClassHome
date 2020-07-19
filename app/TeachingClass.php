@@ -9,6 +9,9 @@ class TeachingClass extends Model
 {
     use SoftDeletes;
     
+    public function teacher(){
+        return $this->belongsTo('App\User');
+    }
     public function posts(){
         return $this->hasMany('App\Post');
     }

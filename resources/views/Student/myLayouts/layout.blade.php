@@ -27,13 +27,16 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav">
                     <li class="nav-item px-2">
-                        <a href="{{ route('myclasses.index') }}" class="nav-link ">My classes</a>
+                        <a href="{{ route('myclasses.index') }}" class="nav-link ">My Classes</a>
                     </li>
                     <li class="nav-item px-2">
                         <a href="{{ route('myclasses.posts.index', $teachingClass->id) }}" class="nav-link ">Posts</a>
                     </li>
                     <li class="nav-item px-2 ">
                         <a href="{{route('myclasses.homeworks.index', $teachingClass->id)}}" class="nav-link ">Homework</a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a href="{{ route('myclasses.contributions.index', $teachingClass->id) }}" class="nav-link">Contibutions</a>
                     </li>
                     <li class="nav-item px-2 ">
                         <a href="{{ route('grades',$teachingClass->id) }}" class="nav-link">Grades</a>
@@ -80,11 +83,7 @@
         <section id="actions" class="py-3 mb-5 bg-light shadow-sm">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-4 offset-md-4">
-                        <div class="input-group">
-                            <input type="text" name="search" id="search" class="form-control shadow-sm" placeholder="Search">
-                        </div>
-                    </div>
+                    @yield('actions')
                 </div>
             </div>
         </section>
@@ -104,7 +103,7 @@
                                 <h4 class="display-4">
                                     <i class="fas fa-folder"></i>
                                 </h4>
-                                <a href="{{ url('/library') }}" class="btn btn-outline-light btn-sm">View</a>
+                                <a href="{{ route('myclasses.library.index',$teachingClass->id) }}" class="btn btn-outline-light btn-sm">View</a>
                             </div>
                         </div>
                         <div class="card text-center bg-primary text-white mb-3 shadow">
@@ -151,8 +150,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <!-- Bootstrap JS link -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-    {{-- Custom JS --}}
+    <!-- Custom JS -->
     @yield('custom-js')
 
 </body>

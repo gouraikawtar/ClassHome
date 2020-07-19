@@ -36,6 +36,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Group'); 
     }
 
+    public function teachingClasses(){
+        return $this->hasMany('App\TeachingClass');
+    }
+
     public function subscriptions(){
         return $this->belongsToMany('App\TeachingClass', 'class_subscriptions', 'user_id', 'teaching_class_id');
     }

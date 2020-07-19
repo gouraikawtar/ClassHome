@@ -19,7 +19,7 @@
 
 <body>
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0 fixed-top">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0 fixed-top shadow">
         <div class="container">
             <span class="navbar-brand">ClassHome</span>
             <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
@@ -36,11 +36,11 @@
                     <li class="nav-item px-2 ">
                         <a href="{{route('myclasses.homeworks.index', $teachingClass->id)}}" class="nav-link ">Homeworks</a>
                     </li>
-                    <li class="nav-item px-2 ">
-                        <a href="{{ route('grades',$teachingClass->id) }}" class="nav-link">Grades</a>
-                    </li>
                     <li class="nav-item px-2">
                         <a href="{{ route('myclasses.contributions.index', $teachingClass->id) }}" class="nav-link">Contibutions</a>
+                    </li>
+                    <li class="nav-item px-2 ">
+                        <a href="{{ route('grades',$teachingClass->id) }}" class="nav-link">Grades</a>
                     </li>
                 </ul>
 
@@ -116,7 +116,7 @@
                                 <h4 class="display-4 ">
                                     <i class="fas fa-folder "></i>
                                 </h4>
-                                <a href="{{ url('library') }}" class="btn btn-outline-light btn-sm ">View</a>
+                                <a href="{{ route('myclasses.library.index',$teachingClass->id) }}" class="btn btn-outline-light btn-sm ">View</a>
                             </div>
                         </div>
 
@@ -187,13 +187,12 @@
     <!---------------------------------------- END MODALS -------------------------------------->
 
 
-    <!-- Jquery links -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
-
+    <!-- Jquery link -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>    
+    <!-- Popper link -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <!-- Bootstrap JS link -->
-    <script src="{{ mix('js/theme.js')}}"></script>
-    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <!-- Custom JS -->
     @yield('custom-js')
 

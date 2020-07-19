@@ -11,7 +11,14 @@
     </a>
 </div>
 <div class="col-md-4 offset-2">
-    <input type="text" name="search" id="search" class="form-control shadow" placeholder="Search">
+    <form method="GET" action="{{route('homeworks.search',$teachingClass->id)}}">
+        <div class="input-group">
+            <input type="text" name="search" id="search" class="form-control shadow" placeholder="Search">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+            </span>
+        </div>
+    </form>
 </div>
 @endsection
 
@@ -31,11 +38,21 @@
         </button>
     </div>
     @endif
+    @if (session()->has('homework_deleted'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>{{ session()->get('homework_deleted') }}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    @endif
+
     <div class="card shadow-sm">
         <div class="card-header">
             <h4>Homework</h4>
         </div>
         <table class="table table-hover" id="datatable">
+            <input type="hidden" name="class_id" id="class_id" value="{{$teachingClass->id}}">
             <thead class="thead-light">
                 <tr>
                     <th></th>
@@ -46,23 +63,29 @@
                 </tr>
             </thead>
             <tbody>
-                <input type="hidden" name="class_id" id="class_id" value="{{$teachingClass->id}}">
                 @foreach ($homeworks as $homework)
                 <tr>
                     <td>
                         <input type="hidden" id="id_hw" name="id_hw" value="{{$homework->id}}">
-                        <input type="hidden" id="desc_hw" name="desc_hw" value="{{$homework->description}}">
                     </td>
                     <td>{{$homework->title}}</td>
                     <td>{{Carbon\Carbon::parse($homework->created_at)->format('Y-m-d')}}</td>
                     <td>{{$homework->deadline}}</td>
-                    <td><a href="{{route('myclasses.homeworks.show',[$teachingClass->id,$homework->id])}}"><i class="view_hw fas fa-info-circle" id=""></i></a></td>
-                    <td><i class="delete_hw fas fa-trash" id="" data-toggle="modal" data-target="#deleteHwModal"></i></td>
-                    @if (Carbon\Carbon::now()->format('Y-m-d') > $homework->deadline)
-                    <td></td>
-                    @else
-                    <td><a href="{{route('myclasses.homeworks.edit',[$teachingClass->id,$homework->id])}}"><i class="edit_hw fas fa-edit" id=""></i></a></td>
-                    @endif
+                    <td>
+                        <a href="{{route('myclasses.homeworks.show',[$teachingClass->id,$homework->id])}}" class="view_hw">
+                            <i class="fas fa-info-circle"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" class="delete_hw" data-toggle="modal" data-target="#deleteHwModal">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{route('myclasses.homeworks.edit',[$teachingClass->id,$homework->id])}}" class="edit_hw">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
@@ -122,7 +145,6 @@
                         <button name="create" class="btn btn-dark" type="submit">Create</button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
@@ -143,7 +165,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-dark" data-dismiss="modal">Back</button>
-                <form id="delete_homework_form" method="POST" action="/homeworks/">
+                <form id="delete_homework_form" method="POST" action="/myclasses/">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-danger" type="submit">Delete</button>
@@ -160,18 +182,29 @@
         var class_id = document.getElementById("class_id").value;
         var tr = this.parentElement.parentElement;
         var homework_id = tr.children[0].children[0].value;
-    
+        
         //Setting up the action for the delete form 
         document.getElementById("delete_homework_form").action = "/myclasses/"+class_id+"/homeworks/"+homework_id;
     }
 
+    function clickOnDelete(){
+        var deleteButtons = document.getElementsByClassName("delete_hw");
+        for (let i = 0; i < deleteButtons.length; i++) {
+            deleteButtons[i].addEventListener("click",deleteHomework);
+        }
+    }
+
     $(document).ready(function(){
+        //Get class id
+        var class_id = document.getElementById("class_id").value;
+        //
+        clickOnDelete();
+        //
         if(localStorage.getItem("success")){
             $('#success-msg').css('display', 'block')
             localStorage.clear();
         }
         //Store data using Ajax
-        var class_id = document.getElementById("class_id").value;
         $('#create_homework_form').on('submit', function(e){
             e.preventDefault();
             $('#title-error').html("");
@@ -219,12 +252,6 @@
             })
         })
         //alert(1);
-
-        var delete_icon = document.getElementsByClassName("delete_hw");
-
-        for (let i = 0; i < delete_icon.length; i++) {
-            delete_icon[i].addEventListener("click",deleteHomework);
-        }
     })
 </script>
 @endsection

@@ -11,7 +11,14 @@
     </a>
 </div>
 <div class="col-md-4 offset-2">
-    <input type="text" name="search" id="search" class="form-control shadow" placeholder="Search">
+    <form method="GET" action="{{route('myclasses.search')}}">
+        <div class="input-group">
+            <input type="text" name="search" id="search" class="form-control shadow-sm" placeholder="Search">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+            </span>
+        </div>
+    </form>
 </div>
 @endsection
 
@@ -54,7 +61,19 @@
             @else
             <p class="card-text">{{$class->description}}</p> 
             @endif
-            <a href="{{route('myclasses.posts.index',$class->id)}}" class="btn btn-primary">Go</a>
+            <table>
+                <tr>
+                    <td>
+                        <input type="hidden" name="class_id" id="class_id" value="{{$class->id}}">
+                    </td>
+                    <td>
+                        <a href="{{route('myclasses.posts.index',$class->id)}}" class="btn btn-primary">Go</a> 
+                    </td>
+                    <td>
+                        <button class="btn btn-danger exit-class" data-toggle="modal" data-target="#exitClassModal">Exit</button>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>

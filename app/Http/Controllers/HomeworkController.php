@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Contribution;
 use App\Homework;
 use App\TeachingClass;
 use App\HomeworkDocument;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -23,10 +23,12 @@ class HomeworkController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($class_id)
+    public function index(Request $request,$class_id)
     {
         $teachingClass = TeachingClass::find($class_id);
-        $homeworks = Homework::where('teaching_class_id',$class_id)->orderBy('created_at','desc')->paginate(8);
+        $homeworks = $teachingClass->homeworks()
+                    ->orderBy('created_at','desc')
+                    ->paginate(8);
         if(Auth::user()->role == 'student'){
             return view('Student.homework',[
                 'homeworks' => $homeworks,
@@ -76,19 +78,15 @@ class HomeworkController extends Controller
             $homework->title = $request->input('title');
             $homework->description = $request->input('desc');
             $homework->deadline = $request->input('deadline');
-            //$homework->teaching_class_id = $class_id;
             $homework->user_id = Auth::user()->id;
             //Database persistence
             $homework->teachingClass()->associate($teachingClass)->save();
-            //getting the homework's id
-            $idHomework = $homework->id;
             //if the homework has joined files
             if($request->hasFile('files')){
                 //
                 $i = 0;
                 foreach ($request->file('files') as $uploadedFile) {
                     $string = Str::slug($homework->title,'-').'-'.Str::random(6);
-                    //$string = 'homework_doc_'.$idHomework.'_'.++$i;
                     $fileName = $string.'.'.$uploadedFile->extension();
                     $uploadedFile->move(public_path().'/homework_files/', $fileName);
                     //HomeworkDocument instantiation
@@ -98,6 +96,15 @@ class HomeworkController extends Controller
                     $file->homework()->associate($homework)->save();
                 }
             }
+            //Create contributions
+            $students = $teachingClass->students;
+            foreach ($students as $student) {
+                $contribution = new Contribution();
+                $contribution->title = $homework->title;
+                $contribution->user_id = $student->id;
+                $contribution->homework()->associate($homework)->save();
+            }
+            //return response
             return response()->json(['success' => '1']);
         }
     }
@@ -203,14 +210,35 @@ class HomeworkController extends Controller
      * @param  \App\Homework  $homework
      * @return \Illuminate\Http\Response
      */
-    public function destroy($class_id, $id)
+    public function destroy(Request $request, $class_id, $id)
     {
         $homework = Homework::find($id);
         $homework->delete();
+        $request->session()->flash('homework_deleted', 'Homework successefully deleted');
         return redirect()->route('myclasses.homeworks.index',$class_id);
     }
 
     public function downloadFile($fileName){
         return response()->download(public_path('/homework_files/'.$fileName));
+    }
+
+    public function searchHomeworks(Request $request, $class_id){
+        $value = $request->get('search');
+        $teachingClass = TeachingClass::find($class_id);
+        $homeworks = $teachingClass->homeworks()
+                    ->where('title','like','%'.$value.'%')
+                    ->orderBy('created_at','desc')
+                    ->paginate(8);
+        if(Auth::user()->role == 'student'){
+            return view('Student.homework',[
+                'homeworks' => $homeworks,
+                'teachingClass' =>  $teachingClass,
+            ]);
+        }elseif(Auth::user()->role == 'teacher'){
+            return view('Teacher.teacher-homework',[
+                'homeworks' => $homeworks,
+                'teachingClass' =>  $teachingClass,
+            ]);
+        }
     }
 }
