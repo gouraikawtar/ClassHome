@@ -11,7 +11,7 @@
     </a>
 </div>
 <div class="col-md-4 offset-2">
-    <form method="GET" action="">
+    <form method="GET" action=" {{route('groups.search',$teachingClass->id)}} ">
         <div class="input-group">
             <input type="text" name="search" id="search" class="form-control shadow" placeholder="Search">
             <span class="input-group-btn">

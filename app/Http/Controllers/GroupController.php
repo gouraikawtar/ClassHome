@@ -17,7 +17,11 @@ class GroupController extends Controller
      */
     public function index($class_id)
     {
-        $groups = Group::where('teaching_class_id',$class_id)->with('users')->with('responsible')->get();
+        $groups = Group::where('teaching_class_id',$class_id)
+                ->with('users')
+                ->with('responsible')
+                ->orderBy('created_at','desc')
+                ->get();
         $teachingClass = TeachingClass::find($class_id);
         $members = $teachingClass->students()->where('role', 'student')->get(); 
         
@@ -33,7 +37,7 @@ class GroupController extends Controller
                 'groups'=>$groups,
                 'teachingClass'=>$teachingClass,
                 'members'=>$members
-        ]) ;
+            ]);
         }
     }
 
@@ -96,6 +100,33 @@ class GroupController extends Controller
         Group::destroy($request->input('groupId'));
         
         return redirect()-> route('myclasses.groups.index', $class_id);  
+    }
+
+    public function searchGroups(Request $request, $class_id){
+        $value = $request->get('search');
+        $teachingClass = TeachingClass::find($class_id);
+        $groups = $teachingClass->groups()
+                    ->where('name','like','%'.$value.'%')
+                    ->with('users')
+                    ->with('responsible')
+                    ->orderBy('created_at','desc')
+                    ->get();
+        $members = $teachingClass->students()->where('role', 'student')->get(); 
+        
+        if(Auth::user()->role == 'student'){
+            return view('Student.groups',  [
+                'groups'=>$groups,
+                'teachingClass'=>$teachingClass, 
+                'members'=>$members
+            ]); 
+        } 
+        elseif (Auth::user()->role == 'teacher'){
+            return view('Teacher.teacher-groups', [
+                'groups'=>$groups,
+                'teachingClass'=>$teachingClass,
+                'members'=>$members
+            ]);
+        }
     }
 
 }

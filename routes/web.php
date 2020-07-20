@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function() {
     Route::resource('/myclasses.groups', 'GroupController') -> only(['index', 'store']);
     Route::post('/deleteGroup', 'GroupController@destroy')->name('deleteGroup');
     Route::post('/updateName', 'GroupController@updateName')->name('updateName');
+    Route::get('/myclasses/{class_id}/members-search','GroupController@searchGroups')->name('groups.search');
 });
 
 
