@@ -39,7 +39,7 @@
                     <td>{{$file->title}}</td>
                     <td>{{Carbon\Carbon::parse($file->created_at)->format('Y-m-d')}}</td>
                     <td>
-                        <a href="{{route('homeworks.download',$file->title)}}">
+                        <a href="{{route('homeworks.download',$file->title)}}" class="btn btn-light">
                             <i class="fas fa-download"></i> Download 
                         </a>
                     </td>

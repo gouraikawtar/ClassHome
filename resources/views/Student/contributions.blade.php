@@ -64,13 +64,13 @@
                 @else
                     @if ($homework->contributions()->where('user_id','=',Auth::user()->id)->first()['status'] == 'Issued')
                     <td>
-                        <a href="#" class="edit_contr" data-toggle="modal" data-target="#editModal">
+                        <a href="#" class="btn btn-light edit_contr" data-toggle="modal" data-target="#editModal">
                             <i class="fas fa-edit"></i> Edit
                         </a>
                     </td>                     
                     @else
                     <td>
-                        <a href="#" class="import_contr" data-toggle="modal" data-target="#importModal">
+                        <a href="#" class="btn btn-light import_contr" data-toggle="modal" data-target="#importModal">
                             <i class="fas fa-file-import"></i> Import
                         </a>
                     </td>

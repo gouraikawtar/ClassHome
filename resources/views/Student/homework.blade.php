@@ -43,8 +43,8 @@
                 <td>{{Carbon\Carbon::parse($homework->created_at)->format('Y-m-d')}}</td>
                 <td>{{$homework->deadline}}</td>
                 <td>
-                    <a href="{{route('myclasses.homeworks.show',[$teachingClass->id,$homework->id])}}">
-                        <i class="fas fa-angle-double-right"></i> Details
+                    <a href="{{route('myclasses.homeworks.show',[$teachingClass->id,$homework->id])}}" class="btn btn-light">
+                        <i class="fas fa-info-circle"></i> Details
                     </a>
                 </td>
             </tr>

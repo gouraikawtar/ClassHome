@@ -72,17 +72,17 @@
                     <td>{{Carbon\Carbon::parse($homework->created_at)->format('Y-m-d')}}</td>
                     <td>{{$homework->deadline}}</td>
                     <td>
-                        <a href="{{route('myclasses.homeworks.show',[$teachingClass->id,$homework->id])}}" class="view_hw">
+                        <a href="{{route('myclasses.homeworks.show',[$teachingClass->id,$homework->id])}}" class="btn btn-light">
                             <i class="fas fa-info-circle"></i>
                         </a>
                     </td>
                     <td>
-                        <a href="#" class="delete_hw" data-toggle="modal" data-target="#deleteHwModal">
+                        <a href="#" class="btn btn-light" data-toggle="modal" data-target="#deleteHwModal">
                             <i class="fas fa-trash"></i>
                         </a>
                     </td>
                     <td>
-                        <a href="{{route('myclasses.homeworks.edit',[$teachingClass->id,$homework->id])}}" class="edit_hw">
+                        <a href="{{route('myclasses.homeworks.edit',[$teachingClass->id,$homework->id])}}" class="btn btn-light">
                             <i class="fas fa-edit"></i>
                         </a>
                     </td>

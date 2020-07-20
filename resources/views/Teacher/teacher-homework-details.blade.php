@@ -39,7 +39,7 @@
                 </tr>
                 @forelse ($files as $file)
                 <tr>
-                    <td><a href="{{route('homeworks.download',$file->title)}}"><i class="far fa-file-alt"></i> {{$file->title}}</a></td>
+                    <td><a href="{{route('homeworks.download',$file->title)}}"><i class="fas fa-file-download"></i> {{$file->title}}</a></td>
                 </tr>
                 @empty
                     <tr>

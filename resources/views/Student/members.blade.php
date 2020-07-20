@@ -4,6 +4,19 @@
     <title> ClassHome - Members</title>
 @endsection
 
+@section('actions')
+<div class="col-md-4 offset-md-4">
+    <form method="GET" action="">
+        <div class="input-group">
+            <input type="text" name="search" id="search" class="form-control shadow-sm" placeholder="Search">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+            </span>
+        </div>
+    </form>
+</div>
+@endsection
+
 @section('content')
 
 <div class="card shadow-sm p-0 mb-5 rounded ">
@@ -91,7 +104,7 @@
 @section('SendEmailModal')
     <!-- SEND EMAIL MODAL -->
 <div class="modal fade" id="sendEmailModal">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title">Send Email</h5>

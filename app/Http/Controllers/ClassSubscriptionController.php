@@ -143,7 +143,7 @@ class ClassSubscriptionController extends Controller
         $user_id = $request->input('userId');
         $subscription= ClassSubscription::where('teaching_class_id', $class_id)->where('user_id',$user_id)->first(); 
 
-        ClassSubscription::destroy($subscription->id);
+        $subscription->forceDelete();
         
         return redirect()-> route('myclasses.members.index', $class_id); 
     }

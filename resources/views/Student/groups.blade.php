@@ -4,6 +4,19 @@
     <title> ClassHome - Groups</title>
 @endsection
 
+@section('actions')
+<div class="col-md-4 offset-md-4">
+    <form method="GET" action="">
+        <div class="input-group">
+            <input type="text" name="search" id="search" class="form-control shadow-sm" placeholder="Search">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+            </span>
+        </div>
+    </form>
+</div>
+@endsection
+
 @section('content')
 
 <div class="card shadow-sm p-0 mb-5 rounded ">

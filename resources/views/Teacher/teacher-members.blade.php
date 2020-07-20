@@ -11,7 +11,14 @@
     </a>
 </div>
 <div class="col-md-4 offset-2">
-    <input type="text" name="search" id="search" class="form-control shadow" placeholder="Search">
+    <form method="GET" action="">
+        <div class="input-group">
+            <input type="text" name="search" id="search" class="form-control shadow" placeholder="Search">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+            </span>
+        </div>
+    </form>
 </div>
 @endsection
 
@@ -112,7 +119,7 @@
 @section('custom-modal')
 <!-- ADD TEACHER MODAL -->
 <div class="modal fade" id="addTeacherModal">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title">Invite Teacher</h5>
@@ -128,13 +135,12 @@
                         <input name="email" type="email" class="form-control" placeholder="Teacher's Email" required>
                         <input type="hidden" name="senderName" value=" {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}" >
                         <input type="hidden" name="senderEmail" value=" {{ Auth::user()->email}}" >
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" type="submit">Send invitation</button>
                 </div>
             </form>
-            </div>
-            
         </div>
     </div>
 </div>
@@ -142,7 +148,7 @@
 
 <!-- SEND EMAIL MODAL -->
 <div class="modal fade" id="sendEmailModal">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-dark text-white">
                 <h5 class="modal-title">Send Email</h5>
@@ -177,23 +183,23 @@
 <div class="modal fade" id="deleteMemberModal">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <div class="modal-header bg-warning text-white">
+            <div class="modal-header bg-danger text-white">
                 <h5 class="modal-title">Attention</h5>
                 <button class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete this member?</p>
+                <p>Do you really want to delete this member? This process cannot be undone.</p>
             </div>
             <div class="modal-footer">
+                <button class="btn btn-dark" data-dismiss="modal">Back</button>
                 <form method="POST" action="{{ route('deleteMember') }}">
                     @csrf
                     <input type="hidden" name="classId" value="{{ $teachingClass->id}}" >
                     <input type="hidden" name="userId" id="userId" value="" >
-                    <button class="btn btn-warning" type="submit">Confirm</button>
+                    <button class="btn btn-danger" type="submit">Delete</button>
                 </form>
-                <button class="btn btn-dark" data-dismiss="modal">Back</button>
             </div>
         </div>
     </div>

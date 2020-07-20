@@ -22,6 +22,7 @@ class CreatePostsTable extends Migration
             $table->foreignId('group_id')->nullable()->constrained(); 
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('teaching_class_id')->constrained()->cascadeOnDelete();
+            $table->softDeletes();
         });
     }
 

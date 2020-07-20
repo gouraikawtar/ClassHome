@@ -51,7 +51,7 @@ class TeachingClass extends Model
             $teachingClass->homeworks()->restore();
         });
 
-        /*//to restore posts related to a teaching class
+        //to restore posts related to a teaching class
         static ::restoring(function(TeachingClass $teachingClass){
             $teachingClass->posts()->restore();
         });
@@ -59,7 +59,7 @@ class TeachingClass extends Model
         //to restore groups related to a teaching class
         static ::restoring(function(TeachingClass $teachingClass){
             $teachingClass->groups()->restore();
-        });*/
+        });
     }
     
 }

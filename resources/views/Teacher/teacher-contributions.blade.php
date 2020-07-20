@@ -37,13 +37,13 @@
                 @foreach ($homeworks as $homework)
                 <tr>
                     <td></td>
-                    <td><i class="fas fa-folder"></i> {{$homework->title}}</td>
+                    <td><i class="fas fa-file-archive"></i> {{$homework->title}}</td>
                     <td>{{Carbon\Carbon::parse($homework->created_at)->format('Y-m-d')}}</td>
                     <td>{{$homework->deadline}}</td>
                     @if (Carbon\Carbon::now()->format('Y-m-d') <= $homework->deadline)
                     <td>No contributions to download yet</td>
                     @else
-                    <td><a href=" {{ route('contributions.download', $homework->id) }} "><i class="fas fa-download"></i> Download</a></td>
+                    <td><a href=" {{ route('contributions.download', $homework->id) }} " class="btn btn-light"><i class="fas fa-download"></i> Download</a></td>
                     @endif
                 </tr>
                 @endforeach

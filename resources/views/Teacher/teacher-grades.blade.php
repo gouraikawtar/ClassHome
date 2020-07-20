@@ -41,7 +41,7 @@
                     <td>{{Carbon\Carbon::parse($homework->created_at)->format('Y-m-d')}}</td>
                     <td>{{$homework->deadline}}</td>
                     @if (Carbon\Carbon::now()->format('Y-m-d') > $homework->deadline)
-                    <td><a href="{{route('grading',[$teachingClass->id,$homework->id])}}"><i class="fas fa-edit"></i> Grade me!</a></td>
+                    <td><a href="{{route('grading',[$teachingClass->id,$homework->id])}}" class="btn btn-light"><i class="fas fa-check-circle"></i> Grade</a></td>
                     @else
                     <td>No contributions to grade yet</td>
                     @endif

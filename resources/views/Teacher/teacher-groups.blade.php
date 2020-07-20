@@ -11,7 +11,14 @@
     </a>
 </div>
 <div class="col-md-4 offset-2">
-    <input type="text" name="search" id="search" class="form-control shadow" placeholder="Search">
+    <form method="GET" action="">
+        <div class="input-group">
+            <input type="text" name="search" id="search" class="form-control shadow" placeholder="Search">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+            </span>
+        </div>
+    </form>
 </div>
 @endsection
 
@@ -80,7 +87,7 @@
 
     <!-- ADD GROUP MODAL -->
 <div class="modal fade" id="addGroupModal">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-warning text-white">
                 <h5 class="modal-title">Add Group</h5>
@@ -186,10 +193,10 @@
 
     <!-- EDIT GROUP'S NAME MODAL -->
 <div class="modal fade" id="editNameGroupModal">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title">Attention</h5>
+                <h5 class="modal-title">Edit</h5>
                 <button class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
@@ -204,7 +211,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" type="submit">Save changes</button>
+                    <button class="btn btn-dark" type="submit">Save changes</button>
                 </div>
             </form>
         </div>
@@ -214,7 +221,7 @@
 
     <!-- SEND EMAIL TO GROUP MODAL -->
     <div class="modal fade" id="emailGpModal">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-dark text-white">
                     <h5 class="modal-title">Send email</h5>
@@ -247,26 +254,25 @@
 
     <!-- DELETE GROUP MODAL -->
 <div class="modal fade" id="deleteGroupModal">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header bg-warning text-white">
+            <div class="modal-header bg-danger text-white">
                 <h5 class="modal-title">Attention</h5>
                 <button class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete this group ?</p>
+                <p>Do you really want to delete this group? This process cannot be undone.</p>
             </div>
             <div class="modal-footer">
+                <button class="btn btn-dark" data-dismiss="modal">Back</button>
                 <form method="POST" action="{{ route('deleteGroup') }}">
                     @csrf
                     <input type="hidden" name="classId" value="{{ $teachingClass->id}}" >
                     <input type="hidden" name="groupId" id="groupId" value="" >
-                    <button class="btn btn-warning" type="submit">Confirm</button>
+                    <button class="btn btn-danger" type="submit">Delete</button>
                 </form>
-
-                <button class="btn btn-dark" data-dismiss="modal">Back</button>
             </div>
         </div>
     </div>

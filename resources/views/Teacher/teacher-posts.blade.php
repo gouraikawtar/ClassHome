@@ -198,24 +198,23 @@
 <div class="modal fade" id="deletePostModal">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <div class="modal-header bg-warning text-white">
+            <div class="modal-header bg-danger text-white">
                 <h5 class="modal-title">Attention</h5>
                 <button class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete this post ?</p>
+                <p>Do you really want to delete this post? This process cannot be undone.</p>
             </div>
             <div class="modal-footer">
+                <button class="btn btn-dark" data-dismiss="modal">Back</button>
                 <form method="POST" action="{{ route('deletePost') }}">
                     @csrf
                     <input type="hidden" name="classId" value="{{ $teachingClass->id}}" >
                     <input type="hidden" name="postId" id="postId" value="" >
-                    <button class="btn btn-warning" type="submit">Confirm</button>
+                    <button class="btn btn-danger" type="submit">Delete</button>
                 </form>
-
-                <button class="btn btn-dark" data-dismiss="modal">Back</button>
             </div>
         </div>
     </div>
@@ -226,24 +225,23 @@
 <div class="modal fade" id="deleteCommentModal">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <div class="modal-header bg-warning text-white">
+            <div class="modal-header bg-danger text-white">
                 <h5 class="modal-title">Attention</h5>
                 <button class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete this comment ?</p>
+                <p>Do you really want to delete this comment? This process cannot be undone.</p>
             </div>
             <div class="modal-footer">
+                <button class="btn btn-dark" data-dismiss="modal">Back</button>
                 <form method="POST" action="{{ route('deleteComment') }}">
                     @csrf
                     <input type="hidden" name="classId" value="{{ $teachingClass->id}}" >
                     <input type="hidden" name="commentId" id="commentId" value="" >
-                    <button class="btn btn-warning" type="submit">Confirm</button>
+                    <button class="btn btn-danger" type="submit">Delete</button>
                 </form>
-
-                <button class="btn btn-dark" data-dismiss="modal">Back</button>
             </div>
         </div>
     </div>
