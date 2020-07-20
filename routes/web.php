@@ -17,20 +17,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 Route::get('/',function(){
     return view('index');
 })->middleware('guest');
+
+
+Route::middleware(['auth','admin'])->group(function() {
+    Route::get('/classes', 'AdminController@classes') -> name('classes');
+    Route::get('/teachers', 'AdminController@teachers') -> name('teachers');
+    Route::get('/students', 'AdminController@students') -> name('students');
+    Route::get('/dashboard', 'AdminController@dashboard')-> name('dashboard');
+});
 
 Route::middleware('auth')->group(function() {
     Route::resource('/myclasses.posts','PostController')-> only(['index', 'store']); 
     Route::post('/editPost', 'PostController@update')->name('editPost');
     Route::post('/deletePost', 'PostController@destroy')->name('deletePost');
     Route::get('/FileDownload/{name}','PostController@downloadFile')->name('files.download');
-
 });
 
 Route::middleware('auth')->group(function() {
