@@ -52,13 +52,8 @@ Route::middleware('auth')->group(function() {
     Route::resource('/myclasses.groups', 'GroupController') -> only(['index', 'store']);
     Route::post('/deleteGroup', 'GroupController@destroy')->name('deleteGroup');
     Route::post('/updateName', 'GroupController@updateName')->name('updateName');
-    Route::get('/myclasses/{class_id}/members-search','GroupController@searchGroups')->name('groups.search');
+    Route::get('/myclasses/{class_id}/groups-search','GroupController@searchGroups')->name('groups.search');
 });
-
-
-// ------------------------------------ Temporary Routes---------------------------------
-Route::get('/library', function () { return view('Teacher.teacher-library');});
-//----------------------------------------------------------------------------------------
 
 //------------------------------ Routes for Authentification----------------------------
 Auth::routes();
@@ -100,8 +95,12 @@ Route::get('/myclasses/{class_id}/grades-search','ContributionController@searchG
 Route::get('/myclasses/{class_id}/grading/{homework_id}/search','ContributionController@searchStudentsGrades')->name('gradesheet.search');
 Route::get('/myclasses/{class_id}/contributions-search','ContributionController@searchContributions')->name('contributions.search');
 /**----------------------------------------------------------------------------------------- */
+
 /**----------------------------- Routes for HomeworkDocumentController ------------------------- */
 Route::resource('/myclasses.homeworks.documents','HomeworkDocumentController')->only(['destroy']);
 /**----------------------------------------------------------------------------------------- */
+
+/**----------------------------- Routes for LibraryController ------------------------- */
 Route::resource('/myclasses.library', 'LibraryController')->only(['index']);
 Route::get('/myclasses/{class_id}/library-search','LibraryController@searchDocuments')->name('library.search');
+/**----------------------------------------------------------------------------------------- */

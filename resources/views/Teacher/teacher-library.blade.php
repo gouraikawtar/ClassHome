@@ -19,9 +19,10 @@
 
 @section('content')
 <div class="col-md-9">
+    {{-- Homeworks library --}}
     <div class="card shadow-sm">
         <div class="card-header">
-            <h4>Library</h4>
+            <h5>Homeworks Library</h5>
         </div>
         <table class="table table-hover">
             <thead class="thead-light">
@@ -33,14 +34,14 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($files as $file)
+                @foreach ($homework_files as $homework_file)
                 <tr>
                     <td></td>
-                    <td>{{$file->title}}</td>
-                    <td>{{Carbon\Carbon::parse($file->created_at)->format('Y-m-d')}}</td>
+                    <td>{{$homework_file->title}}</td>
+                    <td>{{Carbon\Carbon::parse($homework_file->created_at)->format('Y-m-d')}}</td>
                     <td>
-                        <a href="{{route('homeworks.download',$file->title)}}" class="btn btn-light">
-                            <i class="fas fa-download"></i> Download 
+                        <a href="{{ route('homeworks.download',$homework_file->title) }}" class="btn btn-light">
+                            <i class="fas fa-download"></i> Download
                         </a>
                     </td>
                 </tr>
@@ -48,7 +49,40 @@
             </tbody>
         </table>
         <div class="pagination justify-content-center">
-            {{$files->links()}}
+            {{$homework_files->links()}}
+        </div>
+    </div>
+    <br>
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h5>Posts Library</h5>
+        </div>
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th></th>
+                    <th>Title</th>
+                    <th>Created at</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($post_files as $post_file)
+                <tr>
+                    <td></td>
+                    <td>{{$post_file->title}}</td>
+                    <td>{{Carbon\Carbon::parse($post_file->created_at)->format('Y-m-d')}}</td>
+                    <td>
+                        <a href="{{ route('files.download',$post_file->title) }}" class="btn btn-light">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        <div class="pagination justify-content-center">
+            {{$post_files->links()}}
         </div>
     </div>
 </div>

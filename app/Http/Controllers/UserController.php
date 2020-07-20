@@ -22,7 +22,7 @@ class UserController extends Controller
     public function index($class_id)
     {
         $teachingClass = TeachingClass::find($class_id);
-        $members=$teachingClass->students; 
+        $members=$teachingClass->students()->orderBy('last_name','asc')->get(); 
         $teachers=$teachingClass->students->where('role', 'teacher'); 
         
         if(Auth::user()->role == 'student'){
@@ -192,8 +192,8 @@ class UserController extends Controller
         $teachers=$teachingClass->students->where('role', 'teacher');
         $members = $teachingClass->students()
                     ->where('last_name','like','%'.$value.'%')
-                    ->orderBy('created_at','desc')
-                    ->paginate(8);
+                    ->orderBy('last_name','asc')
+                    ->get();
         if(Auth::user()->role == 'student'){
             return view('Student.members',[
                 'members' => $members,
