@@ -186,4 +186,27 @@ class UserController extends Controller
 
     }
 
+    public function searchStudents(Request $request, $class_id){
+        $value = $request->get('search');
+        $teachingClass = TeachingClass::find($class_id);
+        $teachers=$teachingClass->students->where('role', 'teacher');
+        $members = $teachingClass->students()
+                    ->where('last_name','like','%'.$value.'%')
+                    ->orderBy('created_at','desc')
+                    ->paginate(8);
+        if(Auth::user()->role == 'student'){
+            return view('Student.members',[
+                'members' => $members,
+                'teachingClass' =>  $teachingClass,
+                'teachers'=>$teachers,
+            ]);
+        }elseif(Auth::user()->role == 'teacher'){
+            return view('Teacher.teacher-members',[
+                'members' => $members,
+                'teachingClass' =>  $teachingClass,
+                'teachers'=>$teachers,
+            ]);
+        }
+    }
+
 }

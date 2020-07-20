@@ -6,7 +6,7 @@
 
 @section('actions')
 <div class="col-md-4 offset-md-4">
-    <form method="GET" action="">
+    <form method="GET" action=" {{route('members.search',$teachingClass->id)}} ">
         <div class="input-group">
             <input type="text" name="search" id="search" class="form-control shadow-sm" placeholder="Search">
             <span class="input-group-btn">

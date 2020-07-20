@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function() {
     Route::put('/updatePassword/{user_id}', 'UserController@updatePassword')->name('updatePassword');
     Route::get('/myclasses/{class}/invitation', 'UserController@inviteTeacher')->name('invitation');
     Route::get('/sendingEmail', 'UserController@sendingEmail')->name('sendingEmail');
+    Route::get('/myclasses/{class_id}/members-search','UserController@searchStudents')->name('members.search');
 });
 
 Route::middleware('auth')->group(function() {
