@@ -8,7 +8,6 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Database\Eloquent\Collection;
 
 class TeachingClassController extends Controller
 {
@@ -42,12 +41,17 @@ class TeachingClassController extends Controller
         }elseif(Auth::user()->role == 'teacher'){
             $teacher = Auth::user();
             //find its created classes
-            $classes = TeachingClass::where('user_id',Auth::user()->id)->orderBy('created_at','desc')->paginate(9);
-            $subscriptions = Auth::user()->subscriptions()->orderBy('created_at','desc')->paginate(9);
+            $classes = TeachingClass::where('user_id',Auth::user()->id)->get();
+            //find its co-taught classes
+            $subscriptions = Auth::user()->subscriptions()->get();
+            if($subscriptions->isNotEmpty()){
+                foreach ($subscriptions as $subscription) {
+                    $classes->add($subscription);
+                }
+            }
             return view('Teacher.teacher-myclasses',[
-                'classes' => $classes,
+                'classes' => $classes->sortByDesc('created_at')->paginate(9),
                 'active' => 'index',
-                'collaboration' => $subscriptions
                 /* the 'active' parameter is about to define whether
                  * the tab should be active or no
                  */
@@ -200,18 +204,10 @@ class TeachingClassController extends Controller
         //if the current authenticated user is a student
         if(Auth::user()->role == 'student'){
             //get its archived subscriptions
-            $subs = ClassSubscription::onlyTrashed()->where('user_id','=',Auth::user()->id)->get();
-            //instantiate an ampty collection to store the archived classes
-            $archivedClasses = Collection::make();
-            foreach ($subs as $sub) {
-                //find the appropriate archived class using the 'teaching_class_id' from the sub
-                $class = TeachingClass::onlyTrashed()->find($sub->teaching_class_id);
-                //add the class to the collection
-                $archivedClasses->add($class);
-            }
+            $archivedClasses = Auth::user()->archivedSubscriptions;
 
             return view('Student.archive', [
-                'archivedClasses' => $archivedClasses->paginate(9),
+                'archivedClasses' => $archivedClasses->sortByDesc('deleted_at')->paginate(9),
                 'active' => 'archive',
                 /* the 'active' parameter is about to define whether
                  * the tab should be active or no
@@ -221,10 +217,15 @@ class TeachingClassController extends Controller
         //if the current authenticated user is a teacher
         }elseif(Auth::user()->role == 'teacher'){
             //get its archived classes
-            $archivedClasses = TeachingClass::onlyTrashed()->where('user_id',Auth::user()->id)->paginate(9);
-            
+            $archivedClasses = TeachingClass::onlyTrashed()->where('user_id',Auth::user()->id)->get();
+            //get its archived subscriptions
+            $archivedSubs = Auth::user()->archivedSubscriptions()->get();
+            foreach ($archivedSubs as $sub) {
+                //add the class to the collection
+                $archivedClasses->add($sub);
+            }
             return view('Teacher.teacher-archive',[
-                'archivedClasses' => $archivedClasses,
+                'archivedClasses' => $archivedClasses->sortByDesc('deleted_at')->paginate(9),
                 'active' => 'archive',
                 /* the 'active' parameter is about to define whether
                 * the tab should be active or no
@@ -317,11 +318,13 @@ class TeachingClassController extends Controller
         }elseif(Auth::user()->role == 'teacher'){
             $teacher = Auth::user();
             //find its created classes
-            $classes = $teacher->teachingClasses()
-                        ->orderBy('created_at','desc')->where('name','like','%'.$value.'%')
-                        ->paginate(9);
+            $classes = $teacher->teachingClasses()->where('name','like','%'.$value.'%')->get();
+            $subscriptions = Auth::user()->subscriptions()->where('name','like','%'.$value.'%')->get();
+            foreach ($subscriptions as $subscription) {
+                $classes->add($subscription);
+            }
             return view('Teacher.teacher-myclasses',[
-                'classes' => $classes,
+                'classes' => $classes->sortByDesc('created_at')->paginate(9),
                 'active' => 'index', 
                 /* the 'active' parameter is about to define whether
                  * the tab should be active or no
@@ -339,10 +342,17 @@ class TeachingClassController extends Controller
             //get its archived classes
             $archivedClasses = TeachingClass::onlyTrashed()
                             ->where([['user_id',Auth::user()->id],['name','like','%'.$value.'%']])
-                            ->paginate(9);
-            
+                            ->get();
+            //get its archived co_taught classes
+            $archivedSubs = Auth::user()->archivedSubscriptions()
+                            ->where('name','like','%'.$value.'%')
+                            ->get();
+            foreach ($archivedSubs as $sub) {
+                //add the class to the collection
+                $archivedClasses->add($sub);
+            }
             return view('Teacher.teacher-archive',[
-                'archivedClasses' => $archivedClasses,
+                'archivedClasses' => $archivedClasses->sortByDesc('deleted_at')->paginate(9),
                 'active' => 'archive',
                 /* the 'active' parameter is about to define whether
                 * the tab should be active or no

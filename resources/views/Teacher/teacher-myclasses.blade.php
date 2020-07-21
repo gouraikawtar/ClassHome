@@ -70,52 +70,14 @@
                     </td>
                 </tr>
             </table>
-            {{-- <button class="btn btn-warning" data-toggle="modal" data-target="#archiveClassModal">Archive</button> --}}
         </div>
     </div>
 </div>
 @empty
-@endforelse
-
-@forelse ($collaboration as $class)
-<div class="col-lg-4 col-sm-6 mb-4">
-    <div class="card h-80 shadow-sm">
-        <div class="card-body">
-            <input type="hidden" name="class_id" id="class_id" value="{{$class->id}}">
-            <h4 class="card-title">{{$class->name}}</h4>
-            @if ($class->description == null)
-            <p class="card-text">{{$class->name}}</p>
-            @else
-            <p class="card-text">{{$class->description}}</p> 
-            @endif
-            <table>
-                <tr>
-                    <td>
-                        <input type="hidden" name="class_id" id="class_id" value="{{$class->id}}">
-                    </td>
-                    <td>
-                        <a href="{{route('myclasses.posts.index',$class->id)}}" class="btn btn-primary" role="button">Go</a>
-                    </td>
-                    <td>
-                        <button class="btn btn-warning archive-class" data-toggle="modal" data-target="#archiveClassModal">Archive</button>
-                    </td>
-                </tr>
-            </table>
-            {{-- <div class="btn-group">
-                <a href="{{route('myclasses.posts.index',$class->id)}}" class="btn btn-primary" role="button">Go</a>
-                <form method="POST" action="{{url('/myclasses/'.$class->id)}}">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-warning">Archive</button>
-                </form>
-            </div> --}}
-            {{-- <button class="btn btn-warning" data-toggle="modal" data-target="#archiveClassModal">Archive</button> --}}
-        </div>
-    </div>
+<div class="alert alert-primary" role="alert">
+    <strong>No created classes yet</strong>
 </div>
-@empty
 @endforelse
-
 @endsection
 
 @section('pagination')

@@ -56,19 +56,9 @@
                     </td>
                     <td>
                         <button class="btn btn-success restore-class" data-toggle="modal" data-target="#restoreClassModal">Restore</button>
-                        {{-- <form method="POST" action="{{url('/archive/'.$class->id.'/restore')}}">
-                            @csrf
-                            @method('PATCH')
-                            <button class="btn btn-success">Restore</button>
-                        </form> --}}
                     </td>
                     <td>
                         <button class="btn btn-danger delete-class" data-toggle="modal" data-target="#deleteClassModal">Delete</button>
-                        {{-- <form method="POST" action="{{url('/archive/'.$class->id.'/delete')}}">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger">Delete</button>
-                        </form> --}}
                     </td>
                 </tr>
             </table>
@@ -79,7 +69,6 @@
 <div class="alert alert-primary" role="alert">
     <strong>No archived classes yet</strong>
 </div>
-    
 @endforelse
 @endsection
 

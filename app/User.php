@@ -44,6 +44,9 @@ class User extends Authenticatable
         return $this->belongsToMany('App\TeachingClass', 'class_subscriptions', 'user_id', 'teaching_class_id');
     }
 
+    public function archivedSubscriptions(){
+        return $this->belongsToMany('App\TeachingClass', 'class_subscriptions', 'user_id', 'teaching_class_id')->onlyTrashed();
+    }
 
     public static function boot(){
         parent::boot();
