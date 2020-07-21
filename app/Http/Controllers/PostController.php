@@ -30,14 +30,16 @@ class PostController extends Controller
             return view('Student.posts',  [
                 'posts'=>$posts,
                 'teachingClass'=>$teachingClass, 
-                'groups'=>$groups
+                'groups'=>$groups,
+                'active' => 'posts',
             ]); 
         } 
         elseif (Auth::user()->role == 'teacher'){
             return view('Teacher.teacher-posts', [
                 'posts'=>$posts,
                 'teachingClass'=>$teachingClass, 
-                'groups'=>$groups
+                'groups'=>$groups,
+                'active' => 'posts',
         ]) ;
         }
 

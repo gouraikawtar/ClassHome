@@ -33,11 +33,13 @@ class ContributionController extends Controller
             return view('Teacher.teacher-contributions',[
                 'teachingClass' => $teachingClass,
                 'homeworks' => $homeworks,
+                'active' => 'contributions',
             ]);
         }else if(Auth::user()->role == 'student'){
             return view('Student.contributions',[
                 'teachingClass' => $teachingClass,
                 'homeworks' => $homeworks,
+                'active' => 'contributions',
             ]);
         }
     }
@@ -195,11 +197,13 @@ class ContributionController extends Controller
             return view('Teacher.teacher-grades',[
                 'teachingClass' => $teachingClass,
                 'homeworks' => $homeworks,
+                'active' => 'grades',
             ]);
         }else if(Auth::user()->role == 'student'){
             return view('Student.grades',[
                 'teachingClass' => $teachingClass,
                 'homeworks' => $homeworks,
+                'active' => 'grades',
             ]);
         }
     }
@@ -216,6 +220,7 @@ class ContributionController extends Controller
                 'teachingClass' => $teachingClass,
                 'students' => $students,
                 'homework' => $homework,
+                'active' => 'grades',
             ]);
         }
     }
@@ -247,11 +252,13 @@ class ContributionController extends Controller
             return view('Teacher.teacher-contributions',[
                 'teachingClass' => $teachingClass,
                 'homeworks' => $homeworks,
+                'active' => 'contributions',
             ]);
         }else if(Auth::user()->role == 'student'){
             return view('Student.contributions',[
                 'teachingClass' => $teachingClass,
                 'homeworks' => $homeworks,
+                'active' => 'contributions',
             ]);
         }
     } 
@@ -269,11 +276,13 @@ class ContributionController extends Controller
             return view('Teacher.teacher-grades',[
                 'teachingClass' => $teachingClass,
                 'homeworks' => $homeworks,
+                'active' => 'grades',
             ]);
         }else if(Auth::user()->role == 'student'){
             return view('Student.grades',[
                 'teachingClass' => $teachingClass,
                 'homeworks' => $homeworks,
+                'active' => 'grades',
             ]);
         }
     }
@@ -293,6 +302,7 @@ class ContributionController extends Controller
                 'teachingClass' => $teachingClass,
                 'students' => $students,
                 'homework' => $homework,
+                'active' => 'grades',
             ]);
         }
     }

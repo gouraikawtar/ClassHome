@@ -131,6 +131,7 @@ class TeachingClassController extends Controller
 
         return view('Teacher.teacher-settings',[
             'teachingClass' => $teachingClass,
+            'active' => 'myclasses'
         ]);
     }
 

@@ -29,15 +29,17 @@ class UserController extends Controller
             return view('Student.members',  [
                 'members'=>$members, 
                 'teachingClass'=>$teachingClass, 
-                'teachers'=>$teachers
+                'teachers'=>$teachers,
+                'active' => 'members',
             ]); 
         } 
         elseif (Auth::user()->role == 'teacher'){
             return view('Teacher.teacher-members', [
                 'members'=>$members, 
                 'teachingClass'=>$teachingClass,
-                'teachers'=>$teachers
-        ]) ;
+                'teachers'=>$teachers,
+                'active' => 'members',
+            ]);
         }
     }
 
@@ -199,12 +201,14 @@ class UserController extends Controller
                 'members' => $members,
                 'teachingClass' =>  $teachingClass,
                 'teachers'=>$teachers,
+                'active' => 'members',
             ]);
         }elseif(Auth::user()->role == 'teacher'){
             return view('Teacher.teacher-members',[
                 'members' => $members,
                 'teachingClass' =>  $teachingClass,
                 'teachers'=>$teachers,
+                'active' => 'members',
             ]);
         }
     }

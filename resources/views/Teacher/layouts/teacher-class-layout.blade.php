@@ -27,19 +27,19 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav">
-                    <li class="nav-item px-2">
+                    <li class="nav-item px-2 @if ($active == 'myclasses') active @endif">
                         <a href="{{ route('myclasses.index') }}" class="nav-link ">My Classes</a>
                     </li>
-                    <li class="nav-item px-2">
+                    <li class="nav-item px-2 @if ($active == 'posts') active @endif">
                         <a href="{{ route('myclasses.posts.index', $teachingClass->id) }}" class="nav-link ">Posts</a>
                     </li>
-                    <li class="nav-item px-2 ">
+                    <li class="nav-item px-2 @if ($active == 'homeworks') active @endif">
                         <a href="{{route('myclasses.homeworks.index', $teachingClass->id)}}" class="nav-link ">Homeworks</a>
                     </li>
-                    <li class="nav-item px-2">
+                    <li class="nav-item px-2 @if ($active == 'contributions') active @endif">
                         <a href="{{ route('myclasses.contributions.index', $teachingClass->id) }}" class="nav-link">Contibutions</a>
                     </li>
-                    <li class="nav-item px-2 ">
+                    <li class="nav-item px-2 @if ($active == 'grades') active @endif">
                         <a href="{{ route('grades',$teachingClass->id) }}" class="nav-link">Grades</a>
                     </li>
                 </ul>
@@ -110,7 +110,7 @@
 
                     <!-- BOXES -->
                     <div class="col-md-3 ">
-                        <div class="card text-center bg-success text-white mb-3 shadow">
+                        <div class="card text-center bg-success text-white mb-3 shadow @if ($active == 'library') active @endif">
                             <div class="card-body ">
                                 <h3>Library</h3>
                                 <h4 class="display-4 ">
@@ -120,7 +120,7 @@
                             </div>
                         </div>
 
-                        <div class="card text-center bg-primary text-white mb-3 shadow ">
+                        <div class="card text-center bg-primary text-white mb-3 shadow @if ($active == 'members') active @endif">
                             <div class="card-body ">
                                 <h3>Members</h3>
                                 <h4 class="display-4 ">
@@ -130,7 +130,7 @@
                             </div>
                         </div>
 
-                        <div class="card text-center bg-warning text-white mb-3 shadow">
+                        <div class="card text-center bg-warning text-white mb-3 shadow @if ($active == 'groups') active @endif">
                             <div class="card-body ">
                                 <h3>Groups</h3>
                                 <h4 class="display-4 ">

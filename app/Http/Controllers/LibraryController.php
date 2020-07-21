@@ -49,6 +49,7 @@ class LibraryController extends Controller
                 'teachingClass' => $teachingClass,
                 'homework_files' => $homework_files->paginate(8),
                 'post_files' => $post_files->paginate(8),
+                'active' => 'library',
             ]);
 
         //if it's a teacher
@@ -57,6 +58,52 @@ class LibraryController extends Controller
                 'teachingClass' => $teachingClass,
                 'homework_files' => $homework_files->paginate(8),
                 'post_files' => $post_files->paginate(8),
+                'active' => 'library',
+            ]);
+        }
+    }
+
+    /**
+     * Search documents method
+     */
+    public function searchDocuments(Request $request,$class_id){
+        $value = $request->get('search');
+        $teachingClass = TeachingClass::find($class_id);
+        $homeworks = $teachingClass->homeworks;
+        $posts = $teachingClass->posts;
+        
+        $homework_files = Collection::make();
+        $post_files = Collection::make();
+
+        foreach ($homeworks as $homework) {
+            $files = $homework->joinedDocuments()->where('title','like','%'.$value.'%')->get();
+            foreach ($files as $file) {
+                $homework_files->add($file);
+            }
+        }
+
+        foreach ($posts as $post) {
+            $files = $post->files()->where('title','like','%'.$value.'%')->get();
+            foreach ($files as $file) {
+                $post_files->add($file);
+            }
+        }
+
+        if(Auth::user()->role == 'student'){
+            return view('Student.library', [
+                'teachingClass' => $teachingClass,
+                'homework_files' => $homework_files->paginate(8),
+                'post_files' => $post_files->paginate(8),
+                'active' => 'library',
+            ]);
+
+        //if it's a teacher
+        }elseif(Auth::user()->role == 'teacher'){
+            return view('Teacher.teacher-library',[
+                'teachingClass' => $teachingClass,
+                'homework_files' => $homework_files->paginate(8),
+                'post_files' => $post_files->paginate(8),
+                'active' => 'library',
             ]);
         }
     }
@@ -125,45 +172,5 @@ class LibraryController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function searchDocuments(Request $request,$class_id){
-        $value = $request->get('search');
-        $teachingClass = TeachingClass::find($class_id);
-        $homeworks = $teachingClass->homeworks;
-        $posts = $teachingClass->posts;
-        
-        $homework_files = Collection::make();
-        $post_files = Collection::make();
-
-        foreach ($homeworks as $homework) {
-            $files = $homework->joinedDocuments()->where('title','like','%'.$value.'%')->get();
-            foreach ($files as $file) {
-                $homework_files->add($file);
-            }
-        }
-
-        foreach ($posts as $post) {
-            $files = $post->files()->where('title','like','%'.$value.'%')->get();
-            foreach ($files as $file) {
-                $post_files->add($file);
-            }
-        }
-
-        if(Auth::user()->role == 'student'){
-            return view('Student.library', [
-                'teachingClass' => $teachingClass,
-                'homework_files' => $homework_files->paginate(8),
-                'post_files' => $post_files->paginate(8),
-            ]);
-
-        //if it's a teacher
-        }elseif(Auth::user()->role == 'teacher'){
-            return view('Teacher.teacher-library',[
-                'teachingClass' => $teachingClass,
-                'homework_files' => $homework_files->paginate(8),
-                'post_files' => $post_files->paginate(8),
-            ]);
-        }
     }
 }

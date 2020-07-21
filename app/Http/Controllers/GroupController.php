@@ -29,14 +29,16 @@ class GroupController extends Controller
             return view('Student.groups',  [
                 'groups'=>$groups,
                 'teachingClass'=>$teachingClass, 
-                'members'=>$members
+                'members'=>$members,
+                'active' => 'groups',
             ]); 
         } 
         elseif (Auth::user()->role == 'teacher'){
             return view('Teacher.teacher-groups', [
                 'groups'=>$groups,
                 'teachingClass'=>$teachingClass,
-                'members'=>$members
+                'members'=>$members,
+                'active' => 'groups',
             ]);
         }
     }
@@ -117,14 +119,16 @@ class GroupController extends Controller
             return view('Student.groups',  [
                 'groups'=>$groups,
                 'teachingClass'=>$teachingClass, 
-                'members'=>$members
+                'members'=>$members,
+                'active' => 'groups',
             ]); 
         } 
         elseif (Auth::user()->role == 'teacher'){
             return view('Teacher.teacher-groups', [
                 'groups'=>$groups,
                 'teachingClass'=>$teachingClass,
-                'members'=>$members
+                'members'=>$members,
+                'active' => 'groups',
             ]);
         }
     }

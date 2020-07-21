@@ -33,11 +33,13 @@ class HomeworkController extends Controller
             return view('Student.homework',[
                 'homeworks' => $homeworks,
                 'teachingClass' =>  $teachingClass,
+                'active' => 'homeworks',
             ]);
         }elseif(Auth::user()->role == 'teacher'){
             return view('Teacher.teacher-homework',[
                 'homeworks' => $homeworks,
                 'teachingClass' =>  $teachingClass,
+                'active' => 'homeworks',
             ]);
         }
     }
@@ -126,12 +128,14 @@ class HomeworkController extends Controller
                 'teachingClass' =>  $teachingClass,
                 'homework'  =>  $homework,
                 'files' =>  $files,
+                'active' => 'homeworks',
             ]);
         }elseif (Auth::user()->role == 'teacher') {
             return view('Teacher.teacher-homework-details',[
                 'teachingClass' =>  $teachingClass,
                 'homework'  =>  $homework,
                 'files' =>  $files,
+                'active' => 'homeworks',
             ]);
         }
     }
@@ -152,6 +156,7 @@ class HomeworkController extends Controller
                 'teachingClass' =>  $teachingClass,
                 'homework'  =>  $homework,
                 'files' =>  $files,
+                'active' => 'homeworks',
             ]);
         }
     }
@@ -233,11 +238,13 @@ class HomeworkController extends Controller
             return view('Student.homework',[
                 'homeworks' => $homeworks,
                 'teachingClass' =>  $teachingClass,
+                'active' => 'homeworks',
             ]);
         }elseif(Auth::user()->role == 'teacher'){
             return view('Teacher.teacher-homework',[
                 'homeworks' => $homeworks,
                 'teachingClass' =>  $teachingClass,
+                'active' => 'homeworks',
             ]);
         }
     }
