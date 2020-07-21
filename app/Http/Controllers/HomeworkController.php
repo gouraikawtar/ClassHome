@@ -99,7 +99,7 @@ class HomeworkController extends Controller
                 }
             }
             //Create contributions
-            $students = $teachingClass->students;
+            $students = $teachingClass->students()->where('role','student')->get();
             foreach ($students as $student) {
                 $contribution = new Contribution();
                 $contribution->title = $homework->title;

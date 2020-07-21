@@ -211,7 +211,7 @@ class ContributionController extends Controller
     //get gradesheets view
     public function getStudentsContributions($class_id,$homework_id){
         $teachingClass = TeachingClass::find($class_id);
-        $students = $teachingClass->students()
+        $students = $teachingClass->students()->where('role','student')
                     ->orderBy('last_name','asc')
                     ->paginate(8);
         $homework = Homework::find($homework_id);
@@ -293,7 +293,7 @@ class ContributionController extends Controller
 
         $teachingClass = TeachingClass::find($class_id);
         $students = $teachingClass->students()
-                    ->where('last_name','like','%'.$value.'%')
+                    ->where([['role','student'],['last_name','like','%'.$value.'%']])
                     ->orderBy('last_name','asc')
                     ->paginate(8);
         $homework = Homework::find($homework_id);
