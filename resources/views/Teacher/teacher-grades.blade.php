@@ -30,7 +30,7 @@
                     <th>Homework</th>
                     <th>Created at</th>
                     <th>Deadline</th>
-                    <th>Action</th>
+                    <th colspan="2">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,8 +42,10 @@
                     <td>{{$homework->deadline}}</td>
                     @if (Carbon\Carbon::now()->format('Y-m-d') > $homework->deadline)
                     <td><a href="{{route('grading',[$teachingClass->id,$homework->id])}}" class="btn btn-light"><i class="fas fa-check-circle"></i> Grade</a></td>
+                    <td><a href="#" class="btn btn-light"><i class="fas fa-download"></i> Download grades</a></td>
                     @else
                     <td>No contributions to grade yet</td>
+                    <td>No grades to download yet</td>
                     @endif
                 </tr>
                 @endforeach

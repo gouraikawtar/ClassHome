@@ -191,28 +191,6 @@ header {
 /* GROUPS CSS END */
 
 
-/* HOMEWORK CSS */
-
-.edit_hw {
-    cursor: pointer;
-    color: #28a745;
-}
-
-.delete_hw {
-    cursor: pointer;
-    color: #dc3545;
-    ;
-}
-
-.view_hw {
-    cursor: pointer;
-    color: #ffc107;
-}
-
-
-/* HOMEWORK CSS END */
-
-
 /* MEMBERS CSS */
 
 .block_user {

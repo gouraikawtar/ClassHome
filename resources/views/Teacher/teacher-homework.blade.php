@@ -77,7 +77,7 @@
                         </a>
                     </td>
                     <td>
-                        <a href="#" class="btn btn-light" data-toggle="modal" data-target="#deleteHwModal">
+                        <a href="#" class="btn btn-light delete_hw" data-toggle="modal" data-target="#deleteHwModal">
                             <i class="fas fa-trash"></i>
                         </a>
                     </td>
