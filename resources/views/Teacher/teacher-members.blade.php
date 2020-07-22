@@ -56,18 +56,18 @@
                         <td>{{ $teacher->first_name }} {{ $teacher->last_name }}</td>
                         <td>{{ $teacher->email }}</td>
                         <td>
-                            @if ( App\User::find($teachingClass->user_id)->id == Auth::user()->id)
-                                <button class="btn btn-light" data-userid="{{$teacher->id}}" data-toggle="modal" data-target="#deleteMemberModal">
-                                    <i class="fas fa-user-minus delete_user"></i>
-                                </button>
-                                @endif
-                        </td>
-                        <td>
                             @if ( $teacher->id != Auth::user()->id)
                                 <button class="btn btn-light" data-toggle="modal" data-target="#sendEmailModal">
                                     <i class="fas fa-envelope email_user"></i>
                                 </button>
                             @endif
+                        </td>
+                        <td>
+                            @if ( App\User::find($teachingClass->user_id)->id == Auth::user()->id)
+                                <button class="btn btn-light" data-userid="{{$teacher->id}}" data-toggle="modal" data-target="#deleteMemberModal">
+                                    <i class="fas fa-user-minus delete_user"></i>
+                                </button>
+                                @endif
                         </td>
                     </tr>
                 @empty
