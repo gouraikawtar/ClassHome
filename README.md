@@ -1,5 +1,8 @@
 # Get started
 
+## Contributors
+[Salma BOUAOUID](https://github.com/sbouaouid)<br>
+[Kawtar GOURAI](https://github.com/gouraikawtar)
 ## Clone the project
 ```
 git clone url
