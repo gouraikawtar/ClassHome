@@ -24,7 +24,7 @@
                     <section>
                         <header class="major">
                             <h2>Welcome to ClassHome</h2>
-                            <span class="byline">Your virtual nearbly classroom</span>
+                            <span class="byline">Share class materials, and make learning accessible anywhere. Save yourself time by bringing all your classroom tools together.</span>
                         </header>
                         <a href="{{ route('register') }}" class="button alt">Register now</a>
                         <a href="{{ route('login') }}" class="button alt">Login</a>
@@ -38,22 +38,21 @@
         <section class="container">
             <header class="major">
                 <h2>Our Purpose</h2>
-                <span class="byline">Mauris vulputate dolor sit amet nibh</span>
             </header>
             <div class="row no-collapse-1">
                 <section class="4u">
                     <h3>For students</h3>
-                    <a href="#" class="image feature"><img src="{{asset('images/pic02.jpg')}}" alt=""></a>
+                    <a href="#" class="image feature"><img src="{{asset('images/pic01.jpg')}}" alt=""></a>
                     <p>Guarantee to students the possibility of accessing their classroom resources whenever and wherever they are.</p>
                 </section>
                 <section class="4u">
                     <h3>For teachers</h3>
-                    <a href="#" class="image feature"><img src="{{asset('images/pic03.jpg')}}" alt=""></a>
+                    <a href="#" class="image feature"><img src="{{asset('images/pic02.jpg')}}" alt=""></a>
                     <p>Make it easy for teachers to keep in touch with their students anytime.</p>
                 </section>
                 <section class="4u">
                     <h3>For society</h3>
-                    <a href="#" class="image feature"><img src="{{asset('images/pic04.jpg')}}" alt=""></a>
+                    <a href="#" class="image feature"><img src="{{asset('images/pic03.jpg')}}" alt=""></a>
                     <p>Participate in the digitalization and virtualization of the national education system.</p>
                 </section>
             </div>
@@ -64,7 +63,6 @@
         <section class="container">
             <header class="major">
                 <h2>Our Features</h2>
-                <span class="byline">Mauris vulputate dolor sit amet nibh</span>
             </header>
             <div class="row">
                 <!-- Content -->
@@ -72,14 +70,14 @@
                     <section>
                         <ul class="style">
                             <li>
-                                <span class="fa fa-wrench"></span>
+                                <span class="fa fa-comments"></span>
                                 <h3>Assure communication</h3>
                                 <span>Teachers and their students can always communicate by sharing posts and comments to express and sending emails.</span>
                             </li>
                             <li>
-                                <span class="fa fa-cloud"></span>
-                                <h3>Integer ultrices</h3>
-                                <span>In posuere eleifend odio. Quisque semper augue mattis wisi. Maecenas ligula. Pellentesque viverra vulputate enim.</span>
+                                <span class="fa fa-dollar-sign"></span>
+                                <h3>Free access</h3>
+                                <span>Free access to your classes and homeworks.</span>
                             </li>
                         </ul>
                     </section>
@@ -88,14 +86,14 @@
                     <section>
                         <ul class="style">
                             <li>
-                                <span class="fa fa-cogs"></span>
+                                <span class="fa fa-pen"></span>
                                 <h3>Evaluate your students</h3>
                                 <span>Grade your students contributions and keep them updated about their grades.</span>
                             </li>
                             <li>
-                                <span class="fa fa-leaf"></span>
-                                <h3>Aliquam luctus</h3>
-                                <span>Pellentesque viverra vulputate enim. Aliquam erat volutpat. Maecenas condimentum enim tincidunt risus accumsan.</span>
+                                <span class="fa fa-cogs"></span>
+                                <h3>Manage classes</h3>
+                                <span>Manage your classes as you like.</span>
                             </li>
                         </ul>
                     </section>
